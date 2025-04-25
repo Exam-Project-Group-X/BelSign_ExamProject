@@ -8,7 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="easv.dk.belman.gui.controllers.AdminController"
+            fx:controller="easv.dk.belman.GUI.common.AdminController"
             prefHeight="768.0" prefWidth="1024.0">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #2C3E50;">
