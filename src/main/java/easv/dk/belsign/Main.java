@@ -9,18 +9,26 @@ import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 
+/**
+ * =========================================================
+ * Exam project: BelSign Photo Documentation
+ * June 2025
+ * Exam Project Group X <Davide, Jianming, Lucas, Jennifer>
+ * =========================================================
+ * */
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        stage.setTitle("Log in View");
+        stage.setTitle("BelSign");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
+
         launch();
     }
 }
