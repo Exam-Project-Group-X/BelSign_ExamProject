@@ -1,4 +1,4 @@
-package easv.dk.belman;
+package easv.dk.belsign;
 
 public class FXMLPath {
 }

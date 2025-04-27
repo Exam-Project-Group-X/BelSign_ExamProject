@@ -1,4 +1,4 @@
-package easv.dk.belman;
+package easv.dk.belsign;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 
-public class BelmanApplication extends Application {
+public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
