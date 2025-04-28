@@ -1,13 +1,10 @@
 package easv.dk.belsign;
 
+import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.StageManager;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
-
-import java.io.IOException;
 
 /**
  * =========================================================
@@ -18,17 +15,17 @@ import java.io.IOException;
  * */
 public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/easv/dk/belsign/views/LoginView.fxml"));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        stage.setTitle("BelSign");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        StageManager stageManager = new StageManager(); // Create the StageManager
+        stageManager.setCurrentStage(primaryStage);     // Set the main window
+
+        ViewManager.INSTANCE.setStageManager(stageManager);
+
+        ViewManager.INSTANCE.showStage(FXMLPath.LOGIN, "BelSign - Login", false);
     }
 
     public static void main(String[] args) {
 
-        launch();
+        launch(args);
     }
 }
