@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="easv.dk.belsign.gui.QAControllers.QACardController"
+            fx:controller="easv.dk.belsign.gui.QAControllers.QAPhotoReviewController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>
