@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="easv.dk.belsign.gui.QAControllers.QACreateOrderController"
+            prefHeight="800.0" prefWidth="1280.0">
+    <!-- ===== TOP HEADER BAR ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
+            <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../images/logo.png" />
+                </image></ImageView>
+
+            <!-- Welcome text -->
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, Name!" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Header icons placeholder -->
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <Button fx:id="settingsButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/icons/bell.png" />
+                            </image>
+                        </ImageView>
+                    </graphic></Button>
+                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn">
+                    <graphic>
+                        <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../../../../../Charlie.jpg" />
+                            </image>
+                        </ImageView>
+                    </graphic></Button>
+                <Button fx:id="logoutButton" styleClass="logout-btn" text="Logout" />
+            </HBox>
+        </HBox>
+    </top>
+    <center>
+        <StackPane style="-fx-background-color: #D9D9D9; -fx-padding: 25;">
+            <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 15;">
+
+                <!-- Card title -->
+                <Label text="Create New Order" style="-fx-font-weight: bold; -fx-padding: 0 0 10 5;" />
+                <Separator />
+
+                <!-- Form grid -->
+                <GridPane hgap="15" vgap="20" style="-fx-padding: 25 10 40 10;">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="150" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <!-- Order ID -->
+                    <Label text="ORDER ID" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                    <TextField fx:id="orderIdField" promptText="Enter Order ID" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <!-- Description -->
+                    <Label text="DESCRIPTION" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                    <TextField fx:id="descriptionField" promptText="Enter Description" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                    <!-- Assigned to -->
+                    <Label text="ASSIGNED TO" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                    <ComboBox fx:id="assignedToBox" promptText="Operator" prefWidth="250" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                </GridPane>
+
+                <!-- Buttons row -->
+                <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 0 10 20 10;">
+                    <Button fx:id="cancelBtn" text="Cancel" styleClass="secondary-btn" />
+                    <Button fx:id="continueBtn" text="Continue" styleClass="primary-btn" />
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>
