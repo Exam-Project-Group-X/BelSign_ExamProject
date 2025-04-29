@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="easv.dk.belsign.gui.OperatorControllers.OperatorOrdersController"
-            prefHeight="800.0" prefWidth="1280.0"
-            stylesheets="@/easv/dk/belsign/styles/app.css">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@/easv/dk/belsign/styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.OperatorControllers.OperatorOrdersController">
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
@@ -54,8 +57,8 @@
         <VBox spacing="15" style="-fx-background-color: #E3E3E3; -fx-padding: 20;">
 
             <!-- Filters -->
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Orders" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Orders" />
             </HBox>
 
             <HBox spacing="10">
@@ -79,14 +82,17 @@
                     <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
                 </columnConstraints>
                 <children>
-                    <Label text="ORDER ID" styleClass="col-title" GridPane.columnIndex="0"/>
-                    <Label text="DESCRIPTION" styleClass="col-title" GridPane.columnIndex="1"/>
-                    <Label text="CREATE DATE" styleClass="col-title" GridPane.columnIndex="2"/>
-                    <Label text="OPERATOR" styleClass="col-title" GridPane.columnIndex="3"/>
-                    <Label text="PRODUCT PHOTO" styleClass="col-title" GridPane.columnIndex="4"/>
-                    <Label text="STATUS" styleClass="col-title" GridPane.columnIndex="5"/>
-                    <Label text="UPDATE DATE" styleClass="col-title" GridPane.columnIndex="6"/>
+                    <Label styleClass="col-title" text="ORDER ID" GridPane.columnIndex="0" />
+                    <Label styleClass="col-title" text="DESCRIPTION" GridPane.columnIndex="1" />
+                    <Label styleClass="col-title" text="CREATE DATE" GridPane.columnIndex="2" />
+                    <Label styleClass="col-title" text="OPERATOR" GridPane.columnIndex="3" />
+                    <Label styleClass="col-title" text="PRODUCT PHOTO" GridPane.columnIndex="4" />
+                    <Label styleClass="col-title" text="STATUS" GridPane.columnIndex="5" />
+                    <Label styleClass="col-title" text="UPDATE DATE" GridPane.columnIndex="6" />
                 </children>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
         <!-- CARD LIST -->
@@ -95,14 +101,14 @@
 
 
             <!-- Pagination -->
-            <HBox spacing="6" alignment="CENTER" style="-fx-padding: 10;">
-                <Label fx:id="pageInfoLabel" text="Showing page 1 of 4"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <ToggleButton selected="true" text="1"/>
-                <ToggleButton text="2"/>
-                <ToggleButton text="3"/>
-                <ToggleButton text="4"/>
-                <Label text="⟩" style="-fx-opacity: 0.4;"/>
+            <HBox alignment="CENTER" spacing="6" style="-fx-padding: 10;">
+                <Label fx:id="pageInfoLabel" text="Showing page 1 of 4" />
+                <Region HBox.hgrow="ALWAYS" />
+                <ToggleButton selected="true" text="1" />
+                <ToggleButton text="2" />
+                <ToggleButton text="3" />
+                <ToggleButton text="4" />
+                <Label style="-fx-opacity: 0.4;" text="⟩" />
             </HBox>
         </VBox>
     </center>

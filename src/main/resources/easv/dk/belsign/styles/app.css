@@ -1,3 +1,16 @@
 .root {
-    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-font-family: "Helvetica", "Arial", sans-serif; /*If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial → generic sans-serif.*/
+}
+
+.primary-btn {
+    -fx-background-color: #004884;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.secondary-btn {
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
 }
