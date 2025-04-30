@@ -1,18 +1,12 @@
 package easv.dk.belsign.gui.QAControllers;
 
-import easv.dk.belsign.gui.QAControllers.components.NewOrderDialogController;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.ComboBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
