@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class TestUserManagementLauncher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/UserManagementView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/AdminViews/UserManagementView.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("User Management Test");

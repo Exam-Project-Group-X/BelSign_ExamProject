@@ -18,7 +18,7 @@
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
             <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../images/logo.png" />
+                    <Image url="@../../images/logo.png" />
                 </image></ImageView>
 
             <!-- Welcome text -->
@@ -32,7 +32,7 @@
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/icons/bell.png" />
+                                <Image url="@../../images/icons/bell.png" />
                             </image>
                         </ImageView>
                     </graphic></Button>
@@ -40,7 +40,7 @@
                     <graphic>
                         <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../../../../../Charlie.jpg" />
+<!--                                <Image url="@../../../../../../../../Charlie.jpg" />-->
                             </image>
                         </ImageView>
                     </graphic></Button>
@@ -67,7 +67,7 @@
                      <graphic>
                               <ImageView fx:id="cameraIcon" fitHeight="30" fitWidth="30" preserveRatio="true">
                            <image>
-                              <Image url="@../images/icons/camera.png" />
+                              <Image url="@../../images/icons/camera.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -85,22 +85,22 @@
                   <children>
                      <ImageView fitHeight="80.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../images/AN1BH61.png" />
+                           <Image url="@../../images/AN1BH61.png" />
                         </image>
                      </ImageView>
                      <ImageView fitHeight="80.0" fitWidth="100.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../images/LA1ST73.png" />
+                           <Image url="@../../images/LA1ST73.png" />
                         </image>
                      </ImageView>
                      <ImageView fitHeight="80.0" fitWidth="100.0" layoutX="120.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../images/VI1FT90.png" />
+                           <Image url="@../../images/VI1FT90.png" />
                         </image>
                      </ImageView>
                      <ImageView fitHeight="80.0" fitWidth="100.0" layoutX="230.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../images/AN1BH61.png" />
+                           <Image url="@../../images/AN1BH61.png" />
                         </image>
                      </ImageView>
                   </children></FlowPane>
@@ -111,7 +111,7 @@
                 <!-- Buttons row -->
                 <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10 15 15 15;">
                     <Button fx:id="cancelBtn" styleClass="secondary-btn" text="Cancel" />
-                    <Button fx:id="continueBtn" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Confirm" />
+                    <Button fx:id="continueBtn" styleClass="primary-btn" stylesheets="@../../styles/app.css" text="Confirm" />
                 </HBox>
             </VBox>
         </StackPane>
