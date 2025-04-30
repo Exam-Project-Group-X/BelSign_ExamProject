@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.QAControllers.QACardController">
+<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.QAControllers.components.QAOrderCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->
@@ -21,15 +21,15 @@
         <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
         <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
     </columnConstraints>
-    <Label alignment="CENTER" prefHeight="17.0" prefWidth="88.0" text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="88.0" text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label  fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label text="by Donna Nielsen" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
    <HBox spacing="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <children>
           <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@../../images/icons/photos.png" />
+<!--               <Image url="@../../images/icons/photos.png" />-->
             </image>
          </ImageView>
          <Label alignment="CENTER" contentDisplay="CENTER" text="View all" textAlignment="CENTER">

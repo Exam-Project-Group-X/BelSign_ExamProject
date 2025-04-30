@@ -1,6 +1,9 @@
 package easv.dk.belsign.gui.QAControllers;
 
+import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.QAControllers.components.NewOrderDialogController;
+import easv.dk.belsign.gui.QAControllers.components.QAOrderCardController;
+import easv.dk.belsign.gui.QAControllers.model.QAmodel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.fxml.FXML;
@@ -24,6 +27,7 @@ public class QAEmployeeController {
     @FXML
     private Button createOrderButton;
 
+    private final QAmodel model = new QAmodel();
     @FXML
     private void initialize() {
 //        // Simulate loading 2 orders
@@ -56,24 +60,24 @@ public class QAEmployeeController {
 
     }
 
-    public void addNewOrderCard(/* you can pass an Order object later */) {
+    public void addNewOrderCard(Order order) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_ORDER_CARD));
             Parent card = loader.load();
 
-           ///
+            ///
+
+            QAOrderCardController controller = loader.getController();
+            controller.setOrderData(order); // ✅ Pass real order data to UI
 
             cardContainer.getChildren().add(card);
-
         } catch (IOException e) {
             e.printStackTrace();
+
         }
 
-    }
-
-
-
-
 
     }
+}
+
 

@@ -36,6 +36,7 @@ import javafx.scene.layout.BorderPane;
             }
         }
 
+
         public void switchDashboard(String fxml, String title){
             if(stageManager != null){
                 sceneManager.switchDashboard(fxml, title);
