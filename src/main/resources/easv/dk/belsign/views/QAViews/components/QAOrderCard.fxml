@@ -52,7 +52,7 @@
     </rowConstraints>
    <stylesheets>
 
-      <URL value="@../../../styles/card.css" />
+      <URL value="@../../../views/styles/card.css" />
    </stylesheets>
 
 </GridPane>
