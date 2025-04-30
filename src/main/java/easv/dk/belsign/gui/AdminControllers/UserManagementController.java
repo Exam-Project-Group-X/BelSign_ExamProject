@@ -17,32 +17,17 @@ import javafx.stage.Stage;
 
 public class UserManagementController {
 
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private ComboBox<String> roleFilter;
-
-    @FXML
-    private Button addUserButton;
-
-    @FXML
-    private Button logoutButton;
-
-    @FXML
-    private TableView<User> userTable;
-
-    @FXML
-    private TableColumn<User, String> nameColumn;
-
-    @FXML
-    private TableColumn<User, String> emailColumn;
-
-    @FXML
-    private TableColumn<User, String> roleColumn;
-
-    @FXML
-    private TableColumn<User, Void> actionsColumn;
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> roleFilter;
+    @FXML private Button addUserButton;
+    @FXML private Button logoutButton;
+    @FXML private TableView<User> userTable;
+    @FXML private TableColumn<User, String> nameColumn;
+    @FXML private TableColumn<User, String> emailColumn;
+    @FXML private TableColumn<User, String> roleColumn;
+    @FXML private TableColumn<User, String> createdAtColumn;
+    @FXML private TableColumn<User, String> updatedAtColumn;
+    @FXML private TableColumn<User, Void> actionsColumn;
 
     private final ObservableList<User> masterUserList = FXCollections.observableArrayList();
     private final UserDAO userDAO = new UserDAO();
@@ -55,26 +40,39 @@ public class UserManagementController {
         refreshUserList();
     }
 
+    /**
+     * Initializes and configures all table columns including action buttons.
+     */
     private void setupTableColumns() {
         nameColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getUsername()));
         emailColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmail()));
         roleColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getUserRole()));
 
+        createdAtColumn.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getCreatedAt() != null
+                        ? cell.getValue().getCreatedAt().toString() : "")
+        );
+        updatedAtColumn.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getUpdatedAt() != null
+                        ? cell.getValue().getUpdatedAt().toString() : "")
+        );
+
+        // Add Edit and Delete buttons to each row
         actionsColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Delete");
             private final HBox hbox = new HBox(10, editButton, deleteButton);
 
             {
+                hbox.setAlignment(Pos.CENTER);
                 editButton.setOnAction(e -> openEditUserWindow(getTableView().getItems().get(getIndex())));
                 deleteButton.setOnAction(e -> {
                     User user = getTableView().getItems().get(getIndex());
                     userDAO.deleteUser(user);
-                    searchField.clear();
+                    searchField.clear(); // Reset search and filters
                     roleFilter.setValue("All Roles");
                     refreshUserList();
                 });
-                hbox.setAlignment(Pos.CENTER);
             }
 
             @Override
@@ -87,6 +85,9 @@ public class UserManagementController {
         userTable.setEditable(false);
     }
 
+    /**
+     * Populates and binds the search field and role filter dropdown.
+     */
     private void setupSearchAndFilter() {
         if (roleFilter.getItems().isEmpty()) {
             roleFilter.getItems().addAll("All Roles", "Admin", "QA", "Operator");
@@ -97,6 +98,9 @@ public class UserManagementController {
         roleFilter.setOnAction(e -> applyFilters());
     }
 
+    /**
+     * Filters the user list based on search text and selected role.
+     */
     private void applyFilters() {
         String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
         String selectedRole = roleFilter.getValue();
@@ -118,38 +122,49 @@ public class UserManagementController {
         userTable.refresh();
     }
 
+    /**
+     * Reloads the list of users from the database and applies filters.
+     */
     public void refreshUserList() {
         masterUserList.setAll(userDAO.getAllUsers());
-        System.out.println("Loaded users: " + masterUserList.size());
-        masterUserList.forEach(u -> System.out.println(u.getUsername() + " | " + u.getUserRole()));
         applyFilters();
     }
 
+    /**
+     * Opens the add-user form.
+     */
     @FXML
     private void handleAddUser() {
         openAddUserWindow(null);
     }
 
+    /**
+     * Opens a modal window to add or edit a user.
+     */
     private void openAddUserWindow(User userToEdit) {
         Stage userStage = new Stage();
         userStage.initModality(Modality.APPLICATION_MODAL);
         userStage.setTitle(userToEdit != null ? "Edit User" : "Add User");
 
+        // Input fields
         TextField usernameField = new TextField();
         TextField emailField = new TextField();
         PasswordField passwordField = new PasswordField();
         TextField visiblePasswordField = new TextField();
         CheckBox showPasswordCheckBox = new CheckBox("Show password");
 
+        // Bind password visibility toggle
         passwordField.textProperty().bindBidirectional(visiblePasswordField.textProperty());
         visiblePasswordField.managedProperty().bind(showPasswordCheckBox.selectedProperty());
         visiblePasswordField.visibleProperty().bind(showPasswordCheckBox.selectedProperty());
         passwordField.managedProperty().bind(showPasswordCheckBox.selectedProperty().not());
         passwordField.visibleProperty().bind(showPasswordCheckBox.selectedProperty().not());
 
+        // Role dropdown
         ComboBox<String> roleBox = new ComboBox<>();
         roleBox.getItems().addAll("Admin", "QA", "Operator");
 
+        // Populate fields if editing
         if (userToEdit != null) {
             usernameField.setText(userToEdit.getUsername());
             emailField.setText(userToEdit.getEmail());
@@ -158,6 +173,7 @@ public class UserManagementController {
             roleBox.setValue(userToEdit.getUserRole());
         }
 
+        // Save button
         Button saveBtn = new Button(userToEdit != null ? "Save Changes" : "Add User");
         saveBtn.setOnAction(e -> {
             String username = usernameField.getText().trim();
@@ -165,6 +181,7 @@ public class UserManagementController {
             String password = passwordField.getText().trim();
             String role = roleBox.getValue();
 
+            // Validate input
             if (username.isEmpty() || email.isEmpty() || password.isEmpty()
                     || (userToEdit == null && role == null)) {
                 showAlert("Please fill in all fields");
@@ -181,6 +198,7 @@ public class UserManagementController {
                 return;
             }
 
+            // Save or update user
             if (userToEdit != null) {
                 userToEdit.setUsername(username);
                 userToEdit.setEmail(email);
@@ -195,6 +213,7 @@ public class UserManagementController {
             userStage.close();
         });
 
+        // Layout
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(15));
         vbox.setAlignment(Pos.CENTER_LEFT);
@@ -202,31 +221,34 @@ public class UserManagementController {
         vbox.getChildren().addAll(
                 new Label("Username:"), usernameField,
                 new Label("Email:"), emailField,
-                new Label("Password:"), passwordField, visiblePasswordField, showPasswordCheckBox
+                new Label("Password:"), passwordField, visiblePasswordField, showPasswordCheckBox,
+                new Label("Role:"), roleBox,
+                saveBtn
         );
-
-        if (userToEdit == null) {
-            vbox.getChildren().addAll(new Label("Role:"), roleBox);
-        } else {
-            vbox.getChildren().add(roleBox);
-        }
-
-        vbox.getChildren().add(saveBtn);
 
         Scene scene = new Scene(vbox, 320, 400);
         userStage.setScene(scene);
         userStage.showAndWait();
     }
 
+    /**
+     * Opens the edit window for a selected user.
+     */
     private void openEditUserWindow(User user) {
         openAddUserWindow(user);
     }
 
+    /**
+     * Checks whether a username is already in use (case-insensitive).
+     */
     private boolean isUsernameAlreadyUsed(String username) {
         return userDAO.getAllUsers().stream()
                 .anyMatch(u -> u.getUsername().equalsIgnoreCase(username));
     }
 
+    /**
+     * Displays an information alert with the given message.
+     */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.showAndWait();

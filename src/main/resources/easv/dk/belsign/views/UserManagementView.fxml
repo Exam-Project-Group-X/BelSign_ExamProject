@@ -62,6 +62,8 @@
                     <TableColumn fx:id="nameColumn" text="Username" prefWidth="200" />
                     <TableColumn fx:id="emailColumn" text="Email" prefWidth="250" />
                     <TableColumn fx:id="roleColumn" text="Role" prefWidth="200" />
+                    <TableColumn fx:id="createdAtColumn" text="Date Created" prefWidth="200" />
+                    <TableColumn fx:id="updatedAtColumn" text="Last Accessed" prefWidth="200" />
                     <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="200" />
                 </columns>
             </TableView>
