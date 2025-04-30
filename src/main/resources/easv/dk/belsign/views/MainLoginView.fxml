@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="388.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.LoginControllers.MainLoginController">
+<BorderPane prefHeight="388.0" prefWidth="800.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.LoginControllers.MainLoginController">
     <!-- Left image side -->
     <left>
         <ImageView fx:id="loginImage" fitHeight="442.0" fitWidth="506.0" preserveRatio="true">
@@ -30,19 +30,19 @@
                   <image>
                      <Image url="@../images/logo.png" />
                   </image></ImageView>
-               <Label text="Welcome to Belman!">
+               <Label style="-fx-font-weight: bold;" text="Welcome to Belman!">
                   <font>
-                     <Font name="Helvetica Bold" size="21.0" />
+                     <Font name="Helvetica Bold Oblique" size="21.0" />
                   </font>
                </Label>
                 </VBox>
 
                 <VBox maxWidth="400" spacing="10.0">
                     <Label text="Email" />
-                    <TextField fx:id="emailField" promptText="john.doe@gmail.com" />
+                    <TextField fx:id="emailField" promptText="john.doe@gmail.com" style="-fx-background-radius: 6;" />
                     <Label text="Password" />
-                    <PasswordField fx:id="passwordField" promptText="************" />
-                    <Button fx:id="loginButton" prefWidth="258.0" style="-fx-background-color: #154c8d; -fx-text-fill: white; -fx-pref-height: 40;" text="Log in">
+                    <PasswordField fx:id="passwordField" promptText="************" style="-fx-background-radius: 6;" />
+                    <Button fx:id="loginButton" prefWidth="258.0" style="-fx-background-color: #004884; -fx-text-fill: white; -fx-pref-height: 40; -fx-border-radius: 6; -fx-background-radius: 6;" text="Log in">
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Button>

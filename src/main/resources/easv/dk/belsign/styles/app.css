@@ -13,4 +13,13 @@
 .secondary-btn {
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+}
+
+.create-btn {
+    -fx-background-color: #DB551B;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
 }
