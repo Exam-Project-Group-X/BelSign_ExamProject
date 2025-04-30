@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.QAControllers.components;
+package easv.dk.belsign.gui.QAControllers;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.QAControllers.QAEmployeeController;

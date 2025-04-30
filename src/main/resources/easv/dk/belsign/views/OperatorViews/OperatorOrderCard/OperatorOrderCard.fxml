@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane hgap="10" styleClass="card" vgap="5"
+          xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="easv.dk.belsign.gui.OperatorControllers.OperatorOrderCardController.OperatorOrderCardController">
+    <columnConstraints>
+        <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
+        <ColumnConstraints prefWidth="170" /> <!-- Description -->
+        <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
+        <ColumnConstraints prefWidth="150" /> <!-- Operator -->
+        <ColumnConstraints prefWidth="160" /> <!-- Product Photo -->
+        <ColumnConstraints prefWidth="120" /> <!-- Status -->
+        <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
+        <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
+    </columnConstraints>
+    <Label alignment="CENTER" prefHeight="17.0" prefWidth="88.0" text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label text="by Donna Nielsen" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <HBox spacing="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <children>
+            <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../images/icons/photos.png" />
+                </image>
+            </ImageView>
+            <VBox alignment="CENTER" spacing="5.0">
+                <children>
+                    <Label alignment="CENTER" contentDisplay="CENTER" text="0 images" textAlignment="CENTER">
+
+                    </Label>
+                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" text="View all" textAlignment="CENTER" />
+                </children>
+            </VBox>
+        </children>
+    </HBox>
+    <ComboBox prefWidth="150.0" promptText="Pending" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Button mnemonicParsing="false" text="Submit" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+    <stylesheets>
+
+        <URL value="@../../../views/styles/card.css" />
+    </stylesheets>
+</GridPane>

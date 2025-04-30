@@ -21,7 +21,7 @@ public class FXMLPath {
     public static final String QA_PHOTO_REVIEW = "/easv/dk/belsign/views/QAViews/QAPhotoReviewWindow.fxml";
 
     /// QA Paths Components
-    public static final String NEW_ORDER_DIALOG = "/easv/dk/belsign/views/QAViews/components/NewOrderDialog.fxml";
+    public static final String NEW_ORDER_DIALOG = "/easv/dk/belsign/views/QAViews/NewOrderDialog.fxml";
     public static final String QA_ORDER_CARD = "/easv/dk/belsign/views/QAViews/components/QAOrderCard.fxml";
 
 

@@ -1,7 +1,7 @@
 package easv.dk.belsign.gui.QAControllers;
 
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.gui.QAControllers.components.NewOrderDialogController;
+import easv.dk.belsign.gui.QAControllers.NewOrderDialogController;
 import easv.dk.belsign.gui.QAControllers.components.QAOrderCardController;
 import easv.dk.belsign.gui.QAControllers.model.QAmodel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
@@ -34,6 +34,7 @@ public class QAEmployeeController {
 //        for (int i = 0; i < 2; i++) {
 //            cardContainer.getChildren().add(createOrderCard("4504202500" + i, "Order Description " + i, "by Operator " + i));
 //        }
+
         createOrderButton.setOnAction(event -> onCreateOrderClick());
 
     }
