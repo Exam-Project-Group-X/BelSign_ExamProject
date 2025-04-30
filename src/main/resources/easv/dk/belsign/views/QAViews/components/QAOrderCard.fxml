@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.QAControllers.QACardController">
+<GridPane hgap="10" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.QAControllers.components.QAOrderCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->
@@ -28,7 +28,7 @@
     <Label text="by Donna Nielsen" GridPane.columnIndex="3" />
     <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
       <image>
-         <Image url="@../../images/icons/photos.png" />
+         <Image url="@../../../images/icons/photos.png" />
       </image></ImageView>
    <Label text="View all" GridPane.columnIndex="4">
       <padding>
