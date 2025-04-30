@@ -41,7 +41,7 @@ public class MainLoginController {
 
     private void onLoginClick(ActionEvent event) {
         // For now, just always open QA Orders view
-        ViewManager.INSTANCE.showScene(FXMLPath.QA_ORDERS);
+        ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
         System.out.println("Login button clicked!");
     }
 

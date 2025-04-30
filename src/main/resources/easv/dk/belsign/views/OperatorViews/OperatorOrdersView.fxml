@@ -21,7 +21,7 @@
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
             <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../images/logo.png" />
+                    <Image url="@../../images/logo.png" />
                 </image></ImageView>
 
             <!-- Welcome text -->
@@ -35,7 +35,7 @@
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/icons/bell.png" />
+                                <Image url="@../../images/icons/bell.png" />
                             </image>
                         </ImageView>
                     </graphic></Button>
@@ -43,7 +43,7 @@
                     <graphic>
                         <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../../../../../Charlie.jpg" />
+<!--                                <Image url="@../../../../../../../../Charlie.jpg" />-->
                             </image>
                         </ImageView>
                     </graphic></Button>

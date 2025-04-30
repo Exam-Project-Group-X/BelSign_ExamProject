@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.AdminControllers.UserManagementController">
+
+    <!-- ===== TOP HEADER ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="40.0"
+              style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
+
+            <!-- Logo -->
+            <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../images/logo.png" />
+                </image>
+            </ImageView>
+
+            <!-- Welcome Label -->
+            <Label fx:id="welcomeLabel" text="Welcome, Admin!" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Right buttons -->
+            <HBox spacing="15.0">
+                <Button fx:id="logoutButton" text="Logout" styleClass="logout-btn" />
+            </HBox>
+
+        </HBox>
+    </top>
+
+    <!-- ===== CENTER CONTENT ===== -->
+    <center>
+        <VBox spacing="20" style="-fx-background-color: #F5F5F5; -fx-padding: 30;">
+
+            <!-- Filters -->
+            <HBox spacing="10">
+                <TextField fx:id="searchField" promptText="Search users..." prefWidth="250" />
+                <ComboBox fx:id="roleFilter" promptText="Role" prefWidth="200">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Roles" />
+                            <String fx:value="Admin" />
+                            <String fx:value="QA" />
+                            <String fx:value="Operator" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="addUserButton" text="+ Add User" styleClass="primary-button" />
+            </HBox>
+
+            <!-- User Table -->
+            <TableView fx:id="userTable" prefHeight="550">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Username" prefWidth="200" />
+                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="250" />
+                    <TableColumn fx:id="roleColumn" text="Role" prefWidth="200" />
+                    <TableColumn fx:id="createdAtColumn" text="Date Created" prefWidth="200" />
+                    <TableColumn fx:id="updatedAtColumn" text="Last Accessed" prefWidth="200" />
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="200" />
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>

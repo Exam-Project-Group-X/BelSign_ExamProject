@@ -3,90 +3,110 @@ package easv.dk.belsign.be;
 import java.sql.Timestamp;
 
 public class User {
-    private int UserID;
-    private String Username; // For Admins and QA Employees (nullable for Operators)
-    private String PasswordHash; // Encrypted password (nullable for Operators)
-    private String AccessCode; // For Operators (nullable for Admins and QA Employees)
-    private String FullName;
-    private String Email;
-    private Timestamp CreatedAt; // Timestamp for account creation
-    private Timestamp UpdatedAt; // Timestamp for last update
-    private String UserRole; // This will hold the Role's name ("Admin", "QA Employee" or "Operator")
+    private int userID;
+    private String username;
+    private String passwordHash;
+    private String email;
+    private String userRole;
+    private boolean active;
+
+    private String accessCode; // (optional for Operators)
+    private String fullName;   // (optional for additional info)
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     // Default constructor
     public User() {
-
+        this.active = true;
     }
 
+    // Constructor with main fields (for Admin, QA, Operator)
+    public User(String username, String email, String passwordHash, String userRole) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.userRole = userRole;
+        this.active = true;
+    }
+
+    // Getters and Setters
     public int getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(int userID) {
-        UserID = userID;
+        this.userID = userID;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        this.username = username;
     }
 
     public String getPasswordHash() {
-        return PasswordHash;
+        return passwordHash;
     }
 
     public void setPasswordHash(String passwordHash) {
-        PasswordHash = passwordHash;
-    }
-
-    public String getAccessCode() {
-        return AccessCode;
-    }
-
-    public void setAccessCode(String accessCode) {
-        AccessCode = accessCode;
-    }
-
-    public String getFullName() {
-        return FullName;
-    }
-
-    public void setFullName(String fullName) {
-        FullName = fullName;
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
-    }
-
-    public Timestamp getCreatedAt() {
-        return CreatedAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        CreatedAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return UpdatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        UpdatedAt = updatedAt;
+        this.email = email;
     }
 
     public String getUserRole() {
-        return UserRole;
+        return userRole;
     }
 
     public void setUserRole(String userRole) {
-        UserRole = userRole;
+        this.userRole = userRole;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

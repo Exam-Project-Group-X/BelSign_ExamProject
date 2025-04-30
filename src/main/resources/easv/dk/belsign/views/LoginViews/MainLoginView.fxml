@@ -17,7 +17,7 @@
     <left>
         <ImageView fx:id="loginImage" fitHeight="442.0" fitWidth="506.0" preserveRatio="true">
          <image>
-            <Image url="@../images/Profile.jpg" />
+            <Image url="@../../images/Profile.jpg" />
          </image></ImageView>
     </left>
 
@@ -28,7 +28,7 @@
                 <VBox spacing="10.0">
                     <ImageView fx:id="logoImage" fitHeight="61.0" fitWidth="196.0" preserveRatio="true">
                   <image>
-                     <Image url="@../images/logo.png" />
+                     <Image url="@../../images/logo.png" />
                   </image></ImageView>
                <Label style="-fx-font-weight: bold;" text="Welcome to Belman!">
                   <font>
