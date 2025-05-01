@@ -38,6 +38,9 @@ public class QAEmployeeController {
         createOrderButton.setOnAction(event -> onCreateOrderClick());
 
     }
+/// Generate QC Report button only clickable after approving ALL photos (i.e. Status "Complete"
+///  -> Then you can Generate QC Report)
+
 
     private void onCreateOrderClick() {
 //        ViewManager.INSTANCE.showStage(FXMLPath.NEW_ORDER_DIALOG, "Create New Order", true);

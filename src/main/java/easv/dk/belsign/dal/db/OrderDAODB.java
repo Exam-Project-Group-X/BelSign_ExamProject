@@ -3,6 +3,8 @@ package easv.dk.belsign.dal.db;
 import easv.dk.belsign.be.Order;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAODB {
     private DBConnection con = new DBConnection();
@@ -25,7 +27,7 @@ public class OrderDAODB {
             }
 
 
-            ps.setString(3, "Awaiting Photos");
+            ps.setString(3, "New");
 
             ps.executeUpdate();
 
@@ -40,5 +42,34 @@ public class OrderDAODB {
 
         return -1; // In case of error during insertion
         }
+        /// for the QA Method to load all orders
+        public List<Order> getAllOrders() throws SQLException{
+            List <Order> orders = new ArrayList<>();
+            String sql= "SELECT * FROM Orders";
+
+            try (Connection conn = con.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+
+                while (rs.next()) {
+                    Order order = new Order.Builder()
+                            .withOrderID(rs.getInt("OrderID"))
+                            .withOrderNumber(rs.getString("OrderNumber"))
+                            .withProductDescription(rs.getString("ProductDescription"))
+                            .withOrderStatus(rs.getString("OrderStatus"))
+                            .withCreatedAt(rs.getTimestamp("CreatedAt"))
+                            .withUpdatedAt(rs.getTimestamp("UpdatedAt"))
+                            .withAssignedToUserID(rs.getString("AssignedToUserID"))
+                            .build();
+
+                        orders.add(order);
+                }
+
+            }
+
+            return orders;
+
+        }
+
     }
 

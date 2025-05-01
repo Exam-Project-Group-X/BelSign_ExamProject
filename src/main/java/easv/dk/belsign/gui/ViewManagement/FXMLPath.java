@@ -25,9 +25,4 @@ public class FXMLPath {
     public static final String QA_ORDER_CARD = "/easv/dk/belsign/views/QAViews/components/QAOrderCard.fxml";
 
 
-
-
-
-
-
 }
