@@ -10,9 +10,10 @@ import javafx.stage.Stage;
  * =========================================================
  * Exam project: BelSign Photo Documentation
  * June 2025
- * Exam Project Group X <Davide, Jianming, Lucas, Jennifer>
+ * Exam Project Group X: Davide, Jianming, Lucas & Jennifer
  * =========================================================
  * */
+
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
