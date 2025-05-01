@@ -4,6 +4,8 @@ package easv.dk.belsign.gui.QAControllers.model;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.bll.OrderManager;
 
+import java.util.List;
+
 
 public class QAmodel {
 
@@ -13,4 +15,7 @@ public class QAmodel {
         return orderManager.createOrder(order);
     }
 
+    public List<Order> getAllOrders() throws Exception {
+        return orderManager.getAllOrders();
+    }
 }

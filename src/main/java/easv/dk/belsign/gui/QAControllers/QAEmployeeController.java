@@ -30,10 +30,16 @@ public class QAEmployeeController {
     private final QAmodel model = new QAmodel();
     @FXML
     private void initialize() {
-//        // Simulate loading 2 orders
-//        for (int i = 0; i < 2; i++) {
-//            cardContainer.getChildren().add(createOrderCard("4504202500" + i, "Order Description " + i, "by Operator " + i));
-//        }
+
+        try {
+            // Get all orders from the QAmodel
+            for (Order order : model.getAllOrders()) {
+                addNewOrderCard(order); // Add each order card to the UI
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
 
         createOrderButton.setOnAction(event -> onCreateOrderClick());
 
