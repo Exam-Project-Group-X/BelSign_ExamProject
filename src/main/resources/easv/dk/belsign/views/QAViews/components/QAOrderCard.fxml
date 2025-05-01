@@ -36,7 +36,7 @@
          </Label>
       </children>
    </HBox>
-    <ComboBox prefWidth="150.0" promptText="Pending" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <ComboBox fx:id="OrderStatusLabel" prefWidth="150.0" promptText="New" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Button mnemonicParsing="false" text="GENERATE QC REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <rowConstraints>
