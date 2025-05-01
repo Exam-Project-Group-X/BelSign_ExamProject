@@ -5,10 +5,10 @@ public class FXMLPath {
 
 
     public static final String LOGIN = "/easv/dk/belsign/views/LoginViews/AdminQALoginView.fxml";
-    public static final String MAIN = "/easv/dk/belsign/views/MainView.fxml";
+    public static final String MAIN_LOGIN = "/easv/dk/belsign/views/LoginViews/MainLoginView.fxml";
 
 
-    public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorDashboardView.fxml";
+    public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorViews/OperatorOrdersView.fxml";
     public static final String ADMIN_PANEL = "/easv/dk/belsign/views/AdminPanelView.fxml";
     public static final String PHOTO_REVIEW_POPUP = "/easv/dk/belsign/views/popups/PhotoReviewPopup.fxml";
 

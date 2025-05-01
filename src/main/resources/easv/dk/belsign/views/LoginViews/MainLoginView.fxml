@@ -33,7 +33,10 @@
         </Button>
         <!-- Spacer to push the line to the bottom -->
         <Region prefHeight="133.0" prefWidth="1280.0" VBox.vgrow="ALWAYS" />
-        <Line endX="100.0" onSwipeUp="#swipeLine" startX="-100.0" stroke="WHITE" strokeWidth="10.0">
+        <Line fx:id="swipeLine" endX="100.0"
+              onMousePressed="#handleLineMousePressed"
+              onMouseReleased="#handleLineMouseReleased"
+              onSwipeUp="#swipeToLogin" startX="-100.0" stroke="WHITE" strokeWidth="10.0">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>

@@ -21,7 +21,7 @@ public class Main extends Application {
 
         ViewManager.INSTANCE.setStageManager(stageManager);
 
-        ViewManager.INSTANCE.showStage(FXMLPath.LOGIN, "BelSign - Login", false);
+        ViewManager.INSTANCE.showStage(FXMLPath.MAIN_LOGIN, "BelSign - Login", false);
     }
 
     public static void main(String[] args) {
