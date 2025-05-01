@@ -6,6 +6,7 @@ import easv.dk.belsign.gui.QAControllers.components.QAOrderCardController;
 import easv.dk.belsign.gui.QAControllers.model.QAmodel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -85,6 +86,14 @@ public class QAEmployeeController {
             e.printStackTrace();
 
         }
+
+
+    }
+
+    public void onClickLogoutBtn(ActionEvent actionEvent) {
+
+        ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
+
 
 
     }

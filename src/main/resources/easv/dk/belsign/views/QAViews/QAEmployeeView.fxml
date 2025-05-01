@@ -36,7 +36,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-                    <Button fx:id="logoutButton" styleClass="logout-btn" text="Logout" />
+                    <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" styleClass="logout-btn" text="Logout" />
                 </HBox>
             </HBox>
         </top>
