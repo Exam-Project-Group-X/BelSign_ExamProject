@@ -1,10 +1,10 @@
-package easv.dk.belsign.gui.controllers.QAEmployee.components;
+package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class QAOrderCardController {
+public class OrderCardController {
 
     @FXML private Label orderNumberLabel;
     @FXML private Label descriptionLabel;

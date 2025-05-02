@@ -35,7 +35,7 @@ public class SelectOrderController {
 
     private void openTakePictureView(Order selectedOrder) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/take-picture-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/OperatorViews/take-picture-view.fxml"));
             Parent root = loader.load();
 
             // Pass the selected order to the next controller if needed

@@ -1,12 +1,12 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.gui.controllers.QAEmployee.model.QAmodel;
+import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class NewOrderDialogController {
+public class CreateNewOrderController {
 
     @FXML
     private TextField orderIdField;
@@ -20,7 +20,7 @@ public class NewOrderDialogController {
     private Button continueBtn;
 
     private QAEmployeeController parentController;
-    private final QAmodel model = new QAmodel();
+    private final QAEmployeeModel model = new QAEmployeeModel();
     @FXML
     private void initialize()
 

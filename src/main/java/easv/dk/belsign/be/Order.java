@@ -127,14 +127,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "OrderID=" + OrderID +
-                ", OrderNumber='" + OrderNumber + '\'' +
-                ", ProductDescription='" + ProductDescription + '\'' +
-                ", OrderStatus='" + OrderStatus + '\'' +
-                ", CreatedAt=" + CreatedAt +
-                ", UpdatedAt=" + UpdatedAt +
-                ", AssignedToUserID='" + AssignedToUserID + '\'' +
-                '}';
+        return getOrderNumber();
     }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.components.QAOrderCardController">
+<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->

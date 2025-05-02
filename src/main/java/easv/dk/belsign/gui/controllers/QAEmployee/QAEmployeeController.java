@@ -1,8 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.gui.controllers.QAEmployee.components.QAOrderCardController;
-import easv.dk.belsign.gui.controllers.QAEmployee.model.QAmodel;
+import easv.dk.belsign.gui.models.QAEmployeeModel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.event.ActionEvent;
@@ -23,12 +22,12 @@ public class QAEmployeeController {
     @FXML
     private Button createOrderButton;
 
-    private final QAmodel model = new QAmodel();
+    private final QAEmployeeModel model = new QAEmployeeModel();
     @FXML
     private void initialize() {
 
         try {
-            // Get all orders from the QAmodel
+            // Get all orders from the QAEmployeeModel
             for (Order order : model.getAllOrders()) {
                 addNewOrderCard(order); // Add each order card to the UI
             }
@@ -51,7 +50,7 @@ public class QAEmployeeController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.NEW_ORDER_DIALOG));
             Parent root = loader.load();
 
-            NewOrderDialogController controller = loader.getController();
+            CreateNewOrderController controller = loader.getController();
             controller.setParentController(this);
 
             Stage stage = new Stage();
@@ -73,7 +72,7 @@ public class QAEmployeeController {
 
             ///
 
-            QAOrderCardController controller = loader.getController();
+            OrderCardController controller = loader.getController();
             controller.setOrderData(order); // ✅ Pass real order data to UI
 
             cardContainer.getChildren().add(card);

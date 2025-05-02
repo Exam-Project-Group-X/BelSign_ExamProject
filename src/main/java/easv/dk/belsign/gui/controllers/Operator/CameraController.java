@@ -26,7 +26,7 @@ public class CameraController {
     private Image placeholderImage;
     private Order selectedOrder;
 
-    private final File imageSaveDirectory = new File("C:/Users/havoc/Downloads/Photo-dumper");
+    private final File imageSaveDirectory = new File("media");
 
     @FXML
     public void initialize() {
@@ -34,7 +34,7 @@ public class CameraController {
             imageSaveDirectory.mkdirs();
         }
 
-        URL placeholderUrl = getClass().getResource("/plus.png");
+        URL placeholderUrl = getClass().getResource("/easv/dk/belsign/images/icons/plus2.png");
         if (placeholderUrl != null) {
             placeholderImage = new Image(placeholderUrl.toString());
             initImageView(frontImage, f -> frontFile = f);

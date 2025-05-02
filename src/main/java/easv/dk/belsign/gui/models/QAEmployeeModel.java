@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.controllers.QAEmployee.model;
+package easv.dk.belsign.gui.models;
 
 
 import easv.dk.belsign.be.Order;
@@ -7,7 +7,7 @@ import easv.dk.belsign.bll.OrderManager;
 import java.util.List;
 
 
-public class QAmodel {
+public class QAEmployeeModel {
 
     private final OrderManager orderManager = new OrderManager();
 
