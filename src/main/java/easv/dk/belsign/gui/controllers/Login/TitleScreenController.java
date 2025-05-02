@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.LoginControllers;
+package easv.dk.belsign.gui.controllers.Login;
 
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
 
-public class MainLoginController {
+public class TitleScreenController {
     public void onClickScanBtn(ActionEvent actionEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_DASHBOARD);
         System.out.println("scane btn detected! Navigating to operator View.");

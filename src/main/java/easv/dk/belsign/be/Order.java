@@ -11,69 +11,9 @@ public class Order {
     private Timestamp UpdatedAt;
     private String AssignedToUserID; // This will hold the name of the QA Employee who created the order
 
-
     // Default constructor
     public Order() {
 
-    }
-
-    // ========== Builder Pattern ==========
-    /**
-     * Builder Pattern for constructing Order objects in a clean, chainable way.
-     * Useful when different users (e.g., QA vs Operator) need different amounts of data.
-     */
-
-    public static class Builder{
-
-        private int orderID;
-        private String orderNumber;
-        private String productDescription;
-        private String orderStatus;
-        private Timestamp createdAt;
-        private Timestamp updatedAt;
-        private String assignedToUserID;
-
-        public Builder withOrderID(int orderID) {
-            this.orderID = orderID;
-            return this;
-        }
-        public Builder withOrderNumber(String orderNumber) {
-            this.orderNumber = orderNumber;
-            return this;
-        }
-        public Builder withProductDescription(String productDescription) {
-            this.productDescription = productDescription;
-            return this;
-        }
-        public Builder withOrderStatus(String orderStatus) {
-            this.orderStatus = orderStatus;
-            return this;
-        }
-        public Builder withCreatedAt(Timestamp createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-        public Builder withUpdatedAt(Timestamp updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-
-        }
-        public Builder withAssignedToUserID(String assignedToUserID) {
-            this.assignedToUserID = assignedToUserID;
-            return this;
-        }
-        public Order build() {
-            Order order = new Order();
-            order.setOrderID(orderID);
-            order.setOrderNumber(orderNumber);
-            order.setProductDescription(productDescription);
-            order.setOrderStatus(orderStatus);
-            order.setCreatedAt(createdAt);
-            order.setUpdatedAt(updatedAt);
-            order.setAssignedToUserID(assignedToUserID);
-            return order;
-
-        }
     }
 
     public int getOrderID() {
@@ -130,6 +70,59 @@ public class Order {
 
     public void setAssignedToUserID(String assignedToUserID) {
         AssignedToUserID = assignedToUserID;
+    }
+
+    // Builder Pattern
+    // For constructing Order objects in a clean, chainable way
+    // Useful when different users (e.g., QA Vs. Operator) need different amounts of data
+    public static class Builder{
+        private int orderID;
+        private String orderNumber;
+        private String productDescription;
+        private String orderStatus;
+        private Timestamp createdAt;
+        private Timestamp updatedAt;
+        private String assignedToUserID;
+
+        public Builder withOrderID(int orderID) {
+            this.orderID = orderID;
+            return this;
+        }
+        public Builder withOrderNumber(String orderNumber) {
+            this.orderNumber = orderNumber;
+            return this;
+        }
+        public Builder withProductDescription(String productDescription) {
+            this.productDescription = productDescription;
+            return this;
+        }
+        public Builder withOrderStatus(String orderStatus) {
+            this.orderStatus = orderStatus;
+            return this;
+        }
+        public Builder withCreatedAt(Timestamp createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+        public Builder withUpdatedAt(Timestamp updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+        public Builder withAssignedToUserID(String assignedToUserID) {
+            this.assignedToUserID = assignedToUserID;
+            return this;
+        }
+        public Order build() {
+            Order order = new Order();
+            order.setOrderID(orderID);
+            order.setOrderNumber(orderNumber);
+            order.setProductDescription(productDescription);
+            order.setOrderStatus(orderStatus);
+            order.setCreatedAt(createdAt);
+            order.setUpdatedAt(updatedAt);
+            order.setAssignedToUserID(assignedToUserID);
+            return order;
+        }
     }
 
     @Override

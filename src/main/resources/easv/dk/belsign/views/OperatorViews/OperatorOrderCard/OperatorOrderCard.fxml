@@ -12,7 +12,7 @@
 <GridPane hgap="10" styleClass="card" vgap="5"
           xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="easv.dk.belsign.gui.OperatorControllers.OperatorOrderCardController.OperatorOrderCardController">
+          fx:controller="easv.dk.belsign.gui.Operator.OperatorOrderCardController.OperatorOrderCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->

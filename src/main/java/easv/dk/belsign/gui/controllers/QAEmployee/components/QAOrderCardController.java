@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.QAControllers.components;
+package easv.dk.belsign.gui.controllers.QAEmployee.components;
 
 import easv.dk.belsign.be.Order;
 import javafx.fxml.FXML;
@@ -14,7 +14,5 @@ public class QAOrderCardController {
         orderNumberLabel.setText(order.getOrderNumber());
         descriptionLabel.setText(order.getProductDescription() == null ? "No description" : order.getProductDescription());
         createdAtLabel.setText(order.getCreatedAt() != null ? order.getCreatedAt().toString() : "Now");
-
-}
-
+    }
 }

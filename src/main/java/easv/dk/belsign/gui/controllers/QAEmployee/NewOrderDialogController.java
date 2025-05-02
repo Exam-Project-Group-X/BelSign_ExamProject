@@ -1,19 +1,10 @@
-package easv.dk.belsign.gui.QAControllers;
+package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.gui.QAControllers.QAEmployeeController;
-import easv.dk.belsign.gui.QAControllers.model.QAmodel;
-import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.controllers.QAEmployee.model.QAmodel;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class NewOrderDialogController {
 

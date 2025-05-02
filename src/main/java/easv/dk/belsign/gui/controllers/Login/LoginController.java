@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.LoginControllers;
+package easv.dk.belsign.gui.controllers.Login;
 
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
@@ -19,7 +19,7 @@ import javafx.scene.control.Hyperlink;
 - All FXMLs must be inside: /src/main/resources/easv/dk/belsign/views/
 */
 
-public class AdminQALoginController {
+public class LoginController {
 
     @FXML
     private TextField emailField;

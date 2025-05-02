@@ -4,8 +4,8 @@ public class FXMLPath {
 
 
 
-    public static final String LOGIN = "/easv/dk/belsign/views/LoginViews/AdminQALoginView.fxml";
-    public static final String MAIN_LOGIN = "/easv/dk/belsign/views/LoginViews/MainLoginView.fxml";
+    public static final String LOGIN = "/easv/dk/belsign/views/LoginViews/LoginView.fxml";
+    public static final String MAIN_LOGIN = "/easv/dk/belsign/views/LoginViews/TitleScreenView.fxml";
 
 
     public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorViews/OperatorOrdersView.fxml";

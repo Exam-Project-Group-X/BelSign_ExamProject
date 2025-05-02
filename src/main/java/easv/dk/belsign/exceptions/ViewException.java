@@ -1,10 +1,7 @@
-package easv.dk.belsign.gui.Exceptions;
-
+package easv.dk.belsign.exceptions;
 
 public class ViewException extends Exception {
     public ViewException(String message) {
         super(message);
     }
-
 }
-

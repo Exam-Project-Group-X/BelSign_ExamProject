@@ -1,0 +1,6 @@
+.background{
+    -fx-background-image: url("background.png");
+    -fx-background-size: cover; /* Ensures the image covers the entire element */
+    -fx-background-position: center; /* Centers the image */
+    -fx-background-repeat: no-repeat;
+}

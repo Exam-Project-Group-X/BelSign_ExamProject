@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.AdminControllers;
+package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.dal.web.UserDAO;
@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class UserManagementController {
+public class AdminController {
 
     @FXML private TextField searchField;
     @FXML private ComboBox<String> roleFilter;

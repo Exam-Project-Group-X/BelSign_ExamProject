@@ -1,6 +1,6 @@
 package easv.dk.belsign.gui.ViewManagement;
 
-import easv.dk.belsign.gui.Exceptions.ViewException;
+import easv.dk.belsign.exceptions.ViewException;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;

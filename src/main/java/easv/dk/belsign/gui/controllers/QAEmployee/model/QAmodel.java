@@ -1,4 +1,4 @@
-package easv.dk.belsign.gui.QAControllers.model;
+package easv.dk.belsign.gui.controllers.QAEmployee.model;
 
 
 import easv.dk.belsign.be.Order;
