@@ -48,6 +48,8 @@ public class SceneManager {
     public void switchScene(String fxmlPath){
         if(currentStage != null){
             currentStage.setScene(loadScene(fxmlPath));
+            currentStage.sizeToScene();        // resize to the new root’s pref size
+            currentStage.centerOnScreen();     // keeps the window centred
         }
     }
 

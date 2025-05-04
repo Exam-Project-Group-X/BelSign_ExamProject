@@ -45,6 +45,10 @@ public class StageManager {
             stage.setTitle(title);
             stage.initModality(isModal ? Modality.APPLICATION_MODAL : Modality.NONE);
 
+            /* ---------- centre once the window is actually shown ---------- */
+            stage.setOnShown(e -> stage.centerOnScreen());
+            /* ---------------------------------------------------------------- */
+
             stageCache.put(fxmlFile, stage);
         }
     }

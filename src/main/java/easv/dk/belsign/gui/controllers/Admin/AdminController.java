@@ -256,5 +256,6 @@ public class AdminController {
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
+
     }
 }
