@@ -2,6 +2,8 @@ package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.bll.OrderManager;
+import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,25 +35,13 @@ public class SelectOrderController {
         });
     }
 
+
     private void openTakePictureView(Order selectedOrder) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/OperatorViews/take-picture-view.fxml"));
-            Parent root = loader.load();
 
-            // Pass the selected order to the next controller if needed
-            CameraController controller = loader.getController();
-            controller.setSelectedOrder(selectedOrder);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Take Picture");
-            stage.show();
 
-            // Close the current window
-            Stage currentStage = (Stage) orderListView.getScene().getWindow();
-            currentStage.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_TAKE_PICTURE_VIEW);
+
+
     }
 }
