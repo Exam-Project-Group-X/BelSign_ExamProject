@@ -1,37 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.AdminController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.AdminController">
 
     <!-- ===== TOP HEADER ===== -->
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="40.0"
-              style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
-
-            <!-- Logo -->
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
             <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../../images/logo.png" />
-                </image>
-            </ImageView>
+                    <Image url="@../../images/photos/logo.png" />
+                </image></ImageView>
 
-            <!-- Welcome Label -->
-            <Label fx:id="welcomeLabel" text="Welcome, Admin!" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <!-- Welcome text -->
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, Admin!" />
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <!-- Right buttons -->
-            <HBox spacing="15.0">
-                <Button fx:id="logoutButton" text="Logout" styleClass="logout-btn" />
+            <!-- Header icons placeholder -->
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <Button fx:id="settingsButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../images/icons/bell.png" />
+                            </image>
+                        </ImageView>
+                    </graphic></Button>
+                <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/photos/Charlie.jpg" />
+                    </image>
+                </ImageView>
+                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
+                <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
+                    <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
+                    </graphic></Button>
             </HBox>
-
         </HBox>
     </top>
 
@@ -41,8 +61,8 @@
 
             <!-- Filters -->
             <HBox spacing="10">
-                <TextField fx:id="searchField" promptText="Search users..." prefWidth="250" />
-                <ComboBox fx:id="roleFilter" promptText="Role" prefWidth="200">
+                <TextField fx:id="searchField" prefWidth="250" promptText="Search users..." styleClass="box" />
+                <ComboBox fx:id="roleFilter" prefWidth="200" promptText="Role" styleClass="box">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="All Roles" />
@@ -53,18 +73,18 @@
                     </items>
                 </ComboBox>
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="addUserButton" text="+ Add User" styleClass="primary-button" />
+                <Button fx:id="addUserButton" styleClass="create-btn" text="+ Add User" />
             </HBox>
 
             <!-- User Table -->
             <TableView fx:id="userTable" prefHeight="550">
                 <columns>
-                    <TableColumn fx:id="nameColumn" text="Username" prefWidth="200" />
-                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="250" />
-                    <TableColumn fx:id="roleColumn" text="Role" prefWidth="200" />
-                    <TableColumn fx:id="createdAtColumn" text="Date Created" prefWidth="200" />
-                    <TableColumn fx:id="updatedAtColumn" text="Last Accessed" prefWidth="200" />
-                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="200" />
+                    <TableColumn fx:id="nameColumn" prefWidth="200" text="Username" />
+                    <TableColumn fx:id="emailColumn" prefWidth="250" text="Email" />
+                    <TableColumn fx:id="roleColumn" prefWidth="200" text="Role" />
+                    <TableColumn fx:id="createdAtColumn" prefWidth="200" text="Date Created" />
+                    <TableColumn fx:id="updatedAtColumn" prefWidth="200" text="Last Accessed" />
+                    <TableColumn fx:id="actionsColumn" prefWidth="200" text="Actions" />
                 </columns>
             </TableView>
 

@@ -15,15 +15,43 @@
 }
 
 .secondary-btn {
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
     -fx-font-size: 14px;
+}
+.secondary-btn:hover {
+    -fx-background-color: #9D9D9D;
 }
 
 .create-btn {
     -fx-background-color: #DB551B;
     -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+.create-btn:hover {
+    -fx-background-color: #9D9D9D;
+}
+
+.logout-btn {
+    -fx-background-color: #575757;
+    -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #9D9D9D;
+}
+
+.col-title{
+    -fx-font-weight: bold;
+}
+
+.box{
+    -fx-background-color: white;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
 }

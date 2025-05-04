@@ -3,42 +3,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
+<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->
         <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
         <ColumnConstraints prefWidth="150" /> <!-- Operator -->
-        <ColumnConstraints prefWidth="160" /> <!-- Product Photo -->
+        <ColumnConstraints prefWidth="140" /> <!-- Product Photo -->
         <ColumnConstraints prefWidth="120" /> <!-- Status -->
         <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
         <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
     </columnConstraints>
     <Label text="[NOT ASSIGNED]" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="88.0" text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="4510000000001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-   <HBox spacing="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-      <children>
-          <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-<!--               <Image url="@../../images/icons/photos.png" />-->
-            </image>
-         </ImageView>
-         <Label alignment="CENTER" contentDisplay="CENTER" text="View all" textAlignment="CENTER">
-
-         </Label>
-      </children>
-   </HBox>
+    <Label fx:id="createdAtLabel" prefHeight="16.0" prefWidth="106.0" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+   <Label alignment="CENTER" contentDisplay="CENTER" text="View all" textAlignment="CENTER" textFill="#004884" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font></Label>
     <ComboBox fx:id="OrderStatusLabel" prefWidth="150.0" promptText="New" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Button mnemonicParsing="false" text="GENERATE QC REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Button mnemonicParsing="false" styleClass="primary-btn" text="GENERATE QC REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <rowConstraints>
         <RowConstraints />
     </rowConstraints>

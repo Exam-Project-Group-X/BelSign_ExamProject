@@ -21,6 +21,8 @@ public class QAEmployeeController {
     private VBox cardContainer;
     @FXML
     private Button createOrderButton;
+    @FXML
+    private Button logoutButton;
 
     private final QAEmployeeModel model = new QAEmployeeModel();
     @FXML
@@ -78,18 +80,11 @@ public class QAEmployeeController {
             cardContainer.getChildren().add(card);
         } catch (IOException e) {
             e.printStackTrace();
-
         }
-
-
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-
         ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
-
-
-
     }
 }
 

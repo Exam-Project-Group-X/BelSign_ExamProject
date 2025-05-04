@@ -5,6 +5,7 @@ import easv.dk.belsign.dal.web.UserDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -252,5 +253,8 @@ public class AdminController {
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.showAndWait();
+    }
+
+    public void onClickLogoutBtn(ActionEvent actionEvent) {
     }
 }

@@ -1,7 +1,10 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -15,6 +18,8 @@ public class CreateNewOrderController {
     private TextField descriptionField;
     @FXML
     private Button cancelBtn;
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private Button continueBtn;
@@ -58,10 +63,16 @@ public class CreateNewOrderController {
 
         continueBtn.getScene().getWindow().hide();
     }
+
     private void onCancel() {
         cancelBtn.getScene().getWindow().hide(); // Just closes the window
     }
 
 
-
+    public void onClickLogoutBtn(ActionEvent actionEvent) {
+        // Close the current window
+        logoutButton.getScene().getWindow().hide();
+        ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
+        System.out.println("CreateNewOrder-Logout button clicked");
+    }
 }
