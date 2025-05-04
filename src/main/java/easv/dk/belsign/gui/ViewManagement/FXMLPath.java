@@ -9,6 +9,10 @@ public class FXMLPath {
 
 
     public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorViews/OperatorOrdersView.fxml";
+    public static final String OPERATOR_ORDERS =   "/easv/dk/belsign/views/OperatorViews/order-list.fxml";
+
+
+
     public static final String ADMIN_PANEL = "/easv/dk/belsign/views/AdminPanelView.fxml";
     public static final String PHOTO_REVIEW_POPUP = "/easv/dk/belsign/views/popups/PhotoReviewPopup.fxml";
 
@@ -23,6 +27,12 @@ public class FXMLPath {
     /// QA Paths Components
     public static final String NEW_ORDER_DIALOG = "/easv/dk/belsign/views/QAViews/NewOrderDialog.fxml";
     public static final String QA_ORDER_CARD = "/easv/dk/belsign/views/QAViews/components/QAOrderCard.fxml";
+    public static final String QA_PHOTOGRID = "/easv/dk/belsign/views/QAViews/components/PhotoGrid.fxml";
+
+
+
+
+
 
 
 }

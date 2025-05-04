@@ -30,7 +30,7 @@ public class TitleScreenController {
     }
 
     public void onClickScanBtn(ActionEvent actionEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_DASHBOARD);
+        ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_ORDERS);
         System.out.println("scane btn detected! Navigating to operator View.");
     }
 

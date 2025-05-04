@@ -6,32 +6,56 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
+<?import javafx.scene.layout.AnchorPane?>
+<GridPane hgap="10" vgap="5"
+          styleClass="card"
+          stylesheets="@../../styles/card.css"
+          xmlns="http://javafx.com/javafx/22"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
+
     <columnConstraints>
         <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
         <ColumnConstraints prefWidth="170" /> <!-- Description -->
         <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
         <ColumnConstraints prefWidth="150" /> <!-- Operator -->
-        <ColumnConstraints prefWidth="140" /> <!-- Product Photo -->
+        <ColumnConstraints prefWidth="200" /> <!-- Product Photo -->
         <ColumnConstraints prefWidth="120" /> <!-- Status -->
         <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
         <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
     </columnConstraints>
+
+    <!-- Labels -->
     <Label text="[NOT ASSIGNED]" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="4510000000001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label fx:id="createdAtLabel" prefHeight="16.0" prefWidth="106.0" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-   <Label alignment="CENTER" contentDisplay="CENTER" text="View all" textAlignment="CENTER" textFill="#004884" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-      <font>
-         <Font name="System Bold" size="13.0" />
-      </font></Label>
-    <ComboBox fx:id="OrderStatusLabel" prefWidth="150.0" promptText="New" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Button mnemonicParsing="false" styleClass="primary-btn" text="GENERATE QC REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="88.0"
+           text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1"
+           GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2"
+           GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
+    <AnchorPane fx:id="photoGridPlaceholder"
+                prefWidth="200"
+                prefHeight="140"
+                GridPane.columnIndex="4"
+                style="-fx-border-color: blue; -fx-background-color: #eeeeee;" />
+
+    <!-- Order status -->
+    <ComboBox fx:id="OrderStatusLabel" prefWidth="150.0" promptText="New"
+              GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
+    <!-- Update date -->
+    <Label text="27 April 2025" GridPane.columnIndex="6"
+           GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
+    <!-- Action button -->
+    <Button mnemonicParsing="false" text="GENERATE QC REPORT"
+            GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
     <rowConstraints>
         <RowConstraints />
     </rowConstraints>
-
 </GridPane>

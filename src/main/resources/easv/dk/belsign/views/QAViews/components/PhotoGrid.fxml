@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+
+<GridPane fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoGridController"
+          xmlns="http://javafx.com/javafx/22"
+          xmlns:fx="http://javafx.com/fxml/1"
+          hgap="10" vgap="10">
+
+    <!-- Layout: 2 rows × 3 columns -->
+    <columnConstraints>
+        <ColumnConstraints prefWidth="60" />
+        <ColumnConstraints prefWidth="60" />
+        <ColumnConstraints prefWidth="60" />
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints prefHeight="60" />
+        <RowConstraints prefHeight="60" />
+    </rowConstraints>
+
+    <!-- 6 ImageView cells -->
+    <ImageView fx:id="frontImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="0" GridPane.rowIndex="0" />
+
+    <ImageView fx:id="backImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <ImageView fx:id="leftImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+    <ImageView fx:id="rightImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <ImageView fx:id="topImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <ImageView fx:id="bottomImage" fitWidth="60" fitHeight="60"
+               style="-fx-border-color: gray; -fx-background-color: #eeeeee;"
+               GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+
+</GridPane>
