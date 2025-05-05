@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -28,15 +27,13 @@
     <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
     <AnchorPane fx:id="photoGridPlaceholder" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="4" />
-
-    <!-- Order status -->
-    <ComboBox fx:id="OrderStatusLabel" prefWidth="150.0" promptText="New" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-
+    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" text="New" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <!-- Update date -->
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
     <!-- Action button -->
     <Button mnemonicParsing="false" styleClass="primary-btn" text="GENERATE REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
 
     <rowConstraints>
         <RowConstraints />
