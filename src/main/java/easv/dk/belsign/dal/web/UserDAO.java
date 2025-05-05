@@ -50,11 +50,9 @@ public class UserDAO {
     public ObservableList<User> getAllUsers() {
         ObservableList<User> users = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Users";
-
         try (Connection conn = new DBConnection().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
             while (rs.next()) {
                 User user = new User();
                 user.setUserID(rs.getInt("UserID"));
@@ -74,15 +72,35 @@ public class UserDAO {
                     case 3 -> user.setUserRole("Operator");
                     default -> user.setUserRole("Unknown");
                 }
-
                 users.add(user);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return users;
+    }
+
+    public User getUserByAccessCode(String accessCode) {
+        String sql = "SELECT * FROM Users WHERE AccessCode = ?";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, accessCode);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setAccessCode(rs.getString("AccessCode"));
+                    user.setFullName(rs.getString("FullName"));
+                    // Populate other fields as needed
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean addUser(User user) {

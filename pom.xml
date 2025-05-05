@@ -49,6 +49,26 @@
       <artifactId>webcam-capture</artifactId>
       <version>0.3.12</version>
     </dependency>
+    <!-- ZXing Core (QR code reading and writing) -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+      <version>3.5.2</version>
+    </dependency>
+
+    <!-- ZXing JavaSE extensions (for BufferedImageLuminanceSource, etc.) -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+      <version>3.5.2</version>
+    </dependency>
+
+    <!-- Webcam platform plugin for OpenIMAJ (if needed) -->
+    <dependency>
+      <groupId>com.github.sarxos</groupId>
+      <artifactId>webcam-capture-driver-openimaj</artifactId>
+      <version>0.3.12</version>
+    </dependency>
 
     <!-- Add this dependency for BCrypt -->
     <dependency>
