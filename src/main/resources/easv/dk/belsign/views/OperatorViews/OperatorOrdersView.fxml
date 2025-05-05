@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.OperatorOrdersController">
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
@@ -26,7 +26,7 @@
                 </image></ImageView>
 
             <!-- Welcome text -->
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, QA!" />
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, Operator!" />
 
             <Region HBox.hgrow="ALWAYS" />
 
@@ -68,32 +68,16 @@
                 <TextField fx:id="searchField" prefWidth="200" promptText="Search" style="-fx-background-color: ffffff;" styleClass="box" />
                 <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Status" style="-fx-background-color: ffffff;" styleClass="box" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="createOrderButton" styleClass="create-btn" text="Create order">
-                    <graphic>
-                        <FontIcon iconColor="WHITE" iconLiteral="bi-plus" iconSize="20" wrappingWidth="20.0" />
-                    </graphic></Button>
             </HBox>
 
             <!-- Column titles -->
             <GridPane hgap="10" style="-fx-padding: 8 0; -fx-background-color: F9FAFB; -fx-border-color: #d6d6d6; -fx-border-width: 0 0 1 0;" styleClass="card" stylesheets="@../styles/card.css">
                 <columnConstraints>
-                    <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
-                    <ColumnConstraints prefWidth="170" /> <!-- Description -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
-                    <ColumnConstraints prefWidth="150" /> <!-- Operator -->
-                    <ColumnConstraints prefWidth="140" /> <!-- Product Photo -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Status -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
+                    <ColumnConstraints prefWidth="130" /> <!-- Update Date -->
                     <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
                 </columnConstraints>
                 <children>
                     <Label styleClass="col-title" text="ORDER ID" GridPane.columnIndex="0" />
-                    <Label styleClass="col-title" text="DESCRIPTION" GridPane.columnIndex="1" />
-                    <Label styleClass="col-title" text="CREATE DATE" GridPane.columnIndex="2" />
-                    <Label styleClass="col-title" text="OPERATOR" GridPane.columnIndex="3" />
-                    <Label styleClass="col-title" text="PRODUCT PHOTO" GridPane.columnIndex="4" />
-                    <Label styleClass="col-title" text="STATUS" GridPane.columnIndex="5" />
-                    <Label styleClass="col-title" text="UPDATE DATE" GridPane.columnIndex="6" />
                 </children>
             <rowConstraints>
                <RowConstraints />
