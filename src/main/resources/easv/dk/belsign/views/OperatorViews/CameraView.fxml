@@ -55,6 +55,6 @@
             </VBox>
          </children>
       </GridPane>
-      <Button fx:id="UploadPhotosBtn" layoutX="540.0" layoutY="637.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Upload Photos" AnchorPane.bottomAnchor="30.0" />
+      <Button fx:id="UploadPhotosBtn"  onAction="#uploadImages" layoutX="540.0" layoutY="637.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Upload Photos" AnchorPane.bottomAnchor="30.0" />
    </children>
 </AnchorPane>

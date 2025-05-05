@@ -6,6 +6,7 @@ import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 public class CameraController {
 
+    public Button UploadPhotosBtn;
     @FXML
     private ImageView frontImage, backImage, topImage, leftImage, rightImage;
 
