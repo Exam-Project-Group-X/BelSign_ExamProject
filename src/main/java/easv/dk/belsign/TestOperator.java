@@ -6,6 +6,7 @@ import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+
 public class TestOperator extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {

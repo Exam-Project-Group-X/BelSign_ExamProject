@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../styles/style-1.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.CameraController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../styles/style-1.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.CameraController">
    <children>
       <GridPane alignment="CENTER" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
         <columnConstraints>
@@ -26,35 +26,35 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                    <ImageView fx:id="frontImage" fitHeight="150.0" fitWidth="200.0" preserveRatio="true" style="-fx-cursor: hand;" />
-                   <Label GridPane.halignment="CENTER" GridPane.valignment="CENTER" text="Front" />
+                   <Label text="Front" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                <children>
                   <ImageView fx:id="backImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
-                  <Label GridPane.halignment="CENTER" text="Back" />
+                  <Label text="Back" GridPane.halignment="CENTER" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                <children>
                   <ImageView fx:id="topImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
-                  <Label GridPane.halignment="CENTER" text="Top" />
+                  <Label text="Top" GridPane.halignment="CENTER" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                <children>
                   <ImageView fx:id="leftImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
-                  <Label GridPane.halignment="CENTER" text="Left" />
+                  <Label text="Left" GridPane.halignment="CENTER" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <ImageView fx:id="rightImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
-                  <Label GridPane.halignment="CENTER" text="Right" />
+                  <Label text="Right" GridPane.halignment="CENTER" />
                </children>
             </VBox>
          </children>
       </GridPane>
-      <Button layoutX="540.0" layoutY="637.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Upload Photos" AnchorPane.bottomAnchor="30.0" />
+      <Button fx:id="UploadPhotosBtn" layoutX="540.0" layoutY="637.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Upload Photos" AnchorPane.bottomAnchor="30.0" />
    </children>
 </AnchorPane>

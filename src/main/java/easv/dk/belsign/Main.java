@@ -14,6 +14,12 @@ import javafx.stage.Stage;
  * =========================================================
  * */
 
+/// TODO create a navigations printing
+/// ex:
+///
+/// > Now in LOGIN Screen
+///
+/// > Login > QA < Login (to see what windows we have navigated back and forth)
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {

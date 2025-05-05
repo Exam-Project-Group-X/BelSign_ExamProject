@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -64,29 +66,66 @@ public class CameraController {
         imageView.setOnContextMenuRequested(e -> menu.show(imageView, e.getScreenX(), e.getScreenY()));
     }
 
+//    private void captureAndSetImage(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
+//        Image captured = new WebcamCaptureDialog().showAndCapture();
+//        if (captured != null) {
+//            imageView.setImage(captured);
+//            File savedFile = saveImageToFile(captured);
+//            if (savedFile != null) {
+//                fileConsumer.accept(savedFile);
+//            }
+//        }
+//    }
+
     private void captureAndSetImage(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
         Image captured = new WebcamCaptureDialog().showAndCapture();
         if (captured != null) {
             imageView.setImage(captured);
-            File savedFile = saveImageToFile(captured);
-            if (savedFile != null) {
-                fileConsumer.accept(savedFile);
-            }
+            fileConsumer.accept(null); // We’re not saving to file anymore
         }
     }
 
-    private File saveImageToFile(Image image) {
-        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        File file = new File(imageSaveDirectory, "captured-" + UUID.randomUUID() + ".png");
+
+
+//    private File saveImageToFile(Image image) {
+//        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+//        File file = new File(imageSaveDirectory, "captured-" + UUID.randomUUID() + ".png");
+//        try {
+//            ImageIO.write(bImage, "PNG", file);
+//            return file;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            showAlert("Failed to save image.");
+//            return null;
+//        }
+//    }
+
+    private byte[] convertToBytes(Image image) {
         try {
-            ImageIO.write(bImage, "PNG", file);
-            return file;
+            BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "png", outputStream);
+            return outputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Failed to save image.");
+            showAlert("Failed to convert image.");
             return null;
         }
+
     }
+
+//    @FXML
+//    public void uploadImages() {
+//        if (!isCaptured(frontImage) || !isCaptured(backImage) || !isCaptured(topImage) ||
+//                !isCaptured(leftImage) || !isCaptured(rightImage)) {
+//            showAlert("Please capture all 5 images before uploading.");
+//            return;
+//        }
+//
+//        // ImageUploadService.upload(frontFile, backFile, topFile, leftFile, rightFile);
+//
+//        showAlert("Images uploaded successfully!");
+//    }
 
     @FXML
     public void uploadImages() {
@@ -96,10 +135,23 @@ public class CameraController {
             return;
         }
 
-        // ImageUploadService.upload(frontFile, backFile, topFile, leftFile, rightFile);
+        try {
+            ProductPhotosDAO dao = new ProductPhotosDAO();
 
-        showAlert("Images uploaded successfully!");
+            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "FRONT", convertToBytes(frontImage.getImage()));
+            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "BACK", convertToBytes(backImage.getImage()));
+            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "TOP", convertToBytes(topImage.getImage()));
+            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "LEFT", convertToBytes(leftImage.getImage()));
+            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "RIGHT", convertToBytes(rightImage.getImage()));
+
+            showAlert("✅ Images uploaded successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("❌ Failed to upload images.");
+        }
     }
+
+
 
     private boolean isCaptured(ImageView view) {
         return view.getImage() != null && view.getImage() != placeholderImage;

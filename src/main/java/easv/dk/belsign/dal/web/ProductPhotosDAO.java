@@ -37,6 +37,26 @@ public class ProductPhotosDAO {
 
         return photos;
     }
+
+    public void insertCapturedPhoto(int orderId, String angle, byte[] imageData) throws SQLException {
+        if (imageData == null) return;
+
+        String sql = "INSERT INTO ProductPhotos (OrderID, PhotoAngle, Status, PhotoData) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setString(2, angle);
+            ps.setString(3, "Pending");
+            ps.setBytes(4, imageData);
+            ps.executeUpdate();
+
+            System.out.println("✅ Uploaded photo for " + angle + " [Order ID: " + orderId + "]");
+        }
+    }
+
+
     public void insertTestPhoto(String filePath, int orderId, String angle) throws Exception {
         byte[] bytes;
         try {
