@@ -32,7 +32,7 @@
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
     <!-- Action button -->
-    <Button mnemonicParsing="false" styleClass="primary-btn" text="GENERATE REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Button fx:id="btnGenReport" mnemonicParsing="false" onAction="#onClickGenReportBtn" styleClass="primary-btn" text="GENERATE REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
 
     <rowConstraints>
