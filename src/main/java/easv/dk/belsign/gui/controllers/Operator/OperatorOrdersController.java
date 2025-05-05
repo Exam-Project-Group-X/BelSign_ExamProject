@@ -34,7 +34,7 @@ public class OperatorOrdersController {
 
     public void addOrderCard(Order order) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.OPERATOR_ORDER_CARD));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CAMERA_VIEW));
             Parent card = loader.load();
 
             OperatorOrderCardController controller = loader.getController();
