@@ -12,7 +12,6 @@ public class FXMLPath {
     ///
     /// OPERATOR Paths
     public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorViews/OperatorOrdersView.fxml";
-    public static final String OPERATOR_SELECT_ORDERS = "/easv/dk/belsign/views/OperatorViews/SelectOrderView.fxml";
     public static final String OPERATOR_TAKE_PICTURE_VIEW = "/easv/dk/belsign/views/OperatorViews/take-picture-view.fxml";
     public static final String OPERATOR_ORDER_CARD = "/easv/dk/belsign/views/OperatorViews/components/OrderCard.fxml";
 
