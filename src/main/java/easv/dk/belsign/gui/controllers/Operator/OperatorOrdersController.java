@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -48,8 +49,20 @@ public class OperatorOrdersController {
 
     public void openTakePictureView(Order selectedOrder) {
 
-        ViewManager.INSTANCE.showScene(FXMLPath.CAMERA_VIEW);
-        System.out.println("Order Selected:" + selectedOrder);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CAMERA_VIEW));
+            Parent root = loader.load();
+
+            CameraController controller = loader.getController();
+            controller.setSelectedOrder(selectedOrder); // ✅ Inject the order here
+
+            // Replace the scene manually
+            ViewManager.INSTANCE.getSceneManager().getCurrentStage().setScene(new Scene(root));
+            ViewManager.INSTANCE.getSceneManager().getCurrentStage().centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

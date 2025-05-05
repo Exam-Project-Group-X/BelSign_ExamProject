@@ -29,6 +29,11 @@ public class SceneManager {
         this.currentStage = stage;
     }
 
+    public Stage getCurrentStage() {
+        return this.currentStage;
+    }
+
+
     public void setStageRoot(BorderPane stageRoot)
     {
         this.stageRoot = stageRoot;

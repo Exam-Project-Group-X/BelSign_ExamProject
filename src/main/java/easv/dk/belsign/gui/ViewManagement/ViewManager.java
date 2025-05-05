@@ -36,6 +36,9 @@ import javafx.scene.layout.BorderPane;
             }
         }
 
+        public SceneManager getSceneManager() {
+            return this.sceneManager;
+        }
 
         public void switchDashboard(String fxml, String title){
             if(stageManager != null){
