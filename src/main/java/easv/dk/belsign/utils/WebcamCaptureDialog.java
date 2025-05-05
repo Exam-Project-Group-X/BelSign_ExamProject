@@ -16,6 +16,7 @@ public class WebcamCaptureDialog {
     private BufferedImage capturedImage;
 
     public Image showAndCapture() {
+        System.out.println("arch = " + System.getProperty("os.arch"));
         webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
         WebcamPanel panel = new WebcamPanel(webcam);

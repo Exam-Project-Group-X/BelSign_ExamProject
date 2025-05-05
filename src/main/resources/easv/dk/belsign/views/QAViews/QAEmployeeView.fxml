@@ -77,11 +77,11 @@
                 <!-- Column titles (GridPane) -->
                 <GridPane hgap="10" style="-fx-padding: 8 0 8 0; -fx-background-color: F9FAFB; -fx-border-color: #d6d6d6; -fx-border-width: 0 0 1 0;" styleClass="card" stylesheets="@../styles/card.css">
                     <columnConstraints>
-                        <ColumnConstraints prefWidth="130" /> <!-- Order ID -->
-                        <ColumnConstraints prefWidth="170" /> <!-- Description -->
+                        <ColumnConstraints prefWidth="120" /> <!-- Order ID -->
+                        <ColumnConstraints prefWidth="150" /> <!-- Description -->
                         <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
                         <ColumnConstraints prefWidth="150" /> <!-- Operator -->
-                        <ColumnConstraints prefWidth="140" /> <!-- Product Photo -->
+                        <ColumnConstraints prefWidth="200" /> <!-- Product Photo -->
                         <ColumnConstraints prefWidth="120" /> <!-- Status -->
                         <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
                         <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
@@ -108,11 +108,28 @@
                 <!-- Pagination -->
                 <HBox alignment="CENTER" spacing="6" style="-fx-padding: 10;">
                     <Label fx:id="pageInfoLabel" text="Showing page 1 of 4" />
-                    <Region HBox.hgrow="ALWAYS" />
+                    <Region prefHeight="27.0" prefWidth="912.0" HBox.hgrow="ALWAYS" />
                     <ToggleButton selected="true" text="1" />
                     <ToggleButton text="2" />
                     <ToggleButton text="3" />
                     <ToggleButton text="4" />
+
+                    <!-- « previous page -->
+                    <Button fx:id="prevPageBtn" styleClass="icon-btn">
+                        <graphic>
+                            <FontIcon iconLiteral="bi-chevron-left" iconSize="16" />
+                        </graphic>
+                    </Button>
+
+                    <!-- next page » -->
+                    <Button fx:id="nextPageBtn" styleClass="icon-btn">
+                        <graphic>
+                            <FontIcon iconLiteral="bi-chevron-right" iconSize="16" />
+                        </graphic>
+                    </Button>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
                 </HBox>
             </VBox>
         </center>

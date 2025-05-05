@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
@@ -18,11 +19,21 @@ import java.io.IOException;
 
 public class QAEmployeeController {
     @FXML
+    private Label pageInfoLabel;
+    @FXML
+    private Button prevPageBtn;
+    @FXML
+    private Button nextPageBtn;
+    @FXML
     private VBox cardContainer;
     @FXML
     private Button createOrderButton;
     @FXML
     private Button logoutButton;
+
+    private static final int PAGE_SIZE = 6;                    // cards per page
+    private int currentPage = 1;
+    private int pageCount  = 1;
 
     private final QAEmployeeModel model = new QAEmployeeModel();
     @FXML
