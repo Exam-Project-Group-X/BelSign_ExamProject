@@ -49,6 +49,7 @@ public class OperatorOrdersController {
     public void openTakePictureView(Order selectedOrder) {
 
         ViewManager.INSTANCE.showScene(FXMLPath.CAMERA_VIEW);
+        System.out.println("Order Selected:" + selectedOrder);
     }
 
 
