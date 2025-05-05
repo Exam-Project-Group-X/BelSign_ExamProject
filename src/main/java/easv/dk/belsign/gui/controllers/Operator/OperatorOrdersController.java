@@ -34,7 +34,7 @@ public class OperatorOrdersController {
 
     public void addOrderCard(Order order) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CAMERA_VIEW));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.OPERATOR_ORDER_CARD));
             Parent card = loader.load();
 
             OperatorOrderCardController controller = loader.getController();
@@ -48,7 +48,7 @@ public class OperatorOrdersController {
 
     public void openTakePictureView(Order selectedOrder) {
 
-        ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_TAKE_PICTURE_VIEW);
+        ViewManager.INSTANCE.showScene(FXMLPath.CAMERA_VIEW);
     }
 
 
