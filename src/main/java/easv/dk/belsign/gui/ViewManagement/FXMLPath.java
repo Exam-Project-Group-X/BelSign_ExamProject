@@ -3,13 +3,13 @@ package easv.dk.belsign.gui.ViewManagement;
 public class FXMLPath {
 
 
-
+    /// LOGIN PATHS
     public static final String LOGIN = "/easv/dk/belsign/views/LoginViews/LoginView.fxml";
     public static final String TITLE_SCREEN = "/easv/dk/belsign/views/LoginViews/TitleScreenView.fxml";
 
 
-/// TODO ADD DEBUG MESSAGE FOR : LOCATION NOT SET - Problem is Here! (probably)
-///
+    /// TODO ADD DEBUG MESSAGE FOR : LOCATION NOT SET - Problem is Here! (probably)
+    ///
     /// OPERATOR Paths
     public static final String OPERATOR_DASHBOARD = "/easv/dk/belsign/views/OperatorViews/OperatorOrdersView.fxml";
     public static final String OPERATOR_SELECT_ORDERS = "/easv/dk/belsign/views/OperatorViews/SelectOrderView.fxml";

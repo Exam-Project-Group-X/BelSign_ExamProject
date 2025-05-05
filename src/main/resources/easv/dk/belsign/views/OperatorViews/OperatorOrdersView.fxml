@@ -34,7 +34,7 @@
                     </image>
                 </ImageView>
                 <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
-                <Button fx:id="logoutButton" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
+                <Button onAction="#OnClickLogoutButton" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
                     </graphic></Button>

@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import javax.swing.border.Border;
 import java.util.HashMap;
@@ -33,16 +34,12 @@ public class SceneManager {
         this.stageRoot = stageRoot;
     }
 
-    public Scene loadScene(String fxmlPath){
-        if(!sceneCache.containsKey(fxmlPath)){
-            Parent root = FXMLManager.INSTANCE.getFXML(fxmlPath).getKey();
-            if(root != null){
-                root.setFocusTraversable(false);
-                sceneCache.put(fxmlPath, new Scene(root));
-                return sceneCache.get(fxmlPath);
-            }
+    public Scene loadScene(String fxmlPath) {
+        Pair<Parent, Object> fxml = FXMLManager.INSTANCE.getFXML(fxmlPath);
+        if (fxml != null) {
+            return new Scene(fxml.getKey()); // ✅ fresh root every time
         }
-        return sceneCache.get(fxmlPath);
+        return null;
     }
 
     public void switchScene(String fxmlPath){

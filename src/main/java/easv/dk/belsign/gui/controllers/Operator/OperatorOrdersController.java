@@ -6,6 +6,7 @@ import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.controllers.Operator.components.OperatorOrderCardController;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -49,4 +50,12 @@ public class OperatorOrdersController {
 
         ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_TAKE_PICTURE_VIEW);
     }
+
+
+
+    public void OnClickLogoutButton(ActionEvent actionEvent) {
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+    }
+
+
 }
