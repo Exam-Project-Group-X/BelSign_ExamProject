@@ -2,8 +2,10 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -12,6 +14,7 @@ import java.io.IOException;
 
 
 public class OrderCardController {
+    @FXML private Button btnGenReport;
     @FXML private Label statusLabel;
     @FXML private Label orderNumberLabel;
     @FXML private Label descriptionLabel;
@@ -48,6 +51,11 @@ public class OrderCardController {
         } else {
             statusLabel.setStyle("");
         }
+        if ("Complete".equals(status)) {
+            btnGenReport.setDisable(false);
+        } else {
+            btnGenReport.setDisable(true);
+        }
         // Load photos for the order
         if (photoGridController != null) {
             photoGridController.loadPhotosForOrder(order.getOrderID());
@@ -61,5 +69,8 @@ public class OrderCardController {
 
         photoGridPlaceholder.getChildren().clear();
         photoGridPlaceholder.getChildren().add(loadedPhotoGrid);
+    }
+
+    public void onClickGenReportBtn(ActionEvent actionEvent) {
     }
 }
