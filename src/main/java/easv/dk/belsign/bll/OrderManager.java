@@ -21,4 +21,9 @@ public class OrderManager {
     public ObservableList<Order> getAllNewOrders() {
         return orderDAO.getAllNewOrders();
     }
+
+    public void updateOrderToPending(Order order) throws Exception{
+        orderDAO.updateOrderStatusToPending(order.getOrderID());
+    }
+
 }

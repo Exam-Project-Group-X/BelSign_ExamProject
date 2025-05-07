@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.bll.OrderManager;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
@@ -18,7 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.UUID;
+
 
 public class CameraController {
 
@@ -31,6 +32,7 @@ public class CameraController {
     private Order selectedOrder;
 
     private final File imageSaveDirectory = new File("media");
+    private OrderManager orderManager = new OrderManager();
 
     @FXML
     public void initialize() {
@@ -130,7 +132,21 @@ public class CameraController {
 //    }
 
     @FXML
-    public void uploadImages() {
+    public void uploadImages() throws Exception {
+
+
+        if (selectedOrder == null) {
+            showAlert("❌ No order selected.");
+            return;
+        }
+
+        System.out.println("📦 Selected Order ID: " + selectedOrder.getOrderID());
+
+        if (selectedOrder.getOrderID() <= 0) {
+            showAlert("❌ Invalid Order ID: " + selectedOrder.getOrderID());
+            return;
+        }
+
         if (!isCaptured(frontImage) || !isCaptured(backImage) || !isCaptured(topImage) ||
                 !isCaptured(leftImage) || !isCaptured(rightImage)) {
             showAlert("Please capture all 5 images before uploading.");
@@ -151,7 +167,12 @@ public class CameraController {
             e.printStackTrace();
             showAlert("❌ Failed to upload images.");
         }
+
+        orderManager.updateOrderToPending(selectedOrder);
+
+
     }
+
 
 
 
@@ -168,6 +189,7 @@ public class CameraController {
     public void setSelectedOrder(Order order) {
         this.selectedOrder = order;
         // Perform any additional setup with the selected order if needed
-        System.out.println("Selected Order: " + order.getOrderNumber());
+        System.out.println("Selected Order Number: " + order.getOrderNumber());
+        System.out.println("Selected OrderID: " + order.getOrderID());
     }
 }

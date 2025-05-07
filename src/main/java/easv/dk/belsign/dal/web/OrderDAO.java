@@ -65,12 +65,13 @@ public class OrderDAO {
     // Get all 'New' Orders from the database
     public ObservableList<Order> getAllNewOrders() {
         ObservableList<Order> orderList = FXCollections.observableArrayList();
-        String sql = "SELECT OrderNumber FROM Orders WHERE OrderStatus = 'New'";
+        String sql = "SELECT OrderId, OrderNumber FROM Orders WHERE OrderStatus = 'New'";
         try (Connection c = con.getConnection();
              PreparedStatement stmt = c.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
                 order.setOrderNumber(rs.getString("OrderNumber"));
                 orderList.add(order);
             }
@@ -81,4 +82,24 @@ public class OrderDAO {
         }
         return orderList;
     }
+
+    public int updateOrderStatusToPending(int orderId) {
+
+        String sql = "UPDATE Orders SET OrderStatus = 'Pending' WHERE OrderID = ?";
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, orderId);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("✅ Order status updated to Pending for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+            return rowsAffected;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new OrderException("Failed to update order status: " + e.getMessage());
+        }
+    }
+
+
+
 }
