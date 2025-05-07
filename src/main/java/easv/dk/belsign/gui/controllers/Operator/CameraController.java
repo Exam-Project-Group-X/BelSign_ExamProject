@@ -3,6 +3,8 @@ package easv.dk.belsign.gui.controllers.Operator;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.bll.OrderManager;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
+import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -118,18 +120,6 @@ public class CameraController {
 
     }
 
-//    @FXML
-//    public void uploadImages() {
-//        if (!isCaptured(frontImage) || !isCaptured(backImage) || !isCaptured(topImage) ||
-//                !isCaptured(leftImage) || !isCaptured(rightImage)) {
-//            showAlert("Please capture all 5 images before uploading.");
-//            return;
-//        }
-//
-//        // ImageUploadService.upload(frontFile, backFile, topFile, leftFile, rightFile);
-//
-//        showAlert("Images uploaded successfully!");
-//    }
 
     @FXML
     public void uploadImages() throws Exception {
@@ -169,6 +159,7 @@ public class CameraController {
         }
 
         orderManager.updateOrderToPending(selectedOrder);
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
 
 
     }
