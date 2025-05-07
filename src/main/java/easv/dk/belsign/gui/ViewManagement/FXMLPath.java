@@ -17,7 +17,7 @@ public class FXMLPath {
     public static final String CAMERA_VIEW = "/easv/dk/belsign/views/OperatorViews/CameraView.fxml";
 
     /// LOGIN PAths
-    public static final String ADMIN_PANEL = "/easv/dk/belsign/views/AdminPanelView.fxml";
+    public static final String ADMIN_PANEL = "/easv/dk/belsign/views/AdminViews/UserManagementView.fxml";
     public static final String PHOTO_REVIEW_POPUP = "/easv/dk/belsign/views/popups/PhotoReviewPopup.fxml";
 
     //TODO

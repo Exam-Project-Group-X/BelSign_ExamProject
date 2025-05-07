@@ -1,7 +1,7 @@
 package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.dal.web.UserDAO;
+import easv.dk.belsign.dal.web.UserDAO_toDelete;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +31,7 @@ public class AdminController {
     @FXML private TableColumn<User, Void> actionsColumn;
 
     private final ObservableList<User> masterUserList = FXCollections.observableArrayList();
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDAO_toDelete userDAO = new UserDAO_toDelete();
 
     @FXML
     public void initialize() {
