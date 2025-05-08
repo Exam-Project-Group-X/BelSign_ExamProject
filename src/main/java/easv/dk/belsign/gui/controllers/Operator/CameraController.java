@@ -72,17 +72,6 @@ public class CameraController {
         imageView.setOnContextMenuRequested(e -> menu.show(imageView, e.getScreenX(), e.getScreenY()));
     }
 
-//    private void captureAndSetImage(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
-//        Image captured = new WebcamCaptureDialog().showAndCapture();
-//        if (captured != null) {
-//            imageView.setImage(captured);
-//            File savedFile = saveImageToFile(captured);
-//            if (savedFile != null) {
-//                fileConsumer.accept(savedFile);
-//            }
-//        }
-//    }
-
     private void captureAndSetImage(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
         Image captured = new WebcamCaptureDialog().showAndCapture();
         if (captured != null) {
@@ -91,20 +80,6 @@ public class CameraController {
         }
     }
 
-
-
-//    private File saveImageToFile(Image image) {
-//        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-//        File file = new File(imageSaveDirectory, "captured-" + UUID.randomUUID() + ".png");
-//        try {
-//            ImageIO.write(bImage, "PNG", file);
-//            return file;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            showAlert("Failed to save image.");
-//            return null;
-//        }
-//    }
 
     private byte[] convertToBytes(Image image) {
         try {
