@@ -49,7 +49,6 @@ public class QAEmployeeController {
             e.printStackTrace();
         }
 
-        createOrderButton.setOnAction(event -> onCreateOrderClick());
 
         prevPageBtn.setOnAction(event -> {
             if (currentPage > 1) {
@@ -65,20 +64,7 @@ public class QAEmployeeController {
             }
         });
     }
-    /*private void initialize() {
-        try {
-            // Get all orders from the QAEmployeeModel
-            for (Order order : model.getAllOrders()) {
-                addNewOrderCard(order); // Add each order card to the UI
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
 
-        }
-
-        createOrderButton.setOnAction(event -> onCreateOrderClick());
-
-    }*/
 /// Generate QC Report button only clickable after approving ALL photos (i.e. Status "Complete"
 ///  -> Then you can Generate QC Report)
     public void loadPage(int page) {
@@ -91,28 +77,6 @@ public class QAEmployeeController {
         pageInfoLabel.setText("Showing page " + currentPage + " of " + pageCount);
     }
 
-    private void onCreateOrderClick() {
-//        ViewManager.INSTANCE.showStage(FXMLPath.NEW_ORDER_DIALOG, "Create New Order", true);
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.NEW_ORDER_DIALOG));
-            Parent root = loader.load();
-
-            CreateNewOrderController controller = loader.getController();
-            controller.setParentController(this);
-
-            Stage stage = new Stage();
-            stage.setTitle("Create New Order");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void addNewOrderCard(Order order) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_ORDER_CARD));
@@ -121,7 +85,7 @@ public class QAEmployeeController {
             ///
 
             OrderCardController controller = loader.getController();
-            controller.setOrderData(order); // ✅ Pass real order data to UI
+            controller.setOrderData(order);
 
             cardContainer.getChildren().add(card);
         } catch (IOException e) {

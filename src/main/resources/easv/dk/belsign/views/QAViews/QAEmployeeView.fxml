@@ -68,10 +68,6 @@
                     <TextField fx:id="searchField" prefWidth="200" promptText="Search" style="-fx-background-color: ffffff;" styleClass="box" />
                     <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Status" style="-fx-background-color: ffffff;" styleClass="box" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="createOrderButton" styleClass="create-btn" text="Create order">
-                        <graphic>
-                    <FontIcon iconColor="WHITE" iconLiteral="bi-plus" iconSize="20" wrappingWidth="20.0" />
-                </graphic></Button>
                 </HBox>
 
                 <!-- Column titles (GridPane) -->
