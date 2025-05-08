@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.10.2</junit.version>  </properties>
+    <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
     <!-- BootstrapFX stylesheet -->
@@ -36,12 +36,8 @@
       <artifactId>ikonli-bootstrapicons-pack</artifactId>
       <version>12.3.1</version>
     </dependency>
-    <!-- SLF4J binding -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.9</version>
-    </dependency>
+
+
 
     <!-- Webcam Capture API Dependency -->
     <dependency>
@@ -61,13 +57,6 @@
       <groupId>com.google.zxing</groupId>
       <artifactId>javase</artifactId>
       <version>3.5.2</version>
-    </dependency>
-
-    <!-- Webcam platform plugin for OpenIMAJ (if needed) -->
-    <dependency>
-      <groupId>com.github.sarxos</groupId>
-      <artifactId>webcam-capture-driver-openimaj</artifactId>
-      <version>0.3.12</version>
     </dependency>
 
     <!-- Add this dependency for BCrypt -->
@@ -102,6 +91,7 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.36</version>
     </dependency>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
@@ -112,16 +102,7 @@
       <artifactId>javafx-fxml</artifactId>
       <version>17.0.6</version>
     </dependency>
-<dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-javafx</artifactId>
-      <version>12.3.1</version>
-    </dependency><dependency>
-      <groupId>org.kordamp.bootstrapfx</groupId>
-      <artifactId>bootstrapfx-core</artifactId>
-      <version>0.4.0</version>
-    </dependency>
-<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>

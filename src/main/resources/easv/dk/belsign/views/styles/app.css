@@ -50,8 +50,7 @@
     -fx-font-weight: bold;
 }
 
-.box{
-    -fx-background-color: white;
+.txt-box{
     -fx-border-radius: 3px;
     -fx-background-radius: 3px;
 }

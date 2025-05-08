@@ -8,6 +8,17 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
 }
 
+.op-card {
+    -fx-font-family: "Helvetica", "Arial", sans-serif; /*If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial → generic sans-serif.*/
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
+    -fx-font-size: 18px;
+}
+
 .glass-pane {
     -fx-background-color: rgba(255, 255, 255, 0.15);
     -fx-background-radius: 3;
@@ -28,3 +39,10 @@
 .primary-btn:hover {
     -fx-background-color: #9D9D9D;
 }
+
+.box{
+    -fx-background-color: white;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+

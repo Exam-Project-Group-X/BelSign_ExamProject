@@ -1,206 +1,94 @@
 package easv.dk.belsign.dal.web;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.dal.IUserDAO;
 import easv.dk.belsign.dal.db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class UserDAO {
-
-    private final String DB_URL = "jdbc:sqlite:belman.db";
-    private final String TABLE_NAME = "Users";
-
-    public UserDAO() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            createTableIfNotExists();
-        } catch (ClassNotFoundException e) {
-            System.err.println("SQLite JDBC Driver not found.");
-            e.printStackTrace();
-        }
-    }
-
-    private void createTableIfNotExists() {
+public class UserDAO implements IUserDAO {
+    private DBConnection con = new DBConnection();
+    public List<User> getAllUsers() throws SQLException {
+        List<User> allUsers = new ArrayList<>();
         String sql = """
-            CREATE TABLE IF NOT EXISTS Users (
-                UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-                Username TEXT NOT NULL UNIQUE,
-                PasswordHash TEXT,
-                AccessCode TEXT,
-                FullName TEXT,
-                Email TEXT,
-                CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                RoleID INTEGER,
-                Active BOOLEAN DEFAULT 1
-            );
+        SELECT u.UserID, u.UserName, u.AccessCode, u.FullName, u.Email, u.PasswordHash,
+               u.RoleID, u.CreatedAt, u.UpdatedAt, u.Active, r.RoleName
+        FROM   Users u
+        JOIN   UserRoles r ON r.RoleID = u.RoleID
         """;
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.err.println("Failed to ensure Users table exists.");
-            e.printStackTrace();
-        }
-    }
-
-    public ObservableList<User> getAllUsers() {
-        ObservableList<User> users = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM Users";
-        try (Connection conn = new DBConnection().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection connection = con.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                User user = new User();
-                user.setUserID(rs.getInt("UserID"));
-                user.setUsername(rs.getString("Username"));
-                user.setPasswordHash(rs.getString("PasswordHash"));
-                user.setAccessCode(rs.getString("AccessCode"));
-                user.setFullName(rs.getString("FullName"));
-                user.setEmail(rs.getString("Email"));
-                user.setCreatedAt(rs.getTimestamp("CreatedAt"));
-                user.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
-                user.setActive(true); // Assuming Active column missing — update if needed
-
+                int userId = rs.getInt("UserID");
+                String userName = rs.getString("Username");
+                String accessCode = rs.getString("AccessCode");
+                String fullName = rs.getString("FullName");
+                String email = rs.getString("Email");
+                String passwordHash = rs.getString("PasswordHash");
                 int roleId = rs.getInt("RoleID");
-                switch (roleId) {
-                    case 1 -> user.setUserRole("Admin");
-                    case 2 -> user.setUserRole("QA");
-                    case 3 -> user.setUserRole("Operator");
-                    default -> user.setUserRole("Unknown");
-                }
-                users.add(user);
+                Timestamp createdAt = rs.getTimestamp("CreatedAt");
+                Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
+                boolean active = rs.getBoolean("Active");
+                String roleName = rs.getString("RoleName");
+                User user = new User(userId, userName, passwordHash, accessCode,
+                        fullName, email, roleId,
+                        createdAt, updatedAt, active,
+                        roleName);
+                allUsers.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-        return users;
+        return allUsers;
     }
 
-    public User getUserByAccessCode(String accessCode) {
-        String sql = "SELECT * FROM Users WHERE AccessCode = ?";
-        try (Connection conn = new DBConnection().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, accessCode);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setUserID(rs.getInt("UserID"));
-                    user.setUsername(rs.getString("Username"));
-                    user.setAccessCode(rs.getString("AccessCode"));
-                    user.setFullName(rs.getString("FullName"));
-                    // Populate other fields as needed
-                    return user;
-                }
+    @Override
+    public void createNewUser(User user) throws SQLException {
+        String sqlUser = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
+        String sqlRole = "INSERT INTO UserRoles (RoleID, RoleName) VALUES (?, ?)";
+        Connection connection = con.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            try (PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
+                psUser.setString(1, user.getFullName());
+                psUser.setString(2, user.getEmail());
+                psUser.setString(3, user.getUsername());
+                psUser.setString(4, user.getPasswordHash());
+                psUser.setInt(5, user.getRoleId());
+                psUser.executeUpdate();
             }
+            try (PreparedStatement psRole = connection.prepareStatement(sqlRole)) {
+                psRole.setInt(1, user.getRoleId());
+                psRole.setString(2, user.getRoleName());
+                psRole.executeUpdate();
+            }
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             e.printStackTrace();
-        }
-        return null;
-    }
-
-    public boolean addUser(User user) {
-        String sql = "INSERT INTO " + TABLE_NAME + " (Username, PasswordHash, AccessCode, FullName, Email, CreatedAt, UpdatedAt, RoleID, Active) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPasswordHash());
-            stmt.setString(3, user.getAccessCode());
-            stmt.setString(4, user.getFullName());
-            stmt.setString(5, user.getEmail());
-            stmt.setInt(6, getRoleIdFromString(user.getUserRole()));
-            stmt.setBoolean(7, user.isActive());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+            connection.close();
         }
     }
 
-    public boolean deleteUser(User user) {
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE Username = ?";
+    @Override
+    public void deleteUser(User user) throws SQLException {
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, user.getUsername());
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
-    public boolean updateUser(User user) {
-        String sql = "UPDATE " + TABLE_NAME + " SET PasswordHash = ?, FullName = ?, Email = ?, RoleID = ?, Active = ?, UpdatedAt = CURRENT_TIMESTAMP WHERE Username = ?";
+    @Override
+    public void updateUser(User user) throws SQLException {
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, user.getPasswordHash());
-            stmt.setString(2, user.getFullName());
-            stmt.setString(3, user.getEmail());
-            stmt.setInt(4, getRoleIdFromString(user.getUserRole()));
-            stmt.setBoolean(5, user.isActive());
-            stmt.setString(6, user.getUsername());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
-    public boolean updateUserRole(User user) {
-        String sql = "UPDATE " + TABLE_NAME + " SET RoleID = ?, UpdatedAt = CURRENT_TIMESTAMP WHERE Username = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, getRoleIdFromString(user.getUserRole()));
-            stmt.setString(2, user.getUsername());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateUserStatus(User user) {
-        String sql = "UPDATE " + TABLE_NAME + " SET Active = ?, UpdatedAt = CURRENT_TIMESTAMP WHERE Username = ?";
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setBoolean(1, user.isActive());
-            stmt.setString(2, user.getUsername());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private int getRoleIdFromString(String role) {
-        return switch (role.toLowerCase()) {
-            case "admin" -> 1;
-            case "qa" -> 2;
-            case "operator" -> 3;
-            default -> 0;
-        };
-    }
 }
