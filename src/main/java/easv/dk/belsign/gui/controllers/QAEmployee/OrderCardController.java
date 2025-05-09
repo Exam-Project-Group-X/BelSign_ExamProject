@@ -4,6 +4,7 @@ import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import easv.dk.belsign.gui.models.PhotosModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,13 @@ public class OrderCardController {
     private GridPane loadedPhotoGrid;
     private PhotoGridController photoGridController;
     private Order order;
+
+
+    private PhotosModel photosModel;
+
+    public void setPhotosModel(PhotosModel model) {
+        this.photosModel = model;
+    }
 
 
     @FXML
@@ -92,9 +100,16 @@ public class OrderCardController {
         Parent root = pair.getKey();
         PhotoReviewController controller = pair.getValue();
 
-        // Inject the order data
-        controller.loadPhotosForOrder(order.getOrderID());
+
+
+        controller.setModel(new PhotosModel());
+
+        // ✅ Inject order data
+        controller.setOrderId(order.getOrderID());
         controller.setCaption("Order #" + order.getOrderNumber());
+        controller.loadPhotosForOrder(order.getOrderID());
+
+
 
         Stage stage = new Stage();
         stage.setTitle("Photo Review - " + order.getOrderNumber());

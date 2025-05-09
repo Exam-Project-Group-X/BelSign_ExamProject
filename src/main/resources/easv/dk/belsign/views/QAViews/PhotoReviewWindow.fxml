@@ -67,8 +67,8 @@
                </image></ImageView>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" text="Approve" />
-                  <Button mnemonicParsing="false" text="Reject" />
+                  <Button fx:id="ApproveBtn" mnemonicParsing="false" onAction="#ApprovePhoto" text="Approve" />
+                  <Button fx:id="RejectBtn" mnemonicParsing="false" onAction="#RejectPhoto" text="Reject" />
                </children>
             </HBox>
             </StackPane>

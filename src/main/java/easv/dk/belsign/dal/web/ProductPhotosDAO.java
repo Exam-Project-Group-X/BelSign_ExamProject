@@ -86,7 +86,7 @@ public class ProductPhotosDAO {
 
             int rowsAffected = stmt.executeUpdate();
 
-            System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+            System.out.println("X!!!  Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
 
     }
