@@ -74,6 +74,7 @@ public class AdminController implements Initializable {
             //System.out.println("Loaded user card for: " + user.getFullName());
             UserCardController userCardController = loader.getController();
             userCardController.setUserData(user);
+            userCardController.setParentController(this);
             cardContainer.getChildren().add(userCard);
         } catch (IOException e) {
             //System.err.println("Failed to load user card for: " + user.getFullName());
@@ -86,9 +87,14 @@ public class AdminController implements Initializable {
     }
 
     public void onClickCreateUserBtn(ActionEvent actionEvent) {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_EDITOR));
             Parent root = loader.load();
+            // Close current stage
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.close();
+            // Open new stage with USER_EDITOR
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);

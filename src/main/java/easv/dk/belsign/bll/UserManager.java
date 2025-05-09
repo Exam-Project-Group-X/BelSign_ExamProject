@@ -4,6 +4,8 @@ import easv.dk.belsign.dal.web.UserDAO;
 import java.sql.SQLException;
 import java.util.List;
 
+import javafx.collections.ObservableList;
+
 public class UserManager {
     private final UserDAO userDAO;
     public UserManager() {
@@ -24,7 +26,11 @@ public class UserManager {
     public User authenticateAndGetUser(String email, String password) {
         return userDAO.authenticateAndGetUser(email, password);
     }
-    public User getUserByAccessCode(String accessCode) {
-        return userDAO.getUserByAccessCode(accessCode);
+
+    public ObservableList<String> getAllRoles() throws SQLException {
+
+        return userDAO.getAllRoleNames();
+
     }
+
 }

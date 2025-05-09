@@ -8,12 +8,21 @@ public class UserModel {
 
     private final UserManager userManager = new UserManager();
     private final ObservableList<User> allUsers = FXCollections.observableArrayList();
+    private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
     private User loggedInUser;
 
     public User authenticate(String email, String password) {
         this.loggedInUser = userManager.authenticateAndGetUser(email, password);
         return loggedInUser;
     }
+
+    public ObservableList<String> getAllRoleNames() throws SQLException {
+
+        allRoleNames.setAll(userManager.getAllRoles());
+        return allRoleNames;
+    }
+
+
 
     public ObservableList<User> getAllUsers() throws SQLException {allUsers.setAll(userManager.getAllUsers());
         return allUsers;
