@@ -10,6 +10,7 @@ import easv.dk.belsign.be.User;
 import easv.dk.belsign.dal.web.UserDAO;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import easv.dk.belsign.gui.models.UserModel;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +23,9 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 public class TitleScreenController {
-
     @FXML
     private Rectangle swipeRect;
-    private final UserDAO userDAO = new UserDAO();
+    private final UserModel userModel = new UserModel();
 
     public void initialize() {
         animateRectangle();
@@ -50,7 +50,7 @@ public class TitleScreenController {
         }
 
         System.out.println("Scanned Access Code: " + scannedCode);
-        User user = userDAO.getUserByAccessCode(scannedCode);
+        User user = userModel.getUserByAccessCode(scannedCode);
 
         if (user != null) {
             System.out.println("Access granted to user: " + user.getFullName());

@@ -1,17 +1,15 @@
 package easv.dk.belsign.gui.controllers.Login;
 
+import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.models.UserModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
@@ -43,6 +41,9 @@ public class LoginController implements Initializable {
 
     private boolean passwordVisible = false;
 
+    private final UserModel userModel = new UserModel();
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Hook up the login button
@@ -73,12 +74,28 @@ public class LoginController implements Initializable {
     }
 
     public void onLoginClick(ActionEvent event) {
-        // For now, just always open QA Orders view
-        ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
-        System.out.println("Login button clicked!");
         String email = loginEmail.getText().trim();
-        String password = loginPassword.getText();
+        String password = passwordVisible ? visiblePassword.getText() : loginPassword.getText();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            ViewManager.INSTANCE.showError("Login failed", "Email and password cannot be empty.");
+            return;
+        }
+        User user = userModel.authenticate(email, password);
+        if (user != null) {
+            switch (user.getUserRole()) {
+                case "Admin" -> ViewManager.INSTANCE.showScene(FXMLPath.ADMIN_PANEL);
+                case "QA Employee" -> ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
+                default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getUserRole());
+            }
+        } else {
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email or password.");
+        }
     }
 
+    public void onClickLogoutBtn(ActionEvent actionEvent) {
+
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+    }
 
 }
