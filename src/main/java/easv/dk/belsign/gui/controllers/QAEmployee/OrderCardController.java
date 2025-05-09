@@ -2,11 +2,13 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -72,5 +74,9 @@ public class OrderCardController {
     }
 
     public void onClickGenReportBtn(ActionEvent actionEvent) {
+    }
+
+    public void onPhotoGridClick(MouseEvent mouseEvent) {
+        ViewManager.INSTANCE.showScene(FXMLPath.QA_PHOTO_REVIEW);
     }
 }
