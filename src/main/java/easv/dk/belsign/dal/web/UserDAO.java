@@ -6,6 +6,7 @@ import easv.dk.belsign.dal.db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,41 +52,63 @@ public class UserDAO implements IUserDAO {
     @Override
     public void createNewUser(User user) throws SQLException {
         String sqlUser = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
-        String sqlRole = "INSERT INTO UserRoles (RoleID, RoleName) VALUES (?, ?)";
-        Connection connection = con.getConnection();
-        try {
-            connection.setAutoCommit(false);
-            try (PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
+        try (Connection connection = con.getConnection();
+                PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
                 psUser.setString(1, user.getFullName());
                 psUser.setString(2, user.getEmail());
                 psUser.setString(3, user.getUsername());
                 psUser.setString(4, user.getPasswordHash());
                 psUser.setInt(5, user.getRoleId());
                 psUser.executeUpdate();
+            }catch (SQLException e) {
+                throw new RuntimeException("Error adding users to the database: " + e.getMessage(), e);
             }
-            try (PreparedStatement psRole = connection.prepareStatement(sqlRole)) {
-                psRole.setInt(1, user.getRoleId());
-                psRole.setString(2, user.getRoleName());
-                psRole.executeUpdate();
+        }
+
+    @Override
+    public ObservableList<String> getAllRoleNames() throws SQLException {
+        List<String> roleList = new ArrayList<>();
+        String sql = "SELECT DISTINCT RoleName FROM UserRoles";
+        try (Connection connection = con.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                roleList.add(rs.getString("RoleName"));
             }
-            connection.commit();
         } catch (SQLException e) {
-            connection.rollback();
             e.printStackTrace();
             throw e;
-        } finally {
-            connection.setAutoCommit(true);
-            connection.close();
         }
+        return FXCollections.observableArrayList(roleList);
     }
 
     @Override
     public void deleteUser(User user) throws SQLException {
-
+        String sql = "DELETE FROM users where UserID = ?";
+        try (Connection connection = con.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, user.getUserID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting users and its dependencies: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public void updateUser(User user) throws SQLException {
+        String sql = "UPDATE Users SET FullName = ?, Email = ?, Username = ?, PasswordHash = ?, RoleID = ? WHERE UserID = ?";
+        try (Connection connection = con.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPasswordHash());
+            ps.setInt(5, user.getRoleId());
+            ps.setInt(6, user.getUserID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating users: " + e.getMessage(), e);
+        }
 
     }
 

@@ -10,11 +10,17 @@ import java.sql.SQLException;
 public class UserModel {
     private final UserManager userManager = new UserManager();
     private final ObservableList<User> allUsers = FXCollections.observableArrayList();
+    private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
 
     public ObservableList<User> getAllUsers() throws SQLException {
         allUsers.setAll(userManager.getAllUsers());
         return allUsers;
     }
+    public ObservableList<String> getAllRoleNames() throws SQLException {
+        allRoleNames.setAll(userManager.getAllRoles());
+        return allRoleNames;
+    }
+
     public void createNewUser(User user) throws SQLException {
         userManager.createNewUser(user);
         allUsers.add(user);

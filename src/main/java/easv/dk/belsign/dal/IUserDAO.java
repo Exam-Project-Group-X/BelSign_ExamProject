@@ -1,6 +1,7 @@
 package easv.dk.belsign.dal;
 
 import easv.dk.belsign.be.User;
+import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,6 +11,8 @@ public interface IUserDAO {
     List<User> getAllUsers() throws SQLException;
 
     void createNewUser(User user) throws SQLException;
+
+    ObservableList<String> getAllRoleNames() throws SQLException;
 
     void deleteUser(User user) throws SQLException;
 
