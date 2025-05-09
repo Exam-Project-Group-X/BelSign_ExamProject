@@ -57,7 +57,7 @@
         <AnchorPane style="-fx-background-color: #d1d1d1;">
 
             <!-- Close (X) button -->
-            <Button fx:id="closeBtn" style="-fx-font-size: 18px; -fx-background-color: transparent;" text="✕" AnchorPane.rightAnchor="15" AnchorPane.topAnchor="10" />
+            <Button fx:id="closeBtn" onAction="#onCloseBtnClick" style="-fx-font-size: 18px; -fx-background-color: transparent;" text="✕" AnchorPane.rightAnchor="15" AnchorPane.topAnchor="10" />
 
             <!-- Main image -->
             <StackPane fx:id="imageHolder" maxHeight="550" maxWidth="550" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40">

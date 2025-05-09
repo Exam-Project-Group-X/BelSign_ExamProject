@@ -1,16 +1,19 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -25,6 +28,8 @@ public class OrderCardController {
 
     private GridPane loadedPhotoGrid;
     private PhotoGridController photoGridController;
+    private Order order;
+
 
     @FXML
     public void initialize() {
@@ -39,6 +44,7 @@ public class OrderCardController {
     }
 
     public void setOrderData(Order order) {
+        this.order = order;
         orderNumberLabel.setText(order.getOrderNumber());
         descriptionLabel.setText(order.getProductDescription() == null ? "No description" : order.getProductDescription());
         createdAtLabel.setText(order.getCreatedAt() != null ? order.getCreatedAt().toString() : "Now");
@@ -78,5 +84,13 @@ public class OrderCardController {
 
     public void onPhotoGridClick(MouseEvent mouseEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.QA_PHOTO_REVIEW);
+
+        Pair<Parent, PhotoReviewController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
+        PhotoReviewController controller = pair.getValue();
+
+        controller.loadPhotosForOrder(order.getOrderID());
+        controller.setCaption("Order #" + order.getOrderNumber());
+
+
     }
 }
