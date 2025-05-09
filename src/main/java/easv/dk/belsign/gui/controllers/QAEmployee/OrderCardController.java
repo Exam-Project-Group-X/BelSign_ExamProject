@@ -8,11 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -83,13 +86,21 @@ public class OrderCardController {
     }
 
     public void onPhotoGridClick(MouseEvent mouseEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.QA_PHOTO_REVIEW);
-
-        Pair<Parent, PhotoReviewController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
+        // Load the FXML and get the correct controller
+        Pair<Parent, PhotoReviewController> pair =
+                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
+        Parent root = pair.getKey();
         PhotoReviewController controller = pair.getValue();
 
+        // Inject the order data
         controller.loadPhotosForOrder(order.getOrderID());
         controller.setCaption("Order #" + order.getOrderNumber());
+
+        Stage stage = new Stage();
+        stage.setTitle("Photo Review - " + order.getOrderNumber());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
 
 
     }
