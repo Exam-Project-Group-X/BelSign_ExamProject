@@ -6,30 +6,34 @@ public class User {
     private int userID;
     private String username;
     private String passwordHash;
+    private String accessCode;
+    private String fullName;
     private String email;
-    private String userRole;
-    private boolean active;
-
-    private String accessCode; // (optional for Operators)
-    private String fullName;   // (optional for additional info)
+    private int roleId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private boolean active;
+    private String roleName;
 
     // Default constructor
     public User() {
         this.active = true;
     }
 
-    // Constructor with main fields (for Admin, QA, Operator)
-    public User(String username, String email, String passwordHash, String userRole) {
+    public User(int userID, String username, String passwordHash, String accessCode, String fullName, String email, int roleId, Timestamp createdAt, Timestamp updatedAt, boolean active, String roleName) {
+        this.userID = userID;
         this.username = username;
-        this.email = email;
         this.passwordHash = passwordHash;
-        this.userRole = userRole;
-        this.active = true;
+        this.accessCode = accessCode;
+        this.fullName = fullName;
+        this.email = email;
+        this.roleId = roleId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.active = active;
+        this.roleName = roleName;
     }
 
-    // Getters and Setters
     public int getUserID() {
         return userID;
     }
@@ -54,30 +58,6 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public String getAccessCode() {
         return accessCode;
     }
@@ -94,6 +74,22 @@ public class User {
         this.fullName = fullName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -108,5 +104,26 @@ public class User {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    @Override
+    public String toString() {
+        return roleName + ',' + email + ',' + fullName;
     }
 }

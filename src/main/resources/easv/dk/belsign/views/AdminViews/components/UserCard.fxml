@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<GridPane prefHeight="27.0" prefWidth="552.0" styleClass="card" stylesheets="@../../styles/card.css"
+          xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="easv.dk.belsign.gui.controllers.Admin.UserCardController">
+    <columnConstraints>
+        <ColumnConstraints prefWidth="300.0"/>
+        <ColumnConstraints maxWidth="176.0" minWidth="138.0" prefWidth="145.0"/>
+        <ColumnConstraints maxWidth="214.0" minWidth="174.0" prefWidth="200.0"/>
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="103.0" minWidth="98.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+    </rowConstraints>
+    <children>
+        <Label fx:id="lblRole" alignment="CENTER" prefHeight="17.0" prefWidth="124.0" text="admin"
+               textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+        <Label fx:id="lblName" alignment="CENTER" prefHeight="17.0" prefWidth="152.0" text="Jane Doe"
+               textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+               GridPane.valignment="CENTER"/>
+        <Label fx:id="lblEmail" alignment="CENTER" prefHeight="17.0" prefWidth="244.0" text="svenderik1978@mail.com"
+               GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+        <HBox alignment="CENTER" prefHeight="27.0" prefWidth="62.0" GridPane.columnIndex="3"
+              GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <children>
+                <Button fx:id="btnEdit" onAction="#onClickEditUser" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <FontIcon iconColor="#009640" iconLiteral="bi-pencil-fill" iconSize="16"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnDelete" onAction="#onClickDeleteUser" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <FontIcon iconColor="#c00d0d" iconLiteral="bi-trash-fill" iconSize="18"/>
+                    </graphic>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</GridPane>

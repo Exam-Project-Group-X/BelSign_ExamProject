@@ -83,10 +83,10 @@ public class LoginController implements Initializable {
         }
         User user = userModel.authenticate(email, password);
         if (user != null) {
-            switch (user.getUserRole()) {
-                case "Admin" -> ViewManager.INSTANCE.showScene(FXMLPath.ADMIN_PANEL);
+            switch (user.getRoleName()) {
+                case "Admin" -> ViewManager.INSTANCE.showScene(FXMLPath.ADMIN_DASHBOARD);
                 case "QA Employee" -> ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
-                default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getUserRole());
+                default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getRoleName());
             }
         } else {
             ViewManager.INSTANCE.showError("Login failed", "Invalid email or password.");

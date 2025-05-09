@@ -1,0 +1,20 @@
+package easv.dk.belsign.dal;
+
+
+
+
+import easv.dk.belsign.be.User;
+import java.sql.SQLException;
+import java.util.List;
+
+public interface IUserDAO {
+
+    // Define the methods that will be implemented in the UserDAO class
+
+    List<User> getAllUsers() throws SQLException;
+
+    void createNewUser(User user) throws SQLException;
+    void deleteUser(User user) throws SQLException;
+    void updateUser(User user) throws SQLException;
+
+}

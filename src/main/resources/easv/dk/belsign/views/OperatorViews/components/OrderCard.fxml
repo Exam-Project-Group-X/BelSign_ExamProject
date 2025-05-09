@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="cardRoot" hgap="10" prefHeight="163.0" prefWidth="1093.0" styleClass="op-card" stylesheets="@../../styles/operator.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.components.OperatorOrderCardController">
+<GridPane fx:id="cardRoot" hgap="10" prefHeight="163.0" prefWidth="1093.0" styleClass="op-card" stylesheets="@../../styles/card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.components.OperatorOrderCardController">
 
     <columnConstraints>
         <ColumnConstraints prefWidth="200.0" />

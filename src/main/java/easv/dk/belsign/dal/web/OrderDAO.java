@@ -61,7 +61,7 @@ public class OrderDAO {
             }
             return orders;
     }
-
+/// TODO change OrderStatus to "pending" or "under review"
     // Get all 'New' Orders from the database
     public ObservableList<Order> getAllNewOrders() {
         ObservableList<Order> orderList = FXCollections.observableArrayList();

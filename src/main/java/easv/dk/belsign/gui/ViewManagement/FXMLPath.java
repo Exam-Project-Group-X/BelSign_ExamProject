@@ -17,10 +17,14 @@ public class FXMLPath {
     public static final String CAMERA_VIEW = "/easv/dk/belsign/views/OperatorViews/CameraView.fxml";
 
 
+    /// ADMIN Paths
+    public static final String ADMIN_DASHBOARD = "/easv/dk/belsign/views/AdminViews/UserManagementView.fxml";
+    public static final String USER_CARD = "/easv/dk/belsign/views/AdminViews/components/UserCard.fxml";
+    public static final String USER_EDITOR = "/easv/dk/belsign/views/AdminViews/UserEditorView.fxml";
 
     /// LOGIN PAths
-    public static final String ADMIN_PANEL = "/easv/dk/belsign/views/AdminViews/UserManagementView.fxml";
-    public static final String PHOTO_REVIEW_POPUP = "/easv/dk/belsign/views/popups/PhotoReviewPopup.fxml";
+
+
 
     //TODO
     //
