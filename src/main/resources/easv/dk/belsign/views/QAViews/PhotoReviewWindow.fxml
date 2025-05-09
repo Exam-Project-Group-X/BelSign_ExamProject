@@ -65,6 +65,12 @@
                <image>
                   <Image url="@../../images/photos/pp1.jpg" />
                </image></ImageView>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Approve" />
+                  <Button mnemonicParsing="false" text="Reject" />
+               </children>
+            </HBox>
             </StackPane>
 
             <!-- Previous / Next arrows -->

@@ -2,6 +2,7 @@ package easv.dk.belsign.dal.web;
 
 
 import easv.dk.belsign.dal.db.DBConnection;
+import easv.dk.belsign.exceptions.OrderException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,4 +57,39 @@ public class ProductPhotosDAO {
         }
     }
 
+    public void approvePhoto(int orderId, String angle) throws SQLException {
+
+        String sql = "UPDATE ProductPhotos SET Status = 'Approved' WHERE OrderID = ? AND PhotoAngle = ?";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, orderId);
+            stmt.setString(2, angle);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+        }
+
+    }
+
+    public void rejectPhoto(int orderId, String angle) throws SQLException {
+
+        String sql = "UPDATE ProductPhotos SET Status = 'Rejected' WHERE OrderID = ? AND PhotoAngle = ?";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, orderId);
+            stmt.setString(2, angle);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+        }
+
+    }
 }
+
+
