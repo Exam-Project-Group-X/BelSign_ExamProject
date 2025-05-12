@@ -16,16 +16,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-/*
-🧠 ViewManager Reminder:
-
-- To switch screens: ViewManager.INSTANCE.showScene(FXMLPath.XYZ);
-- To open a popup:   ViewManager.INSTANCE.showStage(FXMLPath.XYZ, "Popup Title", true);
-- Add new FXML paths inside: FXMLPath.java
-- Never load FXML manually (no FXMLLoader.load(...)).
-- All FXMLs must be inside: /src/main/resources/easv/dk/belsign/views/
-*/
-
 public class LoginController implements Initializable {
     @FXML
     private TextField loginEmail;
@@ -43,7 +33,6 @@ public class LoginController implements Initializable {
     private boolean passwordVisible = false;
 
     private final UserModel userModel = new UserModel();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,13 +69,13 @@ public class LoginController implements Initializable {
 
         // Validate email format
         if (email.isEmpty() || !isValidEmail(email)) {
-            ViewManager.INSTANCE.showError("Login failed", "Invalid email format.");
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email format");
             return;
         }
 
         // Check if password is empty
         if (password.isEmpty()) {
-            ViewManager.INSTANCE.showError("Login failed", "Password cannot be empty.");
+            ViewManager.INSTANCE.showError("Login failed", "Password cannot be empty");
             return;
         }
 
@@ -98,7 +87,7 @@ public class LoginController implements Initializable {
                 default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getRoleName());
             }
         } else {
-            ViewManager.INSTANCE.showError("Login failed", "Invalid email or password.");
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email or password");
         }
     }
 
@@ -113,5 +102,4 @@ public class LoginController implements Initializable {
 
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
-
 }

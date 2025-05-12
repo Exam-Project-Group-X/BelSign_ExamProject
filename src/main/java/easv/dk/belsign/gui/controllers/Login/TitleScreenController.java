@@ -35,8 +35,6 @@ public class TitleScreenController {
 
     public void handleLineMousePressed(MouseEvent mouseEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
-
-        System.out.println("Swipe detected! Navigating to QA Employee View.");
     }
 
     public void handleLineMouseReleased(MouseEvent mouseEvent) {
