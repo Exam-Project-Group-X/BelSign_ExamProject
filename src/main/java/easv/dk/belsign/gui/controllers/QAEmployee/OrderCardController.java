@@ -3,7 +3,7 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController;
 import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.event.ActionEvent;
@@ -91,11 +91,25 @@ public class OrderCardController {
         photoGridPlaceholder.getChildren().add(loadedPhotoGrid);
     }
 
-    public void onClickGenReportBtn(ActionEvent actionEvent) {
+    public void onClickGenReportBtn(ActionEvent actionEvent) throws IOException {
 
 
-        ViewManager.INSTANCE.showScene(FXMLPath.QC_REPORT);
+        // Load the view + controller using FXMLManager
+        Pair<Parent, QCReportController> pair =
+                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
 
+        Parent root = pair.getKey();
+        QCReportController controller = pair.getValue();
+
+        // Inject the selected order
+        controller.setSelectedOrder(order);
+
+        // Show the preview window
+        Stage stage = new Stage();
+        stage.setTitle("QC Report Preview - Order #" + order.getOrderNumber());
+        stage.initModality(Modality.APPLICATION_MODAL); // Optional
+        stage.setScene(new Scene(root));
+        stage.show();
 
 
     }

@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 public class QCReport {
     private int ReportID;
     private String OrderID; // This will hold the Order Number (e.g. "45-00000-000000")
-    private String ReportStatus; // "Sent", "Archived", etc.
     private String ReportFilePath; // Path to the file on the server
     private String SignedByUserID; // This will hold the name (or signature) of the QA Employee
     private String CustomerEmail; // Customer's email for sending the report (OPTIONAL)
@@ -31,14 +30,6 @@ public class QCReport {
 
     public void setOrderID(String orderID) {
         OrderID = orderID;
-    }
-
-    public String getReportStatus() {
-        return ReportStatus;
-    }
-
-    public void setReportStatus(String reportStatus) {
-        ReportStatus = reportStatus;
     }
 
     public String getReportFilePath() {
