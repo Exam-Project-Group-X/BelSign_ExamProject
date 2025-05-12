@@ -14,6 +14,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 /*
 🧠 ViewManager Reminder:
@@ -77,10 +78,18 @@ public class LoginController implements Initializable {
         String email = loginEmail.getText().trim();
         String password = passwordVisible ? visiblePassword.getText() : loginPassword.getText();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            ViewManager.INSTANCE.showError("Login failed", "Email and password cannot be empty.");
+        // Validate email format
+        if (email.isEmpty() || !isValidEmail(email)) {
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email format.");
             return;
         }
+
+        // Check if password is empty
+        if (password.isEmpty()) {
+            ViewManager.INSTANCE.showError("Login failed", "Password cannot be empty.");
+            return;
+        }
+
         User user = userModel.authenticate(email, password);
         if (user != null) {
             switch (user.getRoleName()) {
@@ -91,6 +100,13 @@ public class LoginController implements Initializable {
         } else {
             ViewManager.INSTANCE.showError("Login failed", "Invalid email or password.");
         }
+    }
+
+    // Helper method to validate email format using a regular expression
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
