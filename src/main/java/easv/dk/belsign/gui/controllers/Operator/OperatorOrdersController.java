@@ -25,7 +25,7 @@ public class OperatorOrdersController {
     @FXML
     public void initialize() {
         try {
-            for (Order order : orderManager.getAllNewOrders()) {
+            for (Order order : orderManager.getAllPendingOrders()) {
                 addOrderCard(order);
             }
         } catch (Exception e) {
@@ -65,11 +65,7 @@ public class OperatorOrdersController {
         }
     }
 
-
-
     public void OnClickLogoutButton(ActionEvent actionEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
-
-
 }

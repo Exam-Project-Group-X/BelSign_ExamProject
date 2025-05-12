@@ -6,10 +6,10 @@ public class Order {
     private int OrderID;
     private String OrderNumber; // Unique identifier for the order (e.g. "45-00000-000000")
     private String ProductDescription;
-    private String OrderStatus; // (e.g. "New", "Under Review", "Approved", "Rejected")
+    private String OrderStatus; // ("Pending" or "Complete")
     private Timestamp CreatedAt;
     private Timestamp UpdatedAt;
-    private String AssignedToUserID; // This will hold the name of the QA Employee who created the order
+    private String AssignedToUserID; // This will hold the name of the Operator
 
     // Default constructor
     public Order() {
