@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="page1" prefHeight="842" prefWidth="595" styleClass="page" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- Logo -->
+        <ImageView fitHeight="69.0" fitWidth="69.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../images/photos/logo.png" />
+            </image>
+        </ImageView>
+
+        <!-- Title -->
+        <Label alignment="CENTER" layoutX="0" layoutY="60" prefWidth="595" style="-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#003f73;" text="Quality Control (QC) Report" />
+
+        <!-- Separator -->
+        <Separator layoutX="40" layoutY="100" prefWidth="515" />
+
+        <!-- Report fields -->
+        <VBox layoutX="40" layoutY="130" spacing="18">
+            <children>
+                <HBox spacing="10">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="QC Report nr.:" />
+                        <Label fx:id="lblReportNo" text="lblReportNo" />
+                    </children>
+                </HBox>
+                <HBox spacing="10">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="Date:" />
+                        <Label fx:id="lblDate" text="lblDate" />
+                    </children>
+                </HBox>
+                <HBox spacing="10">
+                    <children>
+                        <Label prefWidth="175.0" style="-fx-font-weight:bold;" text="Client: [email (if necessary)]" />
+                        <Label fx:id="lblClient" text="lblClient" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <Separator layoutX="40" layoutY="260" prefWidth="515" />
+
+        <!-- Order info -->
+        <VBox layoutX="40" layoutY="290" spacing="18">
+            <children>
+                <HBox spacing="10">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="Order nr.:" />
+                        <Label fx:id="lblOrderNo" text="lblOrderNo" />
+                    </children>
+                </HBox>
+                <HBox spacing="10">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="Operator:" />
+                        <Label fx:id="lblOperator" text="lblOperator" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Footer text -->
+        <Label alignment="CENTER" layoutX="40" layoutY="400" prefWidth="515" style="-fx-border-color: #003f73; -fx-border-width: 1 0 1 0; -fx-padding: 10 0 10 0; -fx-font-weight: bold;" text="Operator's Photos on Page 2" />
+
+        <Label fx:id="lblCreateTime1" layoutX="40" layoutY="770" text="This PDF was created at dd-MM-yy, HH:mm" />
+        <Label alignment="CENTER" layoutX="0" layoutY="810" prefWidth="595" text="Page 1 of [X]" />
+
+        <!-- Signature grid -->
+        <GridPane layoutX="41.0" layoutY="472.0" prefHeight="253.0" prefWidth="510.0" vgap="20.0">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="286.0" />
+                <ColumnConstraints prefWidth="224.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="140.0" />
+                <RowConstraints prefHeight="140.0" />
+            </rowConstraints>
+            <children>
+                <VBox alignment="TOP_LEFT" spacing="4">
+                    <Label style="-fx-font-weight:bold;" text="Operator's Signature: (digital)" />
+                </VBox>
+                <VBox GridPane.columnIndex="1">
+                    <Label style="-fx-font-weight:bold;" text="Date:" />
+                </VBox>
+                <VBox GridPane.rowIndex="1">
+                    <Label style="-fx-font-weight:bold;" text="QA Employee: (digital)" />
+                </VBox>
+                <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label style="-fx-font-weight:bold;" text="Date:" />
+                </VBox>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

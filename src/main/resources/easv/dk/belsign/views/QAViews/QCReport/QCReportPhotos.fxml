@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="photoPage" prefHeight="842" prefWidth="595" styleClass="page"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoPageController">
+    <children>
+        <!-- Header -->
+        <ImageView layoutX="40" layoutY="20" fitHeight="69" fitWidth="69" preserveRatio="true">
+            <image>
+                <Image url="@../../../images/photos/logo.png"/>
+            </image>
+        </ImageView>
+        <Label layoutX="0" layoutY="60" prefWidth="595" alignment="CENTER"
+               style="-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#003f73;" text="Quality Control (QC) Report"/>
+        <Separator layoutX="40" layoutY="100" prefWidth="515"/>
+
+        <!-- Section Title -->
+        <Label layoutX="40" layoutY="130" style="-fx-font-weight:bold;" text="Operator's Photos (Total number of photos):"/>
+
+        <!-- 2x3 Grid of Photos -->
+        <GridPane fx:id="photoGrid" layoutX="35" layoutY="174" hgap="20" vgap="20">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="150"/>
+                <ColumnConstraints prefWidth="150"/>
+                <ColumnConstraints prefWidth="150"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="123"/>
+                <RowConstraints prefHeight="123"/>
+            </rowConstraints>
+
+            <!-- Row 1 -->
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp1.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Front"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp2.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Back"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp3.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Top"/>
+            </VBox>
+
+            <!-- Row 2 -->
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp7.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Left"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp9.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Right"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <ImageView fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/photos/pp10.jpg"/>
+                    </image>
+                </ImageView>
+                <Label style="-fx-font-weight: bold;" text="Inner"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Footer -->
+        <Label fx:id="lblCreateTime" layoutX="40" layoutY="770" text="This PDF was created at dd‑MM‑yy, HH:mm"/>
+        <Label fx:id="lblPageNumber" layoutX="0" layoutY="810" prefWidth="595" alignment="CENTER"/>
+    </children>
+</AnchorPane>
