@@ -78,14 +78,14 @@
                 <children>
                     <Label styleClass="col-title" text="ORDER ID" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                 </children>
-            <rowConstraints>
-               <RowConstraints />
-            </rowConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                </rowConstraints>
             </GridPane>
 
-        <!-- CARD LIST -->
-        <VBox fx:id="cardContainer" spacing="5">
-        </VBox>
+            <!-- CARD LIST -->
+            <VBox fx:id="cardContainer" spacing="5">
+            </VBox>
 
 
             <!-- Pagination -->

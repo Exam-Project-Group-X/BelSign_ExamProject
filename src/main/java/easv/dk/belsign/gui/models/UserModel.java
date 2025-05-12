@@ -1,20 +1,33 @@
 package easv.dk.belsign.gui.models;
-
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.bll.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.SQLException;
-
 public class UserModel {
+
     private final UserManager userManager = new UserManager();
     private final ObservableList<User> allUsers = FXCollections.observableArrayList();
+    private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
+    private User loggedInUser;
 
-    public ObservableList<User> getAllUsers() throws SQLException {
-        allUsers.setAll(userManager.getAllUsers());
+    public User authenticate(String email, String password) {
+        this.loggedInUser = userManager.authenticateAndGetUser(email, password);
+        return loggedInUser;
+    }
+
+    public ObservableList<String> getAllRoleNames() throws SQLException {
+
+        allRoleNames.setAll(userManager.getAllRoles());
+        return allRoleNames;
+    }
+
+
+
+    public ObservableList<User> getAllUsers() throws SQLException {allUsers.setAll(userManager.getAllUsers());
         return allUsers;
     }
+
     public void createNewUser(User user) throws SQLException {
         userManager.createNewUser(user);
         allUsers.add(user);
@@ -29,6 +42,6 @@ public class UserModel {
         if (index != -1) {
             allUsers.set(index, user);
         }
-    }
+}
 
 }

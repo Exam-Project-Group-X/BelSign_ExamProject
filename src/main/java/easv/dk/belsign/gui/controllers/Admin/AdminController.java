@@ -3,6 +3,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.dal.web.UserDAO;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,8 +29,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-
 public class AdminController implements Initializable {
+
     @FXML
     private VBox cardContainer;
 
@@ -73,21 +74,27 @@ public class AdminController implements Initializable {
             //System.out.println("Loaded user card for: " + user.getFullName());
             UserCardController userCardController = loader.getController();
             userCardController.setUserData(user);
+            userCardController.setParentController(this);
             cardContainer.getChildren().add(userCard);
         } catch (IOException e) {
             //System.err.println("Failed to load user card for: " + user.getFullName());
             e.printStackTrace();
         }
     }
-
+// TODO - warning: This method is reused in a lot of controllers
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-        Platform.exit();
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
 
     public void onClickCreateUserBtn(ActionEvent actionEvent) {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_EDITOR));
             Parent root = loader.load();
+            // Close current stage
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.close();
+            // Open new stage with USER_EDITOR
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -97,4 +104,5 @@ public class AdminController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

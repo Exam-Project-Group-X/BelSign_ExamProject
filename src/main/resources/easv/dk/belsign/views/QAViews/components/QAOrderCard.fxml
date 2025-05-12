@@ -26,7 +26,7 @@
     <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-    <AnchorPane fx:id="photoGridPlaceholder" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="4" />
+    <AnchorPane fx:id="photoGridPlaceholder" onMouseClicked="#onPhotoGridClick" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="4" />
     <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" text="New" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <!-- Update date -->
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />

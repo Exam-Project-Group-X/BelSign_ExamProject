@@ -1,17 +1,19 @@
 package easv.dk.belsign.dal.web;
-
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.dal.IUserDAO;
 import easv.dk.belsign.dal.db.DBConnection;
+import easv.dk.belsign.utils.PasswordUtils;
+import easv.dk.belsign.dal.IUserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 public class UserDAO implements IUserDAO {
     private DBConnection con = new DBConnection();
+
     public List<User> getAllUsers() throws SQLException {
         List<User> allUsers = new ArrayList<>();
         String sql = """
@@ -22,7 +24,7 @@ public class UserDAO implements IUserDAO {
         """;
         try (Connection connection = con.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
-             ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("UserID");
                 String userName = rs.getString("Username");
@@ -48,47 +50,105 @@ public class UserDAO implements IUserDAO {
         return allUsers;
     }
 
+
     @Override
+
     public void createNewUser(User user) throws SQLException {
         String sqlUser = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
-        String sqlRole = "INSERT INTO UserRoles (RoleID, RoleName) VALUES (?, ?)";
-        Connection connection = con.getConnection();
-        try {
-            connection.setAutoCommit(false);
-            try (PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
-                psUser.setString(1, user.getFullName());
-                psUser.setString(2, user.getEmail());
-                psUser.setString(3, user.getUsername());
-                psUser.setString(4, user.getPasswordHash());
-                psUser.setInt(5, user.getRoleId());
-                psUser.executeUpdate();
-            }
-            try (PreparedStatement psRole = connection.prepareStatement(sqlRole)) {
-                psRole.setInt(1, user.getRoleId());
-                psRole.setString(2, user.getRoleName());
-                psRole.executeUpdate();
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            e.printStackTrace();
-            throw e;
-        } finally {
-            connection.setAutoCommit(true);
-            connection.close();
+        try (Connection connection = con.getConnection();
+             PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
+            psUser.setString(1, user.getFullName());
+            psUser.setString(2, user.getEmail());
+            psUser.setString(3, user.getUsername());
+            psUser.setString(4, user.getPasswordHash());
+            psUser.setInt(5, user.getRoleId());
+            psUser.executeUpdate();
+        }catch (SQLException e) {
+            throw new RuntimeException("Error adding users to the database: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public void deleteUser(User user) throws SQLException {
-
+    public ObservableList<String> getAllRoleNames() throws SQLException {
+        List<String> roleList = new ArrayList<>();
+        String sql = "SELECT DISTINCT RoleName FROM UserRoles";
+        try (Connection connection = con.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                roleList.add(rs.getString("RoleName"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return FXCollections.observableArrayList(roleList);
     }
 
     @Override
+    public void deleteUser(User user) throws SQLException {
+        String sql = "DELETE FROM users where UserID = ?";
+        try (Connection connection = con.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, user.getUserID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting users and its dependencies: " + e.getMessage(), e);
+        }
+    }
+
+
+    @Override
     public void updateUser(User user) throws SQLException {
+        String sql = "UPDATE Users SET FullName = ?, Email = ?, Username = ?, PasswordHash = ?, RoleID = ? WHERE UserID = ?";
+        try (Connection connection = con.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPasswordHash());
+            ps.setInt(5, user.getRoleId());
+            ps.setInt(6, user.getUserID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating users: " + e.getMessage(), e);
+        }
 
     }
 
 
+    public User authenticateAndGetUser(String email, String rawPassword) {
+        String sql = """
+        SELECT u.*, r.RoleName
+        FROM Users u
+        JOIN UserRoles r ON u.RoleID = r.RoleID
+        WHERE u.Email = ? AND u.Active = 1
+        """;
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String storedHash = rs.getString("PasswordHash");
+                if (PasswordUtils.checkPassword(rawPassword, storedHash)) {
+                    User user = new User();
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPasswordHash(storedHash);
+                    user.setRoleName(rs.getString("RoleName"));
+                    user.setAccessCode(rs.getString("AccessCode"));
+                    user.setFullName(rs.getString("FullName"));
+                    user.setActive(rs.getBoolean("Active"));
+                    user.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    user.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

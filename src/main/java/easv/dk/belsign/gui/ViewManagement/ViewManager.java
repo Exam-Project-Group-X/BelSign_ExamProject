@@ -1,5 +1,7 @@
 package easv.dk.belsign.gui.ViewManagement;
 
+
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 
 
@@ -45,6 +47,17 @@ import javafx.scene.layout.BorderPane;
                 sceneManager.switchDashboard(fxml, title);
             }
         }
+
+        public void showError(String title, String message) {
+
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
+
         public void showPopup(String fxmlFile, String title){
             stageManager.showPopup(fxmlFile, title);
         }

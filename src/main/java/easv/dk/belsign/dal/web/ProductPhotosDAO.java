@@ -2,6 +2,7 @@ package easv.dk.belsign.dal.web;
 
 
 import easv.dk.belsign.dal.db.DBConnection;
+import easv.dk.belsign.exceptions.OrderException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,46 +57,39 @@ public class ProductPhotosDAO {
         }
     }
 
+    public void approvePhoto(int orderId, String angle) throws SQLException {
 
-    public void insertTestPhoto(String filePath, int orderId, String angle) throws Exception {
-        byte[] bytes;
-        try {
-            bytes = Files.readAllBytes(Path.of(filePath));
-        } catch (IOException e) {
-            System.err.println("❌ Failed to load: " + filePath);
-            e.printStackTrace();
-            return; // Exit early if reading failed
-        }
-
-        String sql = "INSERT INTO ProductPhotos (OrderID, PhotoAngle, Status, PhotoData) VALUES (?, ?, ?, ?)";
+        String sql = "UPDATE ProductPhotos SET Status = 'Approved' WHERE OrderID = ? AND PhotoAngle = ?";
 
         try (Connection conn = con.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, orderId);
-            ps.setString(2, angle);
-            ps.setString(3, "Pending");
-            ps.setBytes(4, bytes);
-            ps.executeUpdate();
-            System.out.println("✅ Inserted photo for " + angle + orderId);
+            stmt.setInt(1, orderId);
+            stmt.setString(2, angle);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
-    }
-
-    public void insertAllTestPhotos() throws Exception {
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/bulbasaur.jpg", 1, "FRONT");
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/charmander.jpg", 1, "BACK");
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/squirtle.png", 1, "LEFT");
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/pikachu.jpg", 1, "RIGHT");
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/eevee.jpg", 1, "TOP");
-//        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/snorlax.png", 1, "BOTTOM");
-
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test1.jpeg", 2, "FRONT");
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test2.jpeg", 2, "BACK");
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test3.jpeg", 2, "LEFT");
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test4.jpeg", 2, "RIGHT");
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test5.jpeg", 2, "TOP");
-        insertTestPhoto("src/main/resources/easv/dk/belsign/testphotos/test6.jpeg", 2, "BOTTOM");
 
     }
 
+    public void rejectPhoto(int orderId, String angle) throws SQLException {
+
+        String sql = "UPDATE ProductPhotos SET Status = 'Rejected' WHERE OrderID = ? AND PhotoAngle = ?";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, orderId);
+            stmt.setString(2, angle);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("X!!!  Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+        }
+
+    }
 }
+
+

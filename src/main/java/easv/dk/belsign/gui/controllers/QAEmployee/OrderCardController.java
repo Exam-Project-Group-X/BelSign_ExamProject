@@ -1,14 +1,24 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import easv.dk.belsign.gui.models.PhotosModel;
+import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -23,6 +33,15 @@ public class OrderCardController {
 
     private GridPane loadedPhotoGrid;
     private PhotoGridController photoGridController;
+    private Order order;
+
+
+    private PhotosModel photosModel;
+
+    public void setPhotosModel(PhotosModel model) {
+        this.photosModel = model;
+    }
+
 
     @FXML
     public void initialize() {
@@ -37,6 +56,7 @@ public class OrderCardController {
     }
 
     public void setOrderData(Order order) {
+        this.order = order;
         orderNumberLabel.setText(order.getOrderNumber());
         descriptionLabel.setText(order.getProductDescription() == null ? "No description" : order.getProductDescription());
         createdAtLabel.setText(order.getCreatedAt() != null ? order.getCreatedAt().toString() : "Now");
@@ -72,5 +92,40 @@ public class OrderCardController {
     }
 
     public void onClickGenReportBtn(ActionEvent actionEvent) {
+
+
+        ViewManager.INSTANCE.showScene(FXMLPath.QC_REPORT);
+
+
+
+    }
+
+    public void onPhotoGridClick(MouseEvent mouseEvent) {
+        // Load the FXML and get the correct controller
+        Pair<Parent, PhotoReviewController> pair =
+                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
+        Parent root = pair.getKey();
+        PhotoReviewController controller = pair.getValue();
+
+
+/// refactor needed here also
+        controller.setModel(new PhotosModel());
+        controller.setQAEmployeeModel(new QAEmployeeModel());
+
+
+        // ✅ Inject order data
+        controller.setOrderId(order.getOrderID());
+        controller.setCaption("Order #" + order.getOrderNumber());
+        controller.loadPhotosForOrder(order.getOrderID());
+
+
+
+        Stage stage = new Stage();
+        stage.setTitle("Photo Review - " + order.getOrderNumber());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+
+
     }
 }

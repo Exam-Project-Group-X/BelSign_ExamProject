@@ -36,6 +36,8 @@ ViewManager.INSTANCE.setStageManager(stageManager);
     ViewManager.INSTANCE.showStage(FXMLPath.LOGIN, "BelSign - Login", false);
 }
 
+
+
 4. Switch to Operator Orders after Login
 
 Inside your LoginController (after the user successfully logs in), use this code:
