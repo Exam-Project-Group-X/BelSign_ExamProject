@@ -23,7 +23,7 @@ public class TitleScreenController {
     private void animateRectangle() {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), swipeRect);
         transition.setFromY(0);
-        transition.setToY(-20);
+        transition.setToY(-3);
         transition.setCycleCount(TranslateTransition.INDEFINITE);
         transition.setAutoReverse(true);
         transition.play();
@@ -31,11 +31,6 @@ public class TitleScreenController {
 
     public void onClickScanBtn(ActionEvent actionEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.OPERATOR_DASHBOARD);
-        System.out.println("scane btn detected! Navigating to operator View.");
-    }
-
-    public void swipeToLogin(SwipeEvent swipeEvent) {
-
     }
 
     public void handleLineMousePressed(MouseEvent mouseEvent) {
