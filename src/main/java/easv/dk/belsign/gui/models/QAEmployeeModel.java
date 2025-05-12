@@ -11,9 +11,6 @@ public class QAEmployeeModel {
 
     private final OrderManager orderManager = new OrderManager();
 
-    public int createOrder(Order order) throws Exception {
-        return orderManager.createOrder(order);
-    }
 
     public List<Order> getAllOrders() throws Exception {
         return orderManager.getAllOrders();
