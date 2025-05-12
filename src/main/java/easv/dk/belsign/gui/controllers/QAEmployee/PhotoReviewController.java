@@ -3,6 +3,7 @@
     import easv.dk.belsign.gui.ViewManagement.FXMLPath;
     import easv.dk.belsign.gui.ViewManagement.ViewManager;
     import easv.dk.belsign.gui.models.PhotosModel;
+    import easv.dk.belsign.gui.models.QAEmployeeModel;
     import javafx.event.ActionEvent;
 
     import easv.dk.belsign.dal.web.ProductPhotosDAO;
@@ -12,6 +13,7 @@
     import javafx.scene.image.Image;
     import javafx.scene.image.ImageView;
     import javafx.scene.layout.HBox;
+    import javafx.stage.Stage;
 
     import java.io.ByteArrayInputStream;
     import java.sql.SQLException;
@@ -35,15 +37,22 @@
         private TextField captionField;
 
         private PhotosModel photosModel;
+        private QAEmployeeModel qamodel;
         private int currentOrderId;
         private String currentAngle;
+
 
         private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
         private final List<Image> loadedImages = new ArrayList<>();
 
         public void setModel(PhotosModel photosModel) {
             this.photosModel = photosModel;
+
         }
+        public void setQAEmployeeModel(QAEmployeeModel model) {
+            this.qamodel = model;
+        }
+
         public void setOrderId(int orderId) {
             this.currentOrderId = orderId;
         }
@@ -125,6 +134,19 @@
                 e.printStackTrace();
             }
 
+
+        }
+
+        public void OnClickFinishButton(ActionEvent actionEvent) {
+
+            try {
+                qamodel.setOrderToCompleted(currentOrderId);
+                /// todo refactor
+                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                stage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
     }

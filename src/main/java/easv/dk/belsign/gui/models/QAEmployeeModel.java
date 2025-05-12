@@ -18,4 +18,9 @@ public class QAEmployeeModel {
     public List<Order> getAllOrders() throws Exception {
         return orderManager.getAllOrders();
     }
-}
+
+    public void setOrderToCompleted(int orderId) throws Exception {
+        orderManager.updateOrderToComplete(orderId);
+    }
+
+    }

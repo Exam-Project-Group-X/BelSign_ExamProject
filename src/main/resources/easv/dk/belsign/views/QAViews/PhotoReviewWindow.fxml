@@ -69,6 +69,7 @@
                <children>
                   <Button fx:id="ApproveBtn" mnemonicParsing="false" onAction="#ApprovePhoto" text="Approve" />
                   <Button fx:id="RejectBtn" mnemonicParsing="false" onAction="#RejectPhoto" text="Reject" />
+                  <Button fx:id="finishbtn" mnemonicParsing="false" onAction="#OnClickFinishButton" text="Finish" />
                </children>
             </HBox>
             </StackPane>

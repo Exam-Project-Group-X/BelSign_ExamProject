@@ -26,4 +26,9 @@ public class OrderManager {
         orderDAO.updateOrderStatusToPending(order.getOrderID());
     }
 
+    public void updateOrderToComplete(int orderId) {
+        orderDAO.updateOrderStatusToComplete(orderId);
+    }
+
+
 }

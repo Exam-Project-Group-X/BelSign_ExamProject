@@ -8,12 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,12 +34,12 @@ public class QAEmployeeController {
     private int pageCount  = 1;
     private List<Order> orders;
 
-    private final QAEmployeeModel model = new QAEmployeeModel();
+    private final QAEmployeeModel qamodel = new QAEmployeeModel();
     @FXML
     public void initialize() {
         try {
             // Get all orders from the QAEmployeeModel
-            orders = model.getAllOrders();
+            orders = qamodel.getAllOrders();
             pageCount = (int)Math.ceil((double)orders.size() / PAGE_SIZE);
             loadPage(currentPage);
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.PhotosModel;
+import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -101,8 +102,10 @@ public class OrderCardController {
         PhotoReviewController controller = pair.getValue();
 
 
-
+/// refactor needed here also
         controller.setModel(new PhotosModel());
+        controller.setQAEmployeeModel(new QAEmployeeModel());
+
 
         // ✅ Inject order data
         controller.setOrderId(order.getOrderID());
