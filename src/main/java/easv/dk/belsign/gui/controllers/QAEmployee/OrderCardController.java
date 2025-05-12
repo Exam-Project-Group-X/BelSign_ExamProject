@@ -92,6 +92,12 @@ public class OrderCardController {
     }
 
     public void onClickGenReportBtn(ActionEvent actionEvent) {
+
+
+        ViewManager.INSTANCE.showScene(FXMLPath.QC_REPORT);
+
+
+
     }
 
     public void onPhotoGridClick(MouseEvent mouseEvent) {

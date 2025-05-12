@@ -54,7 +54,7 @@ public class OperatorOrdersController {
             Parent root = loader.load();
 
             CameraController controller = loader.getController();
-            controller.setSelectedOrder(selectedOrder); // ✅ Inject the order here
+            controller.setSelectedOrder(selectedOrder);
 
             // Replace the scene manually
             ViewManager.INSTANCE.getSceneManager().getCurrentStage().setScene(new Scene(root));
