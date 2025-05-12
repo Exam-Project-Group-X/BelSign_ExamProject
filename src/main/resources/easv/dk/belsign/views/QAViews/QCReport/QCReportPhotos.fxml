@@ -96,28 +96,28 @@
         <!-- Footer -->
         <Label fx:id="lblCreateTime" layoutX="40" layoutY="770" text="This PDF was created at dd‑MM‑yy, HH:mm" />
         <Label fx:id="lblPageNumber" alignment="CENTER" layoutX="0" layoutY="810" prefWidth="595" />
-      <GridPane layoutX="51.0" layoutY="482.0" prefHeight="139.0" prefWidth="510.0" vgap="20.0">
-         <columnConstraints>
-            <ColumnConstraints prefWidth="286.0" />
-            <ColumnConstraints prefWidth="224.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints prefHeight="140.0" />
-         </rowConstraints>
-         <children>
-            <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;">
-               <children>
-                  <Label style="-fx-font-weight:bold;" text="QA Employee: (digital)" />
-                  <Label fx:id="lblQaSign" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
-               </children>
-            </VBox>
-            <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;" GridPane.columnIndex="1">
-               <children>
-                  <Label style="-fx-font-weight:bold;" text="Date:" />
-                  <Label fx:id="lblQaSignDate" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
-               </children>
-            </VBox>
-         </children>
-      </GridPane>
+        <GridPane layoutX="51.0" layoutY="482.0" prefHeight="139.0" prefWidth="510.0" vgap="20.0">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="286.0" />
+                <ColumnConstraints prefWidth="224.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="140.0" />
+            </rowConstraints>
+            <children>
+                <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="QA Employee: (digital)" />
+                        <Label fx:id="lblQaSign" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
+                    </children>
+                </VBox>
+                <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;" GridPane.columnIndex="1">
+                    <children>
+                        <Label style="-fx-font-weight:bold;" text="Date:" />
+                        <Label fx:id="lblQaSignDate" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
     </children>
 </AnchorPane>
