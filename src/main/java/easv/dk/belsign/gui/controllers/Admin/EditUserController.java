@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,7 +84,7 @@ public class EditUserController implements Initializable {
     }
 
     public void onClickContinueBtn(ActionEvent actionEvent) {
-        System.out.println("EditUserController.onClickContinueBtn");
+        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
 
         String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
@@ -91,12 +93,12 @@ public class EditUserController implements Initializable {
         String roleName = roleField.getText();
 
         if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || (user == null && rawPassword.isEmpty())) {
-            System.out.println("Fail to process user because one or more fields are empty");
+            AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
             return;
         }
 
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            System.out.println("Invalid email format.");
+            AlertUtil.showErrorNotification(owner, "Invalid Email", "Please enter a valid email address.");
             return;
         }
 
@@ -105,7 +107,7 @@ public class EditUserController implements Initializable {
             case "QA Employee" -> 2;
             case "Operator" -> 3;
             default -> {
-                System.err.println("Unknown role.");
+                AlertUtil.showErrorNotification(owner, "Unknown Role", "Invalid role selected.");
                 yield -1;
             }
         };
@@ -121,7 +123,7 @@ public class EditUserController implements Initializable {
                         user.getUserID(),
                         username,
                         finalPassword,
-                        "", // Salt (if any)
+                        "",
                         fullName,
                         email,
                         roleId,
@@ -132,9 +134,11 @@ public class EditUserController implements Initializable {
                 userModel.updateUser(updatedUser);
                 originalUser = updatedUser;
                 fieldsChanged = false;
+                AlertUtil.showSuccessNotification(owner, "Success", "User updated successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AlertUtil.showErrorNotification(owner, "Error", "Failed to update user.");
             return;
         }
 
@@ -142,9 +146,7 @@ public class EditUserController implements Initializable {
     }
 
     private void navigateBack() {
-
         try {
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
             Parent root = loader.load();
             Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
@@ -176,3 +178,4 @@ public class EditUserController implements Initializable {
                 : PasswordUtils.hashPassword(newPasswordInput.trim());
     }
 }
+

@@ -2,6 +2,8 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.AlertUtil;
+import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
@@ -27,34 +29,18 @@ import java.util.ResourceBundle;
 
 public class CreateUserController implements Initializable {
 
+    public Label labelRole;
     @FXML private Button cancelBtn;
     @FXML private Label actionLabel;
-    @FXML private Label fullNameLabel;
-    @FXML private Label emailLabel;
-    @FXML private Label usernameLabel;
-    @FXML private Label passwordLabel;
-
+    @FXML private Label fullNameLabel, emailLabel, usernameLabel, passwordLabel;
     @FXML private Button continueBtn;
-    @FXML private Button revertBtn;
+    @FXML private TextField usernameField, fullNameField, emailField, passwordField;
+    @FXML private ComboBox<String> roleComboBox;
 
-    @FXML private TextField usernameField;
-    @FXML private TextField fullNameField;
-    @FXML private TextField emailField;
-    @FXML private TextField passwordField;
-    @FXML private ComboBox roleComboBox;
-
-
-    ;
     private static final UserModel userModel = new UserModel();
-    private AdminController adminController; // field for parent controller
-    private User user;
-
-
     private boolean isEditMode = false;
     private boolean fieldsChanged = false;
-
     private User currentUserAfterCreate;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,17 +52,9 @@ public class CreateUserController implements Initializable {
         }
     }
 
-    // Setter to set the parent Manage Users controller
-    public void setManageUsersController(AdminController adminController) {
-        this.adminController = adminController;
-    }
-    /// TODO Method reused in all controllers, lets simplify it
-    public void onClickLogoutBtn(ActionEvent actionEvent) {
+    public void onClickLogoutBtn(ActionEvent event) {
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
-
-        System.out.println("CreateUserController.onClickLogoutBtn");
     }
-
 
     private void addEditListeners() {
         usernameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
@@ -94,9 +72,8 @@ public class CreateUserController implements Initializable {
         cancelBtn.setText(fieldsChanged ? "Revert" : "Close");
     }
 
-
-    public void onClickContinueBtn(ActionEvent actionEvent) {
-        System.out.println("CreateUserController.onClickContinueBtn");
+    public void onClickContinueBtn(ActionEvent event) {
+        Window owner = ((Node) event.getSource()).getScene().getWindow();
 
         String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
@@ -104,28 +81,28 @@ public class CreateUserController implements Initializable {
         String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
-        if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (!isEditMode && rawPassword.isEmpty())) {
-            System.out.println("Fail to process user because one or more fields are empty");
+        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || (!isEditMode && rawPassword.isEmpty())) {
+            AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
             return;
         }
 
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            System.out.println("Invalid email, please enter a valid email address.");
+            AlertUtil.showErrorNotification(owner, "Invalid Email", "Please enter a valid email address.");
             return;
         }
 
         if (selectedRole == null) {
-            System.err.println("No role selected.");
+            AlertUtil.showErrorNotification(owner, "Role Missing", "Please select a role.");
             return;
         }
-/// Todo Create reference to name
+
         String roleName = selectedRole.toString();
         int roleId = switch (roleName) {
             case "Admin" -> 1;
             case "QA Employee" -> 2;
             case "Operator" -> 3;
             default -> {
-                System.err.println("Unknown role selected.");
+                AlertUtil.showErrorNotification(owner, "Unknown Role", "Invalid role selected.");
                 yield -1;
             }
         };
@@ -140,40 +117,30 @@ public class CreateUserController implements Initializable {
                 User updatedUser = new User(currentUserAfterCreate.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.updateUser(updatedUser);
                 currentUserAfterCreate = updatedUser;
-                System.out.println("User updated.");
-                navigateBack(); //
+                AlertUtil.showSuccessNotification(owner, "Success", "User updated.");
+                navigateBack();
             } else {
                 User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.createNewUser(newUser);
                 currentUserAfterCreate = newUser;
-                System.out.println("User created.");
-
+                AlertUtil.showSuccessNotification(owner, "Success", "User created.");
                 enterEditMode();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AlertUtil.showErrorNotification(owner, "Database Error", "Failed to save user.");
         }
     }
 
-
-
-    public void onClickCancelBtn(ActionEvent actionEvent) {
+    public void onClickCancelBtn(ActionEvent event) {
         if (!isEditMode) {
-            // Cancel from create mode → exit
             navigateBack();
+        } else if (fieldsChanged) {
+            onClickRevert();
         } else {
-            if (fieldsChanged) {
-                // Revert changes
-                onClickRevert();
-            } else {
-                // Just close
-                navigateBack();
-            }
+            navigateBack();
         }
     }
-
-
-
 
     private void enterEditMode() {
         isEditMode = true;
@@ -187,12 +154,11 @@ public class CreateUserController implements Initializable {
         fullNameLabel.setText("FULL NAME:");
         emailLabel.setText("EMAIL:");
         usernameLabel.setText("USERNAME:");
+        labelRole.setText("ROLE:");
         passwordLabel.setText("PASSWORD (optional):");
 
         addEditListeners();
     }
-
-
 
     private void onClickRevert() {
         usernameField.setText(currentUserAfterCreate.getUsername());
@@ -215,12 +181,9 @@ public class CreateUserController implements Initializable {
         }
     }
 
-
-
     private String getFinalPassword(String newPasswordInput, String oldPasswordHash) {
         return (newPasswordInput == null || newPasswordInput.trim().isEmpty())
                 ? oldPasswordHash
                 : PasswordUtils.hashPassword(newPasswordInput.trim());
     }
-
 }

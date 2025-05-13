@@ -95,7 +95,7 @@
 
                     <!-- User Role -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="labelRole" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <ComboBox fx:id="roleComboBox" promptText="Select Role" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <rowConstraints>
                         <RowConstraints />

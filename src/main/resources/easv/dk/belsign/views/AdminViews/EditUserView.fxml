@@ -73,13 +73,13 @@
 
                     <!-- User Full Name -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="fullNameField" promptText="Full Name" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                     <!-- User Email Address -->
 
-                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="emailField" promptText="Email Address" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- User Name -->
@@ -90,13 +90,13 @@
 
 
                     <!-- Password -->
-                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="passwordField" promptText="Password" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
 
                     <!-- User Role -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <TextField fx:id="roleField" promptText="Select Role" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <rowConstraints>
                         <RowConstraints />
