@@ -2,6 +2,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
@@ -17,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
@@ -71,7 +73,7 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickContinueBtn(ActionEvent actionEvent) {
-
+        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
         System.out.println("CreateUserController.onClickContinueBtn");
 
         String username = usernameField.getText().trim();
@@ -81,17 +83,20 @@ public class CreateUserController implements Initializable {
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
         if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (user == null && rawPassword.isEmpty())) {
-            System.out.println("Fail to process user because one or more fields are empty");
+            //System.out.println("Fail to process user because one or more fields are empty");
+            AlertUtil.showErrorNotification(owner, "Error", "Fail to process user because one or more fields are empty");
             return;
         }
 
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            System.out.println("Invalid email, please enter a valid email address.");
+            //System.out.println("Invalid email, please enter a valid email address.");
+            AlertUtil.showErrorNotification(owner, "Error", "Invalid email, please enter a valid email address.");
             return;
         }
 
         if (selectedRole == null) {
-            System.err.println("No role selected.");
+            //System.err.println("No role selected.");
+            AlertUtil.showErrorNotification(owner, "Error", "No role selected.");
             return;
         }
 
@@ -109,7 +114,8 @@ public class CreateUserController implements Initializable {
                 roleId = 3;
                 break;
             default:
-                System.err.println("Unknown role selected.");
+                //System.err.println("Unknown role selected.");
+                AlertUtil.showErrorNotification(owner, "Error", "Unknown role selected.");
                 return;
         }
 
@@ -122,13 +128,16 @@ public class CreateUserController implements Initializable {
                 // Edit existing user
                 User updatedUser = new User(user.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.updateUser(updatedUser);
+                AlertUtil.showSuccessNotification(owner, "Success", "User updated successfully.");
             } else {
                 // Create new user
                 User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.createNewUser(newUser);
+                AlertUtil.showSuccessNotification(owner, "Success", "User created successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AlertUtil.showErrorNotification(owner, "Error", "Failed to create user.");
             return;
         }
 
@@ -140,6 +149,7 @@ public class CreateUserController implements Initializable {
             currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
+            AlertUtil.showErrorNotification(owner, "Error", "Failed to open windows");
         }
     }
 

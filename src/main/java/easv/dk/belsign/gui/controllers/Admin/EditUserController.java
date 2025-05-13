@@ -1,5 +1,6 @@
 package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
@@ -14,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -36,8 +39,6 @@ public class EditUserController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             ObservableList<String> roles = userModel.getAllRoleNames();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,7 +71,7 @@ public class EditUserController implements Initializable {
     public void onClickContinueBtn(ActionEvent actionEvent) {
 
         System.out.println("EditUserController.onClickContinueBtn");
-
+        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
         String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
@@ -78,15 +79,16 @@ public class EditUserController implements Initializable {
         String roleName = roleField.getText();
 
         if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (user == null && rawPassword.isEmpty())) {
-            System.out.println("Fail to process user because one or more fields are empty");
+            //System.out.println("Fail to process user because one or more fields are empty");
+            AlertUtil.showErrorNotification(owner, "Error", "Fail to process user because one or more fields are empty!");
             return;
         }
 
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            System.out.println("Invalid email, please enter a valid email address.");
+            //System.out.println("Invalid email, please enter a valid email address.");
+            AlertUtil.showErrorNotification(owner, "Error", "Invalid email, please enter a valid email address!");
             return;
         }
-
 
         int roleId = roleName.equals("Admin") ? 1 : 2;
 
@@ -99,10 +101,12 @@ public class EditUserController implements Initializable {
                 // Edit existing user
                 User updatedUser = new User(user.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.updateUser(updatedUser);
+                AlertUtil.showSuccessNotification(owner, "Success", "User updated successfully.");
             } else {
                 // Create new user
                 User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.createNewUser(newUser);
+                AlertUtil.showSuccessNotification(owner, "Success", "User created successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
