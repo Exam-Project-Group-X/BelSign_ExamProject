@@ -29,42 +29,82 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-public class AdminController implements Initializable {
+import java.util.stream.Collectors;
 
+public class AdminController implements Initializable {
+    @FXML
+    private ComboBox<String> statusFilter;
+    @FXML
+    private TextField searchField;
     @FXML
     private VBox cardContainer;
 
     private static final UserModel userModel = new UserModel();
+    private List<User> allUsersList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             loadAllUsers();
+            searchField.textProperty().addListener((obs, oldVal, newVal) -> filterUsers());
+            statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterUsers());
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void filterUsers() {
+        String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
+        String selectedRole = statusFilter.getValue() == null ? "" : statusFilter.getValue().toString().toLowerCase();
+
+        List<User> filteredUsers = allUsersList.stream()
+                .filter(user ->
+                        user.getFullName().toLowerCase().contains(search) ||
+                                user.getEmail().toLowerCase().contains(search) ||
+                                user.getUsername().toLowerCase().contains(search))
+                .filter(user -> {
+                    // If no role is selected, show all users
+                    if (selectedRole.isEmpty() || selectedRole.equals("all")) {
+                        return true;
+                    } else {
+                        return user.getRoleName().toLowerCase().contains(selectedRole);
+                    }
+                })
+                .collect(Collectors.toList());
+
+        cardContainer.getChildren().clear();
+        for (User user : filteredUsers) {
+            addUserCard(user);
         }
     }
 
     public void loadAllUsers() throws SQLException {
         new Thread(() -> {
             try {
-                List<User> allUsers = userModel.getAllUsers();
-                //System.out.println("Loaded users: " + allUsers.size());
-                if (allUsers.isEmpty()) {
-                    //System.err.println("No users found in the database!");
-                }
-                Platform.runLater(() -> {
-                    cardContainer.getChildren().clear();
-                    for (User user : allUsers) {
-                        addUserCard(user);
-                    }
+                allUsersList = userModel.getAllUsers();
+                Platform.runLater(() ->{
+                        setUpStatusFilter();
+                        filterUsers();
                 });
             } catch (SQLException e) {
-                System.err.println("Error loading users from database.");
+                System.err.println("Error loading users.");
                 e.printStackTrace();
             }
         }).start();
     }
+
+    private void setUpStatusFilter() {
+        ObservableList<String> roles = FXCollections.observableArrayList("All");
+        roles.addAll(
+                allUsersList.stream()
+                        .map(user -> user.getRoleName())
+                        .distinct()
+                        .collect(Collectors.toList())
+        );
+        statusFilter.setItems(roles);
+        statusFilter.getSelectionModel().selectFirst();
+    }
+
 
     public void addUserCard(User user) {
         try {
