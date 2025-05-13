@@ -12,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -22,11 +21,12 @@ import java.util.ResourceBundle;
 
 public class EditUserController implements Initializable {
 
+    @FXML public TextField roleField;
     @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
     @FXML private TextField emailField;
     @FXML private TextField passwordField;
-    @FXML private ComboBox roleComboBox;
+
 
     private static final UserModel userModel = new UserModel();
     private AdminController adminController; // field for parent controller
@@ -36,7 +36,7 @@ public class EditUserController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             ObservableList<String> roles = userModel.getAllRoleNames();
-            roleComboBox.setItems(roles);
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class EditUserController implements Initializable {
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
         String rawPassword = passwordField.getText().trim();
-        Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
+        String roleName = roleField.getText();
 
         if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (user == null && rawPassword.isEmpty())) {
             System.out.println("Fail to process user because one or more fields are empty");
@@ -87,12 +87,7 @@ public class EditUserController implements Initializable {
             return;
         }
 
-        if (selectedRole == null) {
-            System.err.println("No role selected.");
-            return;
-        }
 
-        String roleName = selectedRole.toString();
         int roleId = roleName.equals("Admin") ? 1 : 2;
 
         String finalPassword = (user != null && user.getUserID() > 0)
@@ -138,7 +133,7 @@ public class EditUserController implements Initializable {
         fullNameField.setText(user.getFullName());
         emailField.setText(user.getEmail());
         passwordField.setText("");
-        roleComboBox.setValue(user.getRoleName());
-        roleComboBox.setDisable(true);
+        roleField.setText(user.getRoleName());
+        roleField.setDisable(true);
     }
 }
