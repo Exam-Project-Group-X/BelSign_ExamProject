@@ -132,6 +132,7 @@ public class EditUserController implements Initializable {
         usernameField.setText(user.getUsername());
         fullNameField.setText(user.getFullName());
         emailField.setText(user.getEmail());
+        emailField.setDisable(true);
         passwordField.setText("");
         roleField.setText(user.getRoleName());
         roleField.setDisable(true);
