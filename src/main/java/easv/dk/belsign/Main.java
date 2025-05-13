@@ -28,7 +28,7 @@ public class Main extends Application {
 
         ViewManager.INSTANCE.setStageManager(stageManager);
 
-        ViewManager.INSTANCE.showStage(FXMLPath.TITLE_SCREEN, "BelSign - Login", false);
+        ViewManager.INSTANCE.showStage(FXMLPath.TITLE_SCREEN, "BelSign", false);
         primaryStage.setOnShown(e -> primaryStage.centerOnScreen());
 
     }

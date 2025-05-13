@@ -16,7 +16,7 @@ public class TestOperator extends Application {
 
         ViewManager.INSTANCE.setStageManager(stageManager);
 
-        ViewManager.INSTANCE.showStage(FXMLPath.OPERATOR_DASHBOARD, "OPERATOR_DASHBOARD", false);
+        ViewManager.INSTANCE.showStage(FXMLPath.OPERATOR_DASHBOARD, "BelSign", false);
         primaryStage.setOnShown(e -> primaryStage.centerOnScreen());
     }
     public static void main(String[] args) {
