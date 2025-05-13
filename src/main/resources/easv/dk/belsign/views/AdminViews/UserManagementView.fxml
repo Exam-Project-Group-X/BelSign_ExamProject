@@ -57,7 +57,7 @@
             </HBox>
 
             <HBox spacing="10">
-                <TextField fx:id="searchField" prefWidth="200" promptText="Search" style="-fx-background-color: ffffff;" styleClass="box" />
+                <TextField fx:id="searchField" prefWidth="200" promptText="Search by name, email or role " style="-fx-background-color: ffffff;" styleClass="box" />
                 <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Role" style="-fx-background-color: ffffff;" styleClass="box" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="createOrderButton" onAction="#onClickCreateUserBtn" styleClass="create-btn" text="Create user">
