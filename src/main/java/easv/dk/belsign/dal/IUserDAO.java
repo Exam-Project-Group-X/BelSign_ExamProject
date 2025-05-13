@@ -14,7 +14,7 @@ public interface IUserDAO {
 
     List<User> getAllUsers() throws SQLException;
 
-    void createNewUser(User user) throws SQLException;
+    int createNewUser(User user) throws SQLException;
     void deleteUser(User user) throws SQLException;
     void updateUser(User user) throws SQLException;
     ObservableList<String> getAllRoleNames() throws SQLException;

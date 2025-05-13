@@ -50,23 +50,30 @@ public class UserDAO implements IUserDAO {
         return allUsers;
     }
 
-
     @Override
+    public int createNewUser(User user) throws SQLException {
+        String sql = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
 
-    public void createNewUser(User user) throws SQLException {
-        String sqlUser = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = con.getConnection();
-             PreparedStatement psUser = connection.prepareStatement(sqlUser)) {
-            psUser.setString(1, user.getFullName());
-            psUser.setString(2, user.getEmail());
-            psUser.setString(3, user.getUsername());
-            psUser.setString(4, user.getPasswordHash());
-            psUser.setInt(5, user.getRoleId());
-            psUser.executeUpdate();
-        }catch (SQLException e) {
-            throw new RuntimeException("Error adding users to the database: " + e.getMessage(), e);
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPasswordHash());
+            ps.setInt(5, user.getRoleId());
+
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // ✅ Return the generated user ID
+                }
+            }
         }
+        return -1;
     }
+
 
     @Override
     public ObservableList<String> getAllRoleNames() throws SQLException {

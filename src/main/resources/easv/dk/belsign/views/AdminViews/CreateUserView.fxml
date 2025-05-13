@@ -56,7 +56,7 @@
             <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 15;" styleClass="card" stylesheets="@../styles/card.css">
 
                 <!-- Card title -->
-                <Label style="-fx-font-weight: bold; -fx-padding: 0 0 10 5;" text="User Editor" />
+                <Label fx:id="actionLabel" style="-fx-font-weight: bold; -fx-padding: 0 0 10 5;" text="Creating new user" />
 
                 <Separator />
                 <!-- Form grid -->
@@ -72,24 +72,24 @@
 
                     <!-- User Full Name -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="fullNameLabel" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="fullNameField" promptText="Full Name" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                     <!-- User Email Address -->
 
-                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="emailLabel" prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="emailField" promptText="Email Address" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- User Name -->
 
 
-                    <Label prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="USERNAME" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="usernameLabel" prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="USERNAME" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <TextField fx:id="usernameField" promptText="Username" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
 
                     <!-- Password -->
-                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="passwordLabel" prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="passwordField" promptText="Password" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
 
@@ -108,7 +108,7 @@
                 <!-- Buttons row -->
                 <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 0 10 20 10;">
                     <Button fx:id="cancelBtn" onAction="#onClickCancelBtn" prefHeight="30.0" prefWidth="60.0" styleClass="primary-btn" text="Cancel" />
-                    <Button fx:id="continueBtn" onAction="#onClickContinueBtn" prefHeight="30.0" prefWidth="60.0" styleClass="primary-btn" text="Save" />
+                    <Button fx:id="continueBtn" onAction="#onClickContinueBtn" prefHeight="30.0" prefWidth="60.0" styleClass="primary-btn" text="Create" />
 
                 </HBox>
             </VBox>

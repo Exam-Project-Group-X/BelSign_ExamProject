@@ -14,9 +14,10 @@ public class UserManager {
     public List<User> getAllUsers() throws SQLException {
         return userDAO.getAllUsers();
     }
-    public void createNewUser(User user) throws SQLException {
-        userDAO.createNewUser(user);
+    public int createNewUser(User user) throws SQLException {
+        return userDAO.createNewUser(user); // this returns the newly created UserID from the DB
     }
+
     public void deleteUser(User user) throws SQLException {
         userDAO.deleteUser(user);
     }

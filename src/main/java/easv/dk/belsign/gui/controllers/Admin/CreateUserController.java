@@ -14,7 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -25,6 +27,15 @@ import java.util.ResourceBundle;
 
 public class CreateUserController implements Initializable {
 
+    @FXML private Button cancelBtn;
+    @FXML private Label actionLabel;
+    @FXML private Label fullNameLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label usernameLabel;
+    @FXML private Label passwordLabel;
+
+    @FXML private Button continueBtn;
+    @FXML private Button revertBtn;
 
     @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
@@ -32,9 +43,18 @@ public class CreateUserController implements Initializable {
     @FXML private TextField passwordField;
     @FXML private ComboBox roleComboBox;
 
+
+    ;
     private static final UserModel userModel = new UserModel();
     private AdminController adminController; // field for parent controller
     private User user;
+
+
+    private boolean isEditMode = false;
+    private boolean fieldsChanged = false;
+
+    private User currentUserAfterCreate;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,21 +77,25 @@ public class CreateUserController implements Initializable {
         System.out.println("CreateUserController.onClickLogoutBtn");
     }
 
-    public void onClickCancelBtn(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
-            Parent root = loader.load();
-            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        System.out.println("CreateUserController.onClickCancelBtn");
+    private void addEditListeners() {
+        usernameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
+        fullNameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
+        passwordField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
     }
 
-    public void onClickContinueBtn(ActionEvent actionEvent) {
+    private void checkIfChanged() {
+        fieldsChanged =
+                !usernameField.getText().equals(currentUserAfterCreate.getUsername()) ||
+                        !fullNameField.getText().equals(currentUserAfterCreate.getFullName()) ||
+                        !passwordField.getText().isBlank();
 
+        continueBtn.setText(fieldsChanged ? "Update" : "Save");
+        cancelBtn.setText(fieldsChanged ? "Revert" : "Close");
+    }
+
+
+    public void onClickContinueBtn(ActionEvent actionEvent) {
         System.out.println("CreateUserController.onClickContinueBtn");
 
         String username = usernameField.getText().trim();
@@ -80,7 +104,7 @@ public class CreateUserController implements Initializable {
         String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
-        if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (user == null && rawPassword.isEmpty())) {
+        if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (!isEditMode && rawPassword.isEmpty())) {
             System.out.println("Fail to process user because one or more fields are empty");
             return;
         }
@@ -94,54 +118,104 @@ public class CreateUserController implements Initializable {
             System.err.println("No role selected.");
             return;
         }
-
+/// Todo Create reference to name
         String roleName = selectedRole.toString();
-
-        int roleId;
-        switch (roleName) {
-            case "Admin":
-                roleId = 1;
-                break;
-            case "QA":
-                roleId = 2;
-                break;
-            case "Operator":
-                roleId = 3;
-                break;
-            default:
+        int roleId = switch (roleName) {
+            case "Admin" -> 1;
+            case "QA Employee" -> 2;
+            case "Operator" -> 3;
+            default -> {
                 System.err.println("Unknown role selected.");
-                return;
-        }
+                yield -1;
+            }
+        };
+        if (roleId == -1) return;
 
-        String finalPassword = (user != null && user.getUserID() > 0)
-                ? getFinalPassword(rawPassword, user.getPasswordHash())  // Edit
-                : PasswordUtils.hashPassword(rawPassword);               // New
+        String finalPassword = isEditMode
+                ? getFinalPassword(rawPassword, currentUserAfterCreate.getPasswordHash())
+                : PasswordUtils.hashPassword(rawPassword);
 
         try {
-            if (this.user != null && this.user.getUserID() > 0) {
-                // Edit existing user
-                User updatedUser = new User(user.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
+            if (isEditMode) {
+                User updatedUser = new User(currentUserAfterCreate.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.updateUser(updatedUser);
+                currentUserAfterCreate = updatedUser;
+                System.out.println("User updated.");
+                navigateBack(); //
             } else {
-                // Create new user
                 User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.createNewUser(newUser);
+                currentUserAfterCreate = newUser;
+                System.out.println("User created.");
+
+                enterEditMode();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return;
         }
+    }
 
 
+
+    public void onClickCancelBtn(ActionEvent actionEvent) {
+        if (!isEditMode) {
+            // Cancel from create mode → exit
+            navigateBack();
+        } else {
+            if (fieldsChanged) {
+                // Revert changes
+                onClickRevert();
+            } else {
+                // Just close
+                navigateBack();
+            }
+        }
+    }
+
+
+
+
+    private void enterEditMode() {
+        isEditMode = true;
+        actionLabel.setText("Edit User Details");
+        continueBtn.setText("Save");
+        cancelBtn.setText("Close");
+
+        roleComboBox.setDisable(true);
+        emailField.setDisable(true);
+
+        fullNameLabel.setText("FULL NAME:");
+        emailLabel.setText("EMAIL:");
+        usernameLabel.setText("USERNAME:");
+        passwordLabel.setText("PASSWORD (optional):");
+
+        addEditListeners();
+    }
+
+
+
+    private void onClickRevert() {
+        usernameField.setText(currentUserAfterCreate.getUsername());
+        fullNameField.setText(currentUserAfterCreate.getFullName());
+        passwordField.setText("");
+        fieldsChanged = false;
+
+        continueBtn.setText("Save");
+        cancelBtn.setText("Close");
+    }
+
+    private void navigateBack() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
             Parent root = loader.load();
-            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     private String getFinalPassword(String newPasswordInput, String oldPasswordHash) {
         return (newPasswordInput == null || newPasswordInput.trim().isEmpty())
@@ -149,13 +223,4 @@ public class CreateUserController implements Initializable {
                 : PasswordUtils.hashPassword(newPasswordInput.trim());
     }
 
-
-    public void setUserData(User user) {
-//        this.user = user;
-//        usernameField.setText(user.getUsername());
-//        fullNameField.setText(user.getFullName());
-//        emailField.setText(user.getEmail());
-//        passwordField.setText("");
-//        roleComboBox.setValue(user.getRoleName());
-    }
 }

@@ -28,10 +28,13 @@ public class UserModel {
         return allUsers;
     }
 
-    public void createNewUser(User user) throws SQLException {
-        userManager.createNewUser(user);
+    public int createNewUser(User user) throws SQLException {
+        int newId = userManager.createNewUser(user);
+        user.setUserID(newId);
         allUsers.add(user);
+        return newId;
     }
+
     public void deleteUser(User user) throws SQLException {
         userManager.deleteUser(user);
         allUsers.remove(user);
