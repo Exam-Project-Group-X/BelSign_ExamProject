@@ -3,6 +3,7 @@ import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
+import easv.dk.belsign.utils.PasswordUtils;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,71 +50,94 @@ public class UserEditorController implements Initializable {
     /// TODO Method reused in all controllers, lets simplify it
     public void onClickLogoutBtn(ActionEvent actionEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+
+        System.out.println("UserEditorController.onClickLogoutBtn");
     }
 
     public void onClickCancelBtn(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("UserEditorController.onClickCancelBtn");
     }
+
     public void onClickContinueBtn(ActionEvent actionEvent) {
+
+        System.out.println("UserEditorController.onClickContinueBtn");
+
         String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
-        String password = passwordField.getText().trim();
+        String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
-        if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || password.isEmpty()) {
+
+        if (username.isEmpty() || email.isEmpty() || fullName.isEmpty() || (user == null && rawPassword.isEmpty())) {
             System.out.println("Fail to process user because one or more fields are empty");
             return;
         }
+
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             System.out.println("Invalid email, please enter a valid email address.");
             return;
         }
+
         if (selectedRole == null) {
             System.err.println("No role selected.");
             return;
         }
+
         String roleName = selectedRole.toString();
         int roleId = roleName.equals("Admin") ? 1 : 2;
+
+        String finalPassword = (user != null && user.getUserID() > 0)
+                ? getFinalPassword(rawPassword, user.getPasswordHash())  // Edit
+                : PasswordUtils.hashPassword(rawPassword);               // New
+
         try {
-            if (this.user != null && this.user.getUserID() > 0)
-            {
-                // Edit mode: update existing user
-                User updatedUser = new User(this.user.getUserID(), username, password, "", fullName, email, roleId, null, null, true, roleName);
+            if (this.user != null && this.user.getUserID() > 0) {
+                // Edit existing user
+                User updatedUser = new User(user.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.updateUser(updatedUser);
             } else {
-                // Create mode: create new user
-                User newUser = new User(0, username, password, "", fullName, email, roleId, null, null, true, roleName);
+                // Create new user
+                User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
                 userModel.createNewUser(newUser);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return;
         }
+
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
             Parent root = loader.load();
-            Stage dashboardStage = new Stage();
-            dashboardStage.setScene(new Scene(root));
-            dashboardStage.show();
             Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            currentStage.close();
+            currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private String getFinalPassword(String newPasswordInput, String oldPasswordHash) {
+        return (newPasswordInput == null || newPasswordInput.trim().isEmpty())
+                ? oldPasswordHash
+                : PasswordUtils.hashPassword(newPasswordInput.trim());
+    }
+
 
     public void setUserData(User user) {
         this.user = user;
         usernameField.setText(user.getUsername());
         fullNameField.setText(user.getFullName());
         emailField.setText(user.getEmail());
-        passwordField.setText(user.getPasswordHash());
+        passwordField.setText("");
         roleComboBox.setValue(user.getRoleName());
     }
 }
