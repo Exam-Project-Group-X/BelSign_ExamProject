@@ -4,7 +4,6 @@ import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
 import easv.dk.belsign.utils.PasswordUtils;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +20,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class UserEditorController implements Initializable {
+public class EditUserController implements Initializable {
 
     @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
@@ -38,6 +37,7 @@ public class UserEditorController implements Initializable {
         try {
             ObservableList<String> roles = userModel.getAllRoleNames();
             roleComboBox.setItems(roles);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class UserEditorController implements Initializable {
     public void onClickLogoutBtn(ActionEvent actionEvent) {
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
 
-        System.out.println("UserEditorController.onClickLogoutBtn");
+        System.out.println("EditUserController.onClickLogoutBtn");
     }
 
     public void onClickCancelBtn(ActionEvent actionEvent) {
@@ -64,12 +64,12 @@ public class UserEditorController implements Initializable {
             e.printStackTrace();
         }
 
-        System.out.println("UserEditorController.onClickCancelBtn");
+        System.out.println("EditUserController.onClickCancelBtn");
     }
 
     public void onClickContinueBtn(ActionEvent actionEvent) {
 
-        System.out.println("UserEditorController.onClickContinueBtn");
+        System.out.println("EditUserController.onClickContinueBtn");
 
         String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
@@ -139,5 +139,6 @@ public class UserEditorController implements Initializable {
         emailField.setText(user.getEmail());
         passwordField.setText("");
         roleComboBox.setValue(user.getRoleName());
+        roleComboBox.setDisable(true);
     }
 }

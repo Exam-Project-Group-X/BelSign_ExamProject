@@ -89,16 +89,11 @@ public class AdminController implements Initializable {
     public void onClickCreateUserBtn(ActionEvent actionEvent) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_EDITOR));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CREATE_USER));
             Parent root = loader.load();
             // Close current stage
             Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            currentStage.close();
-            // Open new stage with USER_EDITOR
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             //System.err.println("Failed to load user card for: " + user.getFullName());
             e.printStackTrace();
@@ -106,3 +101,5 @@ public class AdminController implements Initializable {
     }
 
 }
+
+

@@ -20,7 +20,8 @@ public class FXMLPath {
     /// ADMIN Paths
     public static final String ADMIN_DASHBOARD = "/easv/dk/belsign/views/AdminViews/UserManagementView.fxml";
     public static final String USER_CARD = "/easv/dk/belsign/views/AdminViews/components/UserCard.fxml";
-    public static final String USER_EDITOR = "/easv/dk/belsign/views/AdminViews/UserEditorView.fxml";
+    public static final String CREATE_USER = "/easv/dk/belsign/views/AdminViews/CreateUserView.fxml";
+    public static final String USER_EDITOR = "/easv/dk/belsign/views/AdminViews/EditUserView.fxml";
 
     /// LOGIN PAths
 
