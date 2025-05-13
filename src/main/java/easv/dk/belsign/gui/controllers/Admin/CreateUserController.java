@@ -96,7 +96,22 @@ public class CreateUserController implements Initializable {
         }
 
         String roleName = selectedRole.toString();
-        int roleId = roleName.equals("Admin") ? 1 : 2;
+
+        int roleId;
+        switch (roleName) {
+            case "Admin":
+                roleId = 1;
+                break;
+            case "QA":
+                roleId = 2;
+                break;
+            case "Operator":
+                roleId = 3;
+                break;
+            default:
+                System.err.println("Unknown role selected.");
+                return;
+        }
 
         String finalPassword = (user != null && user.getUserID() > 0)
                 ? getFinalPassword(rawPassword, user.getPasswordHash())  // Edit
