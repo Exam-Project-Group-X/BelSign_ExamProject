@@ -14,16 +14,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-/*
-🧠 ViewManager Reminder:
-
-- To switch screens: ViewManager.INSTANCE.showScene(FXMLPath.XYZ);
-- To open a popup:   ViewManager.INSTANCE.showStage(FXMLPath.XYZ, "Popup Title", true);
-- Add new FXML paths inside: FXMLPath.java
-- Never load FXML manually (no FXMLLoader.load(...)).
-- All FXMLs must be inside: /src/main/resources/easv/dk/belsign/views/
-*/
+import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
     @FXML
@@ -42,7 +33,6 @@ public class LoginController implements Initializable {
     private boolean passwordVisible = false;
 
     private final UserModel userModel = new UserModel();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,10 +67,18 @@ public class LoginController implements Initializable {
         String email = loginEmail.getText().trim();
         String password = passwordVisible ? visiblePassword.getText() : loginPassword.getText();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            ViewManager.INSTANCE.showError("Login failed", "Email and password cannot be empty.");
+        // Validate email format
+        if (email.isEmpty() || !isValidEmail(email)) {
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email format");
             return;
         }
+
+        // Check if password is empty
+        if (password.isEmpty()) {
+            ViewManager.INSTANCE.showError("Login failed", "Password cannot be empty");
+            return;
+        }
+
         User user = userModel.authenticate(email, password);
         if (user != null) {
             switch (user.getRoleName()) {
@@ -89,13 +87,19 @@ public class LoginController implements Initializable {
                 default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getRoleName());
             }
         } else {
-            ViewManager.INSTANCE.showError("Login failed", "Invalid email or password.");
+            ViewManager.INSTANCE.showError("Login failed", "Invalid email or password");
         }
+    }
+
+    // Helper method to validate email format using a regular expression
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
 
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
-
 }

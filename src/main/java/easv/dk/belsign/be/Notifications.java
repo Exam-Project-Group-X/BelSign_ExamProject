@@ -2,7 +2,7 @@ package easv.dk.belsign.be;
 
 import java.sql.Timestamp;
 
-public class Notifications {
+public class    Notifications {
     private int NotificationID;
     private String OrderID; // This will hold the Order Number (e.g. "45-00000-000000")
     private String FromUserID; // This will hold the name of the sender

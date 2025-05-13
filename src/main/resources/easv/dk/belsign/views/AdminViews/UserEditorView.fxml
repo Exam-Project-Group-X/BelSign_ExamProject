@@ -1,61 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-
-
-
 <?import javafx.scene.control.Button?>
-
-
 <?import javafx.scene.control.ComboBox?>
-
-
 <?import javafx.scene.control.Label?>
-
-
 <?import javafx.scene.control.Separator?>
-
-
 <?import javafx.scene.control.TextField?>
-
-
 <?import javafx.scene.image.Image?>
-
-
 <?import javafx.scene.image.ImageView?>
-
-
 <?import javafx.scene.layout.BorderPane?>
-
-
 <?import javafx.scene.layout.ColumnConstraints?>
-
-
 <?import javafx.scene.layout.GridPane?>
-
-
 <?import javafx.scene.layout.HBox?>
-
-
 <?import javafx.scene.layout.Region?>
-
-
 <?import javafx.scene.layout.RowConstraints?>
-
-
 <?import javafx.scene.layout.StackPane?>
-
-
 <?import javafx.scene.layout.VBox?>
-
-
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
-
-
-
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.UserEditorController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.UserEditorController">
 
 
     <!-- ===== TOP HEADER BAR ===== -->
@@ -110,30 +72,30 @@
 
                     <!-- User Full Name -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="fullNameField" promptText="Enter User Full Name" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="fullNameField" promptText="Full Name" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                     <!-- User Email Address -->
 
-                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="emailField" promptText="Enter Email Address" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="emailField" promptText="Email Address" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- User Name -->
 
 
-                    <Label prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="USER NAME" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="usernameField" promptText="Enter Username" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="USERNAME" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="usernameField" promptText="Username" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
 
                     <!-- Password -->
-                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="passwordField" promptText="Enter Password" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="passwordField" promptText="Password" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
 
                     <!-- User Role -->
 
-                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <ComboBox fx:id="roleComboBox" promptText="Select Role" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <rowConstraints>
                         <RowConstraints />
@@ -145,8 +107,8 @@
                 </GridPane>
                 <!-- Buttons row -->
                 <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 0 10 20 10;">
-                    <Button fx:id="cancelBtn" onAction="#onClickCancelBtn" styleClass="secondary-btn" text="Cancel" />
-                    <Button fx:id="continueBtn" onAction="#onClickContinueBtn" styleClass="primary-btn" text="Continue" />
+                    <Button fx:id="cancelBtn" onAction="#onClickCancelBtn" prefHeight="30.0" prefWidth="60.0" styleClass="primary-btn" text="Cancel" />
+               <Button fx:id="continueBtn" onAction="#onClickContinueBtn" prefHeight="30.0" prefWidth="60.0" styleClass="primary-btn" text="Save" />
 
                 </HBox>
             </VBox>
