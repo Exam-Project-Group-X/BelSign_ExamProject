@@ -25,7 +25,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         StageManager stageManager = new StageManager(); // Create the StageManager
         stageManager.setCurrentStage(primaryStage);     // Set the main window
-
         ViewManager.INSTANCE.setStageManager(stageManager);
 
         ViewManager.INSTANCE.showStage(FXMLPath.TITLE_SCREEN, "BelSign - Login", false);
