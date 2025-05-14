@@ -38,9 +38,8 @@ public class CreateUserController implements Initializable {
     @FXML private ComboBox<String> roleComboBox;
 
     private static final UserModel userModel = new UserModel();
-    private boolean isEditMode = false;
-    private boolean fieldsChanged = false;
-    private User currentUserAfterCreate;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,21 +55,7 @@ public class CreateUserController implements Initializable {
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
 
-    private void addEditListeners() {
-        usernameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
-        fullNameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
-        passwordField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
-    }
 
-    private void checkIfChanged() {
-        fieldsChanged =
-                !usernameField.getText().equals(currentUserAfterCreate.getUsername()) ||
-                        !fullNameField.getText().equals(currentUserAfterCreate.getFullName()) ||
-                        !passwordField.getText().isBlank();
-
-        continueBtn.setText(fieldsChanged ? "Update" : "Save");
-        cancelBtn.setText(fieldsChanged ? "Revert" : "Close");
-    }
 
     public void onClickContinueBtn(ActionEvent event) {
         Window owner = ((Node) event.getSource()).getScene().getWindow();
@@ -81,7 +66,7 @@ public class CreateUserController implements Initializable {
         String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
-        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || (!isEditMode && rawPassword.isEmpty())) {
+        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || rawPassword.isEmpty()) {
             AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
             return;
         }
@@ -108,24 +93,27 @@ public class CreateUserController implements Initializable {
         };
         if (roleId == -1) return;
 
-        String finalPassword = isEditMode
-                ? getFinalPassword(rawPassword, currentUserAfterCreate.getPasswordHash())
-                : PasswordUtils.hashPassword(rawPassword);
+        String hashedPassword = PasswordUtils.hashPassword(rawPassword);
 
         try {
-            if (isEditMode) {
-                User updatedUser = new User(currentUserAfterCreate.getUserID(), username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
-                userModel.updateUser(updatedUser);
-                currentUserAfterCreate = updatedUser;
-                AlertUtil.showSuccessNotification(owner, "Success", "User updated.");
-                navigateBack();
-            } else {
-                User newUser = new User(0, username, finalPassword, "", fullName, email, roleId, null, null, true, roleName);
-                userModel.createNewUser(newUser);
-                currentUserAfterCreate = newUser;
-                AlertUtil.showSuccessNotification(owner, "Success", "User created.");
-                enterEditMode();
+            for (User existingUser : userModel.getAllUsers()) {
+                if (existingUser.getEmail().equalsIgnoreCase(email)) {
+                    AlertUtil.showErrorNotification(owner, "Duplicate Email", "A user with this email already exists.");
+                    return;
+                }
+                if (existingUser.getUsername().equalsIgnoreCase(username)) {
+                    AlertUtil.showErrorNotification(owner, "Duplicate Username", "A user with this username already exists.");
+                    return;
+                }
             }
+
+            User newUser = new User(0, username, hashedPassword, "", fullName, email, roleId, null, null, true, roleName);
+            userModel.createNewUser(newUser);
+
+            AlertUtil.showSuccessNotification(owner, "Success", "User created.");
+            navigateBack();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
             AlertUtil.showErrorNotification(owner, "Database Error", "Failed to save user.");
@@ -133,42 +121,10 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickCancelBtn(ActionEvent event) {
-        if (!isEditMode) {
-            navigateBack();
-        } else if (fieldsChanged) {
-            onClickRevert();
-        } else {
-            navigateBack();
-        }
+
+        navigateBack();
     }
 
-    private void enterEditMode() {
-        isEditMode = true;
-        actionLabel.setText("Edit User Details");
-        continueBtn.setText("Save");
-        cancelBtn.setText("Close");
-
-        roleComboBox.setDisable(true);
-        emailField.setDisable(true);
-
-        fullNameLabel.setText("FULL NAME:");
-        emailLabel.setText("EMAIL:");
-        usernameLabel.setText("USERNAME:");
-        labelRole.setText("ROLE:");
-        passwordLabel.setText("PASSWORD (optional):");
-
-        addEditListeners();
-    }
-
-    private void onClickRevert() {
-        usernameField.setText(currentUserAfterCreate.getUsername());
-        fullNameField.setText(currentUserAfterCreate.getFullName());
-        passwordField.setText("");
-        fieldsChanged = false;
-
-        continueBtn.setText("Save");
-        cancelBtn.setText("Close");
-    }
 
     private void navigateBack() {
         try {
@@ -181,9 +137,5 @@ public class CreateUserController implements Initializable {
         }
     }
 
-    private String getFinalPassword(String newPasswordInput, String oldPasswordHash) {
-        return (newPasswordInput == null || newPasswordInput.trim().isEmpty())
-                ? oldPasswordHash
-                : PasswordUtils.hashPassword(newPasswordInput.trim());
-    }
+
 }
