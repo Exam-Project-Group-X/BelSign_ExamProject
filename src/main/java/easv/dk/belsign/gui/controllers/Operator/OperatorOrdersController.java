@@ -40,7 +40,7 @@ public class OperatorOrdersController {
 
     private ObservableList<Order> allOrders;
     private FilteredList<Order> filteredOrders;
-    private static final int ORDERS_PER_PAGE = 9;
+    private static final int ORDERS_PER_PAGE = 8;
     private int currentPage = 1;
     private int totalPages;
 
