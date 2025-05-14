@@ -90,30 +90,43 @@
             <!-- CARD LIST -->
             <VBox fx:id="cardContainer" spacing="5">
             </VBox>
-
             <!-- Pagination -->
-            <HBox alignment="CENTER" spacing="6" style="-fx-padding: 10;">
-                <Label fx:id="pageInfoLabel" prefHeight="16.0" prefWidth="173.0" text="Showing page 1 of 4" />
-                <Region prefHeight="27.0" prefWidth="912.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" spacing="6.0" style="-fx-padding: 10;">
+                <Label fx:id="lblPageInfo" prefHeight="16.0" prefWidth="173.0" text="Showing page 1 of 4" />
+                <Region prefHeight="27.0" prefWidth="780.0" HBox.hgrow="ALWAYS" />
 
                 <!-- « previous page -->
-                <Button fx:id="prevPageBtn" styleClass="icon-btn">
+                <Button fx:id="firstPageBtn" onAction="#onClickFirstPageBtn" styleClass="icon-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="bi-chevron-bar-left" iconSize="16" />
+                    </graphic>
+                </Button>
+                <Button fx:id="prevPageBtn" onAction="#onClickPrevPageBtn" styleClass="icon-btn">
                     <graphic>
                         <FontIcon iconLiteral="bi-chevron-double-left" iconSize="16" />
                     </graphic>
                 </Button>
-                <ToggleButton selected="true" text="1" />
-                <ToggleButton text="2" />
-                <ToggleButton text="3" />
-                <ToggleButton text="4" />
+                <HBox fx:id="toggleBtnContainer" alignment="CENTER" prefHeight="27.0" prefWidth="220.0" spacing="6.0">
+                    <children>
+                        <ToggleButton minWidth="35.0" prefHeight="27.0" prefWidth="35.0" selected="true" styleClass="tgBtn" text="1" />
+                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="2" />
+                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="3" />
+                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="4" />
+                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="5" />
+                    </children>
+                </HBox>
 
                 <!-- next page » -->
-                <Button fx:id="nextPageBtn" styleClass="icon-btn">
+                <Button fx:id="nextPageBtn" onAction="#onCLickNextPageBtn" prefHeight="25.0" prefWidth="45.0" styleClass="icon-btn">
                     <graphic>
                         <FontIcon iconLiteral="bi-chevron-double-right" iconSize="16" />
                     </graphic>
                 </Button>
-
+                <Button fx:id="lastPageBtn" onAction="#onClickLastPageBtn" styleClass="icon-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="bi-chevron-bar-right" iconSize="16" />
+                    </graphic>
+                </Button>
             </HBox>
         </VBox>
     </center>
