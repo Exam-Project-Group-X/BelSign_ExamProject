@@ -41,12 +41,12 @@ public class AdminController implements Initializable {
     private Button prevPageBtn;
     @FXML
     private Button nextPageBtn;
-    @FXML private ComboBox<String> statusFilter;
+    @FXML private ComboBox<String> roleFilter;
     @FXML private TextField searchField;
     @FXML private VBox cardContainer;
 
-    private static final int PAGE_SIZE = 6;
-    private static final int TOGGLE_COUNT = 5;// cards per page
+    private static final int PAGE_SIZE = 9; //cards per page
+    private static final int TOGGLE_COUNT = 2;// toggle btn per line
     private int currentPage = 1;
     private int pageCount  = 1;
     private ToggleGroup toggleGroup = new ToggleGroup();
@@ -58,22 +58,15 @@ public class AdminController implements Initializable {
         try {
             // Get all users from the UserModel
             allUsersList = userModel.getAllUsers();
+            updatePageCount(allUsersList.size());
             loadPage(currentPage);
-            pageCount = (int)Math.ceil((double)allUsersList.size() / PAGE_SIZE);
-            //updatePageCount(allUsersList.size());
             updatePaginationToggles();
             loadAllUsers();
             searchField.textProperty().addListener((obs, oldVal, newVal) -> filterUsers());
-            statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterUsers());
+            roleFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterUsers());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void updatePageCount(int totalItems) {
-        pageCount = (int) Math.ceil(totalItems / (double) PAGE_SIZE);
-
-        if (currentPage > pageCount) currentPage = pageCount;
     }
 
     public void loadPage(int page) {
@@ -84,6 +77,11 @@ public class AdminController implements Initializable {
             addUserCard(allUsersList.get(i));
         }
         lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
+    }
+
+    private void updatePageCount(int totalItems) {
+        pageCount = (int) Math.ceil(totalItems / (double) PAGE_SIZE);
+        if (currentPage > pageCount) currentPage = pageCount;
     }
 
     // Dynamically generate pagination toggle buttons based on current page
@@ -110,23 +108,23 @@ public class AdminController implements Initializable {
     }
 
     public void loadAllUsers() throws SQLException {
-
         new Thread(() -> {
             try {
                 allUsersList = userModel.getAllUsers();
                 Platform.runLater(() ->{
-                    setUpStatusFilter();
-                    filterUsers();
+                    setUpRoleFilter();
+                    pageCount = (int)Math.ceil((double)allUsersList.size() / PAGE_SIZE);
+                    loadPage(1);
+                    updatePaginationToggles();
                 });
             } catch (SQLException e) {
                 System.err.println("Error loading users.");
                 e.printStackTrace();
             }
         }).start();
-
     }
-    public void addUserCard(User user) {
 
+    public void addUserCard(User user) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_CARD));
             Node userCard = loader.load();
@@ -136,13 +134,11 @@ public class AdminController implements Initializable {
             cardContainer.getChildren().add(userCard);
 
         } catch (IOException e) {
-
             e.printStackTrace();
         }
-
     }
 
-    private void setUpStatusFilter() {
+    private void setUpRoleFilter() {
         ObservableList<String> roles = FXCollections.observableArrayList("All");
         roles.addAll(
                 allUsersList.stream()
@@ -150,8 +146,8 @@ public class AdminController implements Initializable {
                         .distinct()
                         .collect(Collectors.toList())
         );
-        statusFilter.setItems(roles);
-        statusFilter.getSelectionModel().selectFirst();
+        roleFilter.setItems(roles);
+        roleFilter.getSelectionModel().selectFirst();
     }
 
 
@@ -177,7 +173,7 @@ public class AdminController implements Initializable {
 
     private void filterUsers() {
         String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
-        String selectedRole = statusFilter.getValue() == null ? "" : statusFilter.getValue().toString().toLowerCase();
+        String selectedRole = roleFilter.getValue() == null ? "" : roleFilter.getValue().toLowerCase();
         List<User> filteredUsers = allUsersList.stream()
                 .filter(user ->
                         user.getFullName().toLowerCase().contains(search) ||
@@ -192,10 +188,11 @@ public class AdminController implements Initializable {
                     }
                 })
                 .collect(Collectors.toList());
-        cardContainer.getChildren().clear();
-        for (User user : filteredUsers) {
-            addUserCard(user);
-        }
+        updatePageCount(filteredUsers.size());
+        this.allUsersList = filteredUsers;
+        currentPage = 1;
+        loadPage(currentPage);
+        updatePaginationToggles();
     }
 
     public void onClickFirstPageBtn(ActionEvent actionEvent) {

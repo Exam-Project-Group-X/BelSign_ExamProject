@@ -58,9 +58,9 @@
 
             <HBox spacing="10">
                 <TextField fx:id="searchField" prefWidth="200" promptText="Search by name, email or role " style="-fx-background-color: ffffff;" styleClass="box" />
-                <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Role" style="-fx-background-color: ffffff;" styleClass="box" />
+                <ComboBox fx:id="roleFilter" prefWidth="150" promptText="Role" style="-fx-background-color: ffffff;" styleClass="box" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="createOrderButton" onAction="#onClickCreateUserBtn" styleClass="create-btn" text="Create user">
+                <Button fx:id="createUserButton" onAction="#onClickCreateUserBtn" styleClass="create-btn" text="Create user">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-plus" iconSize="20" wrappingWidth="20.0" />
                     </graphic></Button>
@@ -106,13 +106,10 @@
                         <FontIcon iconLiteral="bi-chevron-double-left" iconSize="16" />
                     </graphic>
                 </Button>
-                <HBox fx:id="toggleBtnContainer" alignment="CENTER" prefHeight="27.0" prefWidth="220.0" spacing="6.0">
+                <HBox fx:id="toggleBtnContainer" alignment="CENTER" prefHeight="27.0" prefWidth="93.0" spacing="6.0">
                     <children>
-                        <ToggleButton minWidth="35.0" prefHeight="27.0" prefWidth="35.0" selected="true" styleClass="tgBtn" text="1" />
-                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="2" />
-                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="3" />
-                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="4" />
-                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="5" />
+                        <ToggleButton minWidth="35.0" prefHeight="27.0" prefWidth="35.0" selected="true" styleClass="tgBtn" text="10" />
+                        <ToggleButton minWidth="35.0" prefWidth="35.0" styleClass="tgBtn" text="11" />
                     </children>
                 </HBox>
 
