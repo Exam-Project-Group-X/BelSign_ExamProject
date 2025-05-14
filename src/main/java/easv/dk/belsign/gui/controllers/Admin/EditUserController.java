@@ -1,7 +1,7 @@
 package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.gui.AlertUtil;
+import easv.dk.belsign.utils.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;

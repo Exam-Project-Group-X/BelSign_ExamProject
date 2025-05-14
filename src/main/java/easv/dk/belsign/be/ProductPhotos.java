@@ -4,13 +4,13 @@ import java.sql.Timestamp;
 
 public class ProductPhotos {
     private int PhotoID;
-    private String OrderID; // This will hold the Order Number (e.g. "45-00000-000000")
+    private String OrderID; // This will hold the Order Number (e.g. "45-00000-0000")
     private String FilePath; // Path or URL where the photo is stored
-    private String PhotoAngle; // (e.g. "Front", "Back", "Left", "Right")
-    private String Status; // "Approved" or "Rejected"
+    private String PhotoAngle; // ("Front", "Back", "Left", "Right", etc.)
+    private String Status; // "Pending Review", "Approved" or "Rejected"
     private Timestamp CreatedAt; // Timestamp of photo upload
     private Timestamp ReviewedAt; // Timestamp of photo review
-    private String ReviewerUserID; // This will hold the name of the reviewer
+    private String ReviewerUserID; // This will hold the name of the reviewer (QA Employee)
     private String Comment;
 
     // Default constructor

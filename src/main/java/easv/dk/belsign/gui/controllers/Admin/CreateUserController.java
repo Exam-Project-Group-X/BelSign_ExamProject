@@ -2,7 +2,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.gui.AlertUtil;
+import easv.dk.belsign.utils.AlertUtil;
 import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;

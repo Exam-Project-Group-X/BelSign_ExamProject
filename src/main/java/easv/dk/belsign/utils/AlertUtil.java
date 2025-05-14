@@ -1,19 +1,8 @@
-package easv.dk.belsign.gui;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Insets;
+package easv.dk.belsign.utils;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.util.Duration;
-import org.kordamp.ikonli.javafx.FontIcon;
 import org.controlsfx.control.Notifications;
 public class AlertUtil {
     private static Runnable onConfirm;

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Order {
     private int OrderID;
-    private String OrderNumber; // Unique identifier for the order (e.g. "45-00000-000000")
+    private String OrderNumber; // Unique identifier for the order (e.g. "45-00000-0000")
     private String ProductDescription;
     private String OrderStatus; // ("Pending" or "Complete")
     private Timestamp CreatedAt;

@@ -86,12 +86,13 @@
                 </rowConstraints>
             </GridPane>
 
-            <Label fx:id="noOrdersLabel" text="No orders found." visible="false" style="-fx-text-fill: red; -fx-font-size: 16px;" />
-            <Label fx:id="errorLabel" text="" visible="false" wrapText="true" style="-fx-text-fill: red; -fx-font-size: 14;" />
+            <Label fx:id="noOrdersLabel" text="No orders found" visible="false" style="-fx-text-fill: red; -fx-font-size: 18px;" />
 
             <!-- CARD LIST -->
             <VBox fx:id="cardContainer" spacing="5">
             </VBox>
+
+            <Label fx:id="errorLabel" text="" visible="false" wrapText="true" style="-fx-text-fill: red; -fx-font-size: 14;" />
 
             <HBox fx:id="paginationBox" alignment="CENTER" spacing="6" style="-fx-padding: 10;">
                 <!-- Buttons added programmatically -->

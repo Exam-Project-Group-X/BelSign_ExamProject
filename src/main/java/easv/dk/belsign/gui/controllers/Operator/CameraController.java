@@ -1,161 +1,165 @@
 package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.bll.OrderManager;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CameraController {
 
-    public Button UploadPhotosBtn;
-    @FXML
-    private ImageView frontImage, backImage, topImage, leftImage, rightImage;
+    @FXML private GridPane photoGridPane;
+    @FXML private TextField operatorNameField;
 
-    private File frontFile, backFile, topFile, leftFile, rightFile;
+    private final Map<String, PhotoEntry> requiredPhotos = new LinkedHashMap<>();
+    private final List<PhotoEntry> extraPhotos = new ArrayList<>();
+
     private Image placeholderImage;
     private Order selectedOrder;
 
-    private final File imageSaveDirectory = new File("media");
-    private OrderManager orderManager = new OrderManager();
+    private int photoColumnCount = 3;
+    private int photoRowIndex = 0;
+    private int photoColIndex = 0;
+
+    private static class PhotoEntry {
+        ImageView imageView;
+        TextField descriptionField;
+        Image image;
+    }
 
     @FXML
     public void initialize() {
-        if (!imageSaveDirectory.exists()) {
-            imageSaveDirectory.mkdirs();
-        }
+        placeholderImage = new Image(getClass().getResource("/easv/dk/belsign/images/icons/plus2.png").toString());
 
-        URL placeholderUrl = getClass().getResource("/easv/dk/belsign/images/icons/plus2.png");
-        if (placeholderUrl != null) {
-            placeholderImage = new Image(placeholderUrl.toString());
-            initImageView(frontImage, f -> frontFile = f);
-            initImageView(backImage, f -> backFile = f);
-            initImageView(topImage, f -> topFile = f);
-            initImageView(leftImage, f -> leftFile = f);
-            initImageView(rightImage, f -> rightFile = f);
+        String[] requiredLabels = {"Front", "Back", "Top", "Left", "Right"};
+        for (String label : requiredLabels) {
+            PhotoEntry entry = createPhotoEntry(label);
+            requiredPhotos.put(label, entry);
+            addPhotoEntryToGrid(entry);
         }
     }
 
-    private void initImageView(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
-        imageView.setImage(placeholderImage);
-        imageView.setOnMouseClicked(e -> captureAndSetImage(imageView, fileConsumer));
+    private PhotoEntry createPhotoEntry(String defaultDescription) {
+        PhotoEntry entry = new PhotoEntry();
+        entry.imageView = new ImageView(placeholderImage);
+        entry.imageView.setFitHeight(150);
+        entry.imageView.setFitWidth(150);
+        entry.imageView.setPreserveRatio(true);
+        entry.imageView.setStyle("-fx-cursor: hand;");
 
-        ContextMenu menu = new ContextMenu();
+        entry.descriptionField = new TextField(defaultDescription);
+        entry.descriptionField.setPrefWidth(150);
 
-        MenuItem retry = new MenuItem("Retry Capture");
-        retry.setOnAction(e -> captureAndSetImage(imageView, fileConsumer));
-
-        MenuItem delete = new MenuItem("Delete Image");
-        delete.setOnAction(e -> {
-            imageView.setImage(placeholderImage);
-            fileConsumer.accept(null);
+        entry.imageView.setOnMouseClicked(e -> {
+            Image captured = new WebcamCaptureDialog().showAndCapture();
+            if (captured != null) {
+                entry.image = captured;
+                entry.imageView.setImage(captured);
+            }
         });
 
-        menu.getItems().addAll(retry, delete);
-        imageView.setOnContextMenuRequested(e -> menu.show(imageView, e.getScreenX(), e.getScreenY()));
+        return entry;
     }
 
-    private void captureAndSetImage(ImageView imageView, java.util.function.Consumer<File> fileConsumer) {
-        Image captured = new WebcamCaptureDialog().showAndCapture();
-        if (captured != null) {
-            imageView.setImage(captured);
-            fileConsumer.accept(null); // We’re not saving to file anymore
+    private void addPhotoEntryToGrid(PhotoEntry entry) {
+        VBox container = new VBox(5);
+        container.getChildren().addAll(entry.imageView, entry.descriptionField);
+        photoGridPane.add(container, photoColIndex, photoRowIndex);
+
+        photoColIndex++;
+        if (photoColIndex >= photoColumnCount) {
+            photoColIndex = 0;
+            photoRowIndex++;
         }
     }
-
-
-    private byte[] convertToBytes(Image image) {
-        try {
-            BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ImageIO.write(bImage, "png", outputStream);
-            return outputStream.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Failed to convert image.");
-            return null;
-        }
-
-    }
-
 
     @FXML
-    public void uploadImages() throws Exception {
+    public void handleAddExtraPhoto() {
+        PhotoEntry extra = createPhotoEntry("New Angle");
+        extraPhotos.add(extra);
+        addPhotoEntryToGrid(extra);
+    }
 
-
-        if (selectedOrder == null) {
-            showAlert("❌ No order selected.");
+    @FXML
+    public void uploadImages() {
+        if (selectedOrder == null || selectedOrder.getOrderID() <= 0) {
+            showAlert("No valid order selected");
             return;
         }
 
-        System.out.println("📦 Selected Order ID: " + selectedOrder.getOrderID());
-
-        if (selectedOrder.getOrderID() <= 0) {
-            showAlert("❌ Invalid Order ID: " + selectedOrder.getOrderID());
+        String operatorName = operatorNameField.getText().trim();
+        if (operatorName.isEmpty()) {
+            showAlert("Please enter operator name to sign the upload");
             return;
         }
 
-        if (!isCaptured(frontImage) || !isCaptured(backImage) || !isCaptured(topImage) ||
-                !isCaptured(leftImage) || !isCaptured(rightImage)) {
-            showAlert("Please capture all 5 images before uploading.");
-            return;
+        for (Map.Entry<String, PhotoEntry> entry : requiredPhotos.entrySet()) {
+            if (entry.getValue().image == null) {
+                showAlert("Missing required photo: " + entry.getKey());
+                return;
+            }
         }
 
         try {
             ProductPhotosDAO dao = new ProductPhotosDAO();
 
-            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "FRONT", convertToBytes(frontImage.getImage()));
-            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "BACK", convertToBytes(backImage.getImage()));
-            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "TOP", convertToBytes(topImage.getImage()));
-            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "LEFT", convertToBytes(leftImage.getImage()));
-            dao.insertCapturedPhoto(selectedOrder.getOrderID(), "RIGHT", convertToBytes(rightImage.getImage()));
+            for (PhotoEntry entry : requiredPhotos.values()) {
+                dao.insertCapturedPhoto(
+                        selectedOrder.getOrderID(),
+                        entry.descriptionField.getText(),
+                        convertToBytes(entry.image)
+                );
+            }
 
-            showAlert("✅ Images uploaded successfully!");
+            for (PhotoEntry entry : extraPhotos) {
+                if (entry.image != null) {
+                    dao.insertCapturedPhoto(
+                            selectedOrder.getOrderID(),
+                            entry.descriptionField.getText(),
+                            convertToBytes(entry.image)
+                    );
+                }
+            }
+
+            showAlert("All photos uploaded successfully!\nSigned by: " + operatorName);
+            ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("❌ Failed to upload images.");
+            showAlert("Error uploading photos: " + e.getMessage());
         }
-
-        orderManager.updateOrderToPending(selectedOrder);
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
-
-
     }
 
-
-
-
-    private boolean isCaptured(ImageView view) {
-        return view.getImage() != null && view.getImage() != placeholderImage;
+    private byte[] convertToBytes(Image image) throws IOException {
+        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(bImage, "png", outputStream);
+        return outputStream.toByteArray();
     }
 
-    private void showAlert(String message) {
+    private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 
     public void setSelectedOrder(Order order) {
         this.selectedOrder = order;
-        // Perform any additional setup with the selected order if needed
-        System.out.println("Selected Order Number: " + order.getOrderNumber());
-        System.out.println("Selected OrderID: " + order.getOrderID());
     }
 }

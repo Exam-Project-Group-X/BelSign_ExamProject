@@ -91,7 +91,7 @@ public class LoginController implements Initializable {
         }
     }
 
-    // Helper method to validate email format using a regular expression
+    // Helper method to validate e-mail format using a regular expression
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -99,7 +99,6 @@ public class LoginController implements Initializable {
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-
         ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
 }

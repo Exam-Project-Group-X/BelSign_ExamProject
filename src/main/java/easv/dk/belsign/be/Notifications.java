@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class    Notifications {
     private int NotificationID;
-    private String OrderID; // This will hold the Order Number (e.g. "45-00000-000000")
+    private String OrderID; // This will hold the Order Number (e.g. "45-00000-0000")
     private String FromUserID; // This will hold the name of the sender
     private String ToUserID; // This will hold the name of the receiver
     private String Message;

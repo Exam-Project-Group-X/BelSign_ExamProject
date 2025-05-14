@@ -14,12 +14,19 @@
 <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.controlsfx</groupId>
+      <artifactId>controlsfx</artifactId>
+      <version>11.1.2</version>
+    </dependency>
+
     <!-- BootstrapFX stylesheet -->
     <dependency>
       <groupId>org.kordamp.bootstrapfx</groupId>
       <artifactId>bootstrapfx-core</artifactId>
       <version>0.4.0</version>
     </dependency>
+
     <!-- Ikonli runtime + at least one icon pack -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
@@ -36,6 +43,7 @@
       <artifactId>ikonli-bootstrapicons-pack</artifactId>
       <version>12.3.1</version>
     </dependency>
+
     <!-- SLF4J binding -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -49,6 +57,7 @@
       <artifactId>webcam-capture</artifactId>
       <version>0.3.12</version>
     </dependency>
+
     <!-- ZXing Core (QR code reading and writing) -->
     <dependency>
       <groupId>com.google.zxing</groupId>
@@ -61,13 +70,6 @@
       <groupId>com.google.zxing</groupId>
       <artifactId>javase</artifactId>
       <version>3.5.2</version>
-    </dependency>
-
-    <!-- Webcam platform plugin for OpenIMAJ (if needed) -->
-    <dependency>
-      <groupId>com.github.sarxos</groupId>
-      <artifactId>webcam-capture-driver-openimaj</artifactId>
-      <version>0.3.12</version>
     </dependency>
 
     <!-- Add this dependency for BCrypt -->
