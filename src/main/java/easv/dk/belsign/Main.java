@@ -14,22 +14,18 @@ import javafx.stage.Stage;
  * =========================================================
  * */
 
-/// TODO create a navigations printing
-/// ex:
-///
-/// > Now in LOGIN Screen
-///
-/// > Login > QA < Login (to see what windows we have navigated back and forth)
+/// TODO List
+/// - [ ] One window for all
+/// - [ ] Improve loading times
+/// - [ ] Remove photo previews from QA Employee panel Order cards
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         StageManager stageManager = new StageManager(); // Create the StageManager
-        stageManager.setCurrentStage(primaryStage);     // Set the main window
+        stageManager.setCurrentStage(primaryStage); // Set the main window
         ViewManager.INSTANCE.setStageManager(stageManager);
-
-        ViewManager.INSTANCE.showStage(FXMLPath.TITLE_SCREEN, "BelSign - Login", false);
+        ViewManager.INSTANCE.showStage(FXMLPath.TITLE_SCREEN, "BelSign", false);
         primaryStage.setOnShown(e -> primaryStage.centerOnScreen());
-
     }
 
     public static void main(String[] args) {

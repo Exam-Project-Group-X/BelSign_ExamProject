@@ -5,6 +5,7 @@ import easv.dk.belsign.bll.OrderManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.controllers.Operator.components.OperatorOrderCardController;
+
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,7 +67,7 @@ public class OperatorOrdersController {
                 if (filteredOrders.isEmpty()) {
                     noOrdersLabel.setVisible(true);
                     cardContainer.getChildren().clear();
-                    pageInfoLabel.setText("No results");
+                    pageInfoLabel.setText(" ");
                     paginationBox.getChildren().clear();
                 } else {
                     noOrdersLabel.setVisible(false);
@@ -135,7 +136,7 @@ public class OperatorOrdersController {
 
             cardContainer.getChildren().add(card);
         } catch (Exception e) {
-            showError("Error loading order card for Order: " + order.getOrderNumber());
+            showError("Error loading order card for Order Nr.: " + order.getOrderNumber());
         }
     }
 
@@ -153,7 +154,7 @@ public class OperatorOrdersController {
             ViewManager.INSTANCE.getSceneManager().getCurrentStage().centerOnScreen();
 
         } catch (Exception e) {
-            showError("Could not open camera view for Order: " + selectedOrder.getOrderNumber());
+            showError("Could not open camera view for Order Nr.: " + selectedOrder.getOrderNumber());
         }
     }
 
