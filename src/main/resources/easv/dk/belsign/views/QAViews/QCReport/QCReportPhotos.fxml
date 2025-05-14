@@ -10,8 +10,17 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="photoPage" prefHeight="842" prefWidth="595" styleClass="page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.PhotoPageController">
-    <children>
+<AnchorPane
+        fx:id="photoPage"
+        fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.PhotoPageController"
+        prefHeight="842"
+        prefWidth="595"
+        maxHeight="842"
+        maxWidth="595"
+        VBox.vgrow="NEVER"
+        styleClass="page"
+        xmlns="http://javafx.com/javafx/23.0.1"
+        xmlns:fx="http://javafx.com/fxml/1">    <children>
         <!-- Header -->
         <ImageView fitHeight="69" fitWidth="69" layoutX="40" layoutY="20" preserveRatio="true">
             <image>

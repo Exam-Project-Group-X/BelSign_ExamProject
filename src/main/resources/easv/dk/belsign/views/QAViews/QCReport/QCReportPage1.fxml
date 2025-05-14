@@ -11,7 +11,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="page1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportPage1Controller" prefHeight="842" prefWidth="595" styleClass="page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane  fx:id="page1"
+             fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportPage1Controller"
+             prefHeight="842"
+             prefWidth="595"
+             maxHeight="842"
+             maxWidth="595"
+             VBox.vgrow="NEVER"
+             styleClass="page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <!-- Logo -->
         <ImageView fitHeight="69.0" fitWidth="69.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

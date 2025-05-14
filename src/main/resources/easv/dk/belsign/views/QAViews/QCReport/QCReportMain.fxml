@@ -15,18 +15,21 @@
             <Button onAction="#onClickPrintBtn" text="Print /Export PDF"/>
         </ToolBar>
     </top>
-
     <center>
-        <ScrollPane prefWidth="597.0">
+        <ScrollPane fitToWidth="true" fitToHeight="false"
+                    VBox.vgrow="ALWAYS"
+                    maxHeight="Infinity"
+                    prefViewportHeight="800">
             <content>
-                <VBox fx:id="vboxPages" alignment="TOP_CENTER" spacing="40">
+                <VBox fx:id="vboxPages"
+                      alignment="TOP_CENTER"
+                      spacing="40"
+                      maxWidth="595"
+                      prefWidth="595"
+                      style="-fx-background-color: #eeeeee;">
                     <padding>
                         <Insets top="20" right="20" bottom="20" left="20"/>
                     </padding>
-
-                    <!-- This is Page 1 content (main report layout) -->
-<!--                    <fx:include fx:id="page1Controller" source="QCReportPage1.fxml"/>-->
-
                 </VBox>
             </content>
         </ScrollPane>
