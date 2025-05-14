@@ -19,10 +19,22 @@ public class ProductPhotosDAO {
 
     private DBConnection con = new DBConnection();
 
-    public Map<String, byte[]> getPhotosByOrderId(int orderId) throws SQLException {
-        Map<String, byte[]> photos = new HashMap<>();
+    public static class PhotoData {
+        public byte[] photo;
+        public String status;
+        public String rejectionNote;
 
-        String sql = "SELECT PhotoAngle, PhotoData FROM ProductPhotos WHERE OrderID = ?";
+        public PhotoData(byte[] photo, String status, String rejectionNote) {
+            this.photo = photo;
+            this.status = status;
+            this.rejectionNote = rejectionNote;
+        }
+    }
+
+    public Map<String, PhotoData> getPhotosByOrderId(int orderId) throws SQLException {
+        Map<String, PhotoData> photos = new HashMap<>();
+
+        String sql = "SELECT PhotoAngle, PhotoData, Status, RejectionNote FROM ProductPhotos WHERE OrderID = ?";
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -32,7 +44,9 @@ public class ProductPhotosDAO {
             while (rs.next()) {
                 String angle = rs.getString("PhotoAngle");
                 byte[] data = rs.getBytes("PhotoData");
-                photos.put(angle.toUpperCase(), data);
+                String status = rs.getString("Status");
+                String note = rs.getString("RejectionNote");
+                photos.put(angle.toUpperCase(), new PhotoData(data, status, note));
             }
         }
 
@@ -58,8 +72,7 @@ public class ProductPhotosDAO {
     }
 
     public void approvePhoto(int orderId, String angle) throws SQLException {
-
-        String sql = "UPDATE ProductPhotos SET Status = 'Approved' WHERE OrderID = ? AND PhotoAngle = ?";
+        String sql = "UPDATE ProductPhotos SET Status = 'Approved', RejectionNote = NULL WHERE OrderID = ? AND PhotoAngle = ?";
 
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -68,28 +81,22 @@ public class ProductPhotosDAO {
             stmt.setString(2, angle);
 
             int rowsAffected = stmt.executeUpdate();
-
             System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
-
     }
 
-    public void rejectPhoto(int orderId, String angle) throws SQLException {
-
-        String sql = "UPDATE ProductPhotos SET Status = 'Rejected' WHERE OrderID = ? AND PhotoAngle = ?";
+    public void rejectPhoto(int orderId, String angle, String reason) throws SQLException {
+        String sql = "UPDATE ProductPhotos SET Status = 'Rejected', RejectionNote = ? WHERE OrderID = ? AND PhotoAngle = ?";
 
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, orderId);
-            stmt.setString(2, angle);
+            stmt.setString(1, reason);
+            stmt.setInt(2, orderId);
+            stmt.setString(3, angle);
 
             int rowsAffected = stmt.executeUpdate();
-
-            System.out.println("X!!!  Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+            System.out.println("❌ Rejected photo '" + angle + "' for OrderID: " + orderId + " | Reason: " + reason + " (" + rowsAffected + " row(s) affected)");
         }
-
     }
 }
-
-
