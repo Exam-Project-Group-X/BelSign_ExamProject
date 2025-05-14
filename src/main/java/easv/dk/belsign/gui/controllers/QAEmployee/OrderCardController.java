@@ -9,6 +9,7 @@ import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -122,24 +123,15 @@ public class OrderCardController {
         PhotoReviewController controller = pair.getValue();
 
 
-/// refactor needed here also
         controller.setModel(new PhotosModel());
         controller.setQAEmployeeModel(new QAEmployeeModel());
 
-
-        // ✅ Inject order data
         controller.setOrderId(order.getOrderID());
         controller.setCaption("Order #" + order.getOrderNumber());
         controller.loadPhotosForOrder(order.getOrderID());
 
-
-
-        Stage stage = new Stage();
-        stage.setTitle("Photo Review - " + order.getOrderNumber());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.show();
-
+        Stage currentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        currentStage.setScene(new Scene(root));
 
     }
 }
