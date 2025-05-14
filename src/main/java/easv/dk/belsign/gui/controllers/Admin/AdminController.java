@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 public class AdminController implements Initializable {
+    @FXML private Label welcomeLabel;
     @FXML
     private HBox toggleBtnContainer;
     @FXML
@@ -56,6 +57,8 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+
+
             // Get all users from the UserModel
             allUsersList = userModel.getAllUsers();
             loadPage(currentPage);
@@ -68,6 +71,10 @@ public class AdminController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setLoggedInUser(User user) {
+        welcomeLabel.setText("Welcome back, " + user.getFullName() + "!");
     }
 
     private void updatePageCount(int totalItems) {

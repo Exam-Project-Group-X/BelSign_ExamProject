@@ -3,15 +3,22 @@ package easv.dk.belsign.gui.controllers.Login;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.controllers.Admin.AdminController;
+import easv.dk.belsign.gui.controllers.QAEmployee.QAEmployeeController;
 import easv.dk.belsign.gui.models.UserModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -81,11 +88,40 @@ public class LoginController implements Initializable {
 
         User user = userModel.authenticate(email, password);
         if (user != null) {
-            switch (user.getRoleName()) {
-                case "Admin" -> ViewManager.INSTANCE.showScene(FXMLPath.ADMIN_DASHBOARD);
-                case "QA Employee" -> ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
-                default -> ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getRoleName());
+            try {
+                FXMLLoader loader;
+                Parent root;
+                Scene scene;
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+
+                switch (user.getRoleName()) {
+                    case "Admin" -> {
+                        loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
+                        root = loader.load();
+                        AdminController adminController = loader.getController();
+                        adminController.setLoggedInUser(user);
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                    }
+                    case "QA Employee" -> {
+                        loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_EMPLOYEE_VIEW));
+                        root = loader.load();
+                        QAEmployeeController qaController = loader.getController();
+                        qaController.setLoggedInUser(user); // if applicable
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                    }
+                    default -> {
+                        ViewManager.INSTANCE.showError("Login failed", "Access denied for role: " + user.getRoleName());
+                        return;
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                ViewManager.INSTANCE.showError("Error", "Could not load the dashboard.");
             }
+
         } else {
             ViewManager.INSTANCE.showError("Login failed", "Invalid email or password");
         }

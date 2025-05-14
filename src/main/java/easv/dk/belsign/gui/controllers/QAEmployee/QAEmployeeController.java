@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class QAEmployeeController implements Initializable {
+    public Label welcomeLabel;
     @FXML
     private HBox toggleBtnContainer;
     @FXML
@@ -48,6 +50,7 @@ public class QAEmployeeController implements Initializable {
     private List<Order> orders;
     private ToggleGroup toggleGroup = new ToggleGroup();
     private final QAEmployeeModel qamodel = new QAEmployeeModel();
+    private User loggedInUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,6 +64,14 @@ public class QAEmployeeController implements Initializable {
             e.printStackTrace();
         }
     }
+
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+        // Optional: update welcome label or other UI
+        welcomeLabel.setText("Welcome back, " + user.getFullName() + "!");
+    }
+
 
     /// Generate QC Report button only clickable after approving ALL photos (i.e. Status "Complete"
     ///  -> Then you can Generate QC Report)
