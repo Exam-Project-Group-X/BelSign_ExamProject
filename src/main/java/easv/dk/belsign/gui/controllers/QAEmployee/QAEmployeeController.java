@@ -38,8 +38,7 @@ public class QAEmployeeController implements Initializable {
     private Button nextPageBtn;
     @FXML
     private VBox cardContainer;
-    @FXML
-    private Button createOrderButton;
+
     @FXML
     private Button logoutButton;
 

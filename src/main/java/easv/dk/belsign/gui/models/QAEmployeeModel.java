@@ -19,5 +19,4 @@ public class QAEmployeeModel {
     public void setOrderToCompleted(int orderId) throws Exception {
         orderManager.updateOrderToComplete(orderId);
     }
-
     }
