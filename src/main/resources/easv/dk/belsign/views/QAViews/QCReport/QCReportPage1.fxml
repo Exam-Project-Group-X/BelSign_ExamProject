@@ -11,14 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane  fx:id="page1"
-             fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportPage1Controller"
-             prefHeight="842"
-             prefWidth="595"
-             maxHeight="842"
-             maxWidth="595"
-             VBox.vgrow="NEVER"
-             styleClass="page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="page1" maxHeight="872.0" maxWidth="595" prefHeight="842.0" prefWidth="595" styleClass="page" VBox.vgrow="NEVER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportPage1Controller">
     <children>
         <!-- Logo -->
         <ImageView fitHeight="69.0" fitWidth="69.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -68,12 +61,7 @@
                         <Label fx:id="lblOrderNo" text="lblOrderNo" />
                     </children>
                 </HBox>
-                <HBox spacing="10">
-                    <children>
-                        <Label style="-fx-font-weight:bold;" text="Operator:" />
-                        <Label fx:id="lblOperator" text="lblOperator" />
-                    </children>
-                </HBox>
+                <HBox spacing="10" />
             </children>
         </VBox>
 
@@ -94,14 +82,6 @@
                 <RowConstraints prefHeight="140.0" />
             </rowConstraints>
             <children>
-                <VBox alignment="TOP_LEFT" spacing="4" style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;">
-                    <Label style="-fx-font-weight:bold;" text="Operator's Signature: (digital)" />
-                    <Label fx:id="lblOpSign" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
-                </VBox>
-                <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;" GridPane.columnIndex="1">
-                    <Label style="-fx-font-weight:bold;" text="Date:" />
-                    <Label fx:id="lblOpSignDate" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
-                </VBox>
                 <VBox style="-fx-border-color: #003f73; -fx-border-width: 0 0 1 0;" GridPane.rowIndex="1">
                     <Label style="-fx-font-weight:bold;" text="QA Employee: (digital)" />
                     <Label fx:id="lblQaSign" layoutX="10.0" layoutY="10.0" style="-fx-font-weight:bold;" />
