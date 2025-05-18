@@ -1,0 +1,30 @@
+.status-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;        /* semibold */
+    -fx-text-fill: #ffffff;
+    -fx-padding: 2 12;           /* vert horiz */
+    -fx-background-radius: 999;  /* full pill */
+    -fx-border-radius: 999;
+}
+
+.status-new {
+    -fx-background-color: #007ACD;
+    -fx-text-fill: #FFFFFF;
+}
+
+.status-pending {
+    -fx-background-color: #D98200;
+    -fx-text-fill: #FFFFFF;
+}
+
+.status-complete {
+    -fx-background-color: #118C4F;
+    -fx-text-fill: #FFFFFF;
+}
+
+.status:hover,
+.status:armed,
+.status:focused {
+    -fx-background-color: inherit;   /* stay the same */
+    -fx-effect: none;
+}

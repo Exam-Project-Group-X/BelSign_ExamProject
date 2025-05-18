@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10" styleClass="card" stylesheets="@../../styles/card.css" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
+<GridPane hgap="10" styleClass="card" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
 
     <columnConstraints>
         <ColumnConstraints prefWidth="120" /> <!-- Order ID -->
@@ -27,7 +28,7 @@
     <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
     <AnchorPane fx:id="photoGridPlaceholder" onMouseClicked="#onPhotoGridClick" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="4" />
-    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" text="New" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" styleClass="status-label" stylesheets="@../../styles/orderStatus.css" text="New" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <!-- Update date -->
     <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
@@ -38,4 +39,8 @@
     <rowConstraints>
         <RowConstraints />
     </rowConstraints>
+   <stylesheets>
+      <URL value="@../../styles/card.css" />
+      <URL value="@../../styles/orderStatus.css" />
+   </stylesheets>
 </GridPane>

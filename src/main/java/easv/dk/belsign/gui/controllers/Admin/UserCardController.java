@@ -2,6 +2,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.models.UserModel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.utils.AlertUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.sql.SQLException;
 public class UserCardController {
     @FXML private Label lblRole;
@@ -30,14 +33,17 @@ public class UserCardController {
         this.adminController = adminController;
     }
     public void onClickDeleteUser(ActionEvent actionEvent) {
+        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
         try {
             model.deleteUser(user);
             // Notify parent controller to refresh the cards if available
             if (adminController != null) {
                 adminController.loadAllUsers();
+                AlertUtil.showWarningNotification(owner, "Warning", "User deleted successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AlertUtil.showErrorNotification(owner,"Error", "Failed to delete user.");
         }
     }
     public void onClickEditUser(ActionEvent actionEvent) {
