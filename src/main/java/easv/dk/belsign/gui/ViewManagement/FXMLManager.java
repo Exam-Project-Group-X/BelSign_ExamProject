@@ -24,6 +24,7 @@ public enum FXMLManager {
             e.printStackTrace();
             throw new RuntimeException("Failed to load FXML: " + fxmlPath, e);
         }
+
     }
 
     private static URL getFXMLPath(String fxmlPath) {

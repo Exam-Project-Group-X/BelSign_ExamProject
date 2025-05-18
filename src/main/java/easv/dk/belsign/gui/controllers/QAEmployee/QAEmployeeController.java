@@ -1,13 +1,12 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
+import easv.dk.belsign.gui.ViewManagement.*;
+import javafx.util.Pair;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
-import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -85,20 +84,11 @@ public class QAEmployeeController implements Initializable {
     }
 
     public void addNewOrderCard(Order order) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_ORDER_CARD));
-            Parent card = loader.load();
-
-            ///
-
-            OrderCardController controller = loader.getController();
-            controller.setOrderData(order);
-
-            cardContainer.getChildren().add(card);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Pair<Parent, OrderCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_ORDER_CARD);
+        pair.getValue().setOrderData(order);
+        cardContainer.getChildren().add(pair.getKey());
     }
+
     // Dynamically generate pagination toggle buttons based on current page
     private void updatePaginationToggles() {
         toggleBtnContainer.getChildren().clear();
@@ -123,7 +113,7 @@ public class QAEmployeeController implements Initializable {
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
+        Navigation.goToLoginScreen();
     }
 
     public void onClickFirstPageBtn(ActionEvent actionEvent) {

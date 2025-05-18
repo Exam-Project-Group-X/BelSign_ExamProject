@@ -1,29 +1,29 @@
 package easv.dk.belsign.gui.controllers.Admin;
-import easv.dk.belsign.be.Order;
+
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
+import javafx.util.Pair;
+
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-import easv.dk.belsign.gui.ViewManagement.ViewManager;
+
 import easv.dk.belsign.gui.models.UserModel;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.fxml.Initializable;
 import java.util.stream.Collectors;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -137,18 +137,10 @@ public class AdminController implements Initializable {
     }
     public void addUserCard(User user) {
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_CARD));
-            Node userCard = loader.load();
-            UserCardController userCardController = loader.getController();
-            userCardController.setUserData(user);
-            userCardController.setParentController(this);
-            cardContainer.getChildren().add(userCard);
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        Pair<Parent, UserCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.USER_CARD);
+        pair.getValue().setUserData(user);
+        pair.getValue().setParentController(this);
+        cardContainer.getChildren().add(pair.getKey());
 
     }
 
@@ -167,22 +159,13 @@ public class AdminController implements Initializable {
 
 // TODO - warning: This method is reused in a lot of controllers
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+        Navigation.goToTitleScreen();
     }
 
 
     public void onClickCreateUserBtn(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CREATE_USER));
-            Parent root = loader.load();
-            // Close current stage
-            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            //System.err.println("Failed to load user card for: " + user.getFullName());
-            e.printStackTrace();
-        }
-
+        Pair<Parent, CreateUserController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.CREATE_USER);
+        Navigation.goToCreateUserView(pair.getKey());
     }
 
     private void filterUsers() {

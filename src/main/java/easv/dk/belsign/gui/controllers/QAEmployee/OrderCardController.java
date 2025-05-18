@@ -3,6 +3,7 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController;
 import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
@@ -94,44 +95,11 @@ public class OrderCardController {
 
     public void onClickGenReportBtn(ActionEvent actionEvent) throws IOException {
 
-
-        // Load the view + controller using FXMLManager
-        Pair<Parent, QCReportController> pair =
-                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
-
-        Parent root = pair.getKey();
-        QCReportController controller = pair.getValue();
-
-        // Inject the selected order
-        controller.setSelectedOrder(order);
-
-        // Show the preview window
-        Stage stage = new Stage();
-        stage.setTitle("QC Report Preview - Order #" + order.getOrderNumber());
-        stage.initModality(Modality.APPLICATION_MODAL); // Optional
-        stage.setScene(new Scene(root));
-        stage.show();
-
+        Navigation.openQCReportPreview(order);
 
     }
 
     public void onPhotoGridClick(MouseEvent mouseEvent) {
-        // Load the FXML and get the correct controller
-        Pair<Parent, PhotoReviewController> pair =
-                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
-        Parent root = pair.getKey();
-        PhotoReviewController controller = pair.getValue();
-
-
-        controller.setModel(new PhotosModel());
-        controller.setQAEmployeeModel(new QAEmployeeModel());
-
-        controller.setOrderId(order.getOrderID());
-        controller.setCaption("Order #" + order.getOrderNumber());
-        controller.loadPhotosForOrder(order.getOrderID());
-
-        Stage currentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        currentStage.setScene(new Scene(root));
-
-    }
+        Navigation.goToPhotoReviewView(order);
+}
 }

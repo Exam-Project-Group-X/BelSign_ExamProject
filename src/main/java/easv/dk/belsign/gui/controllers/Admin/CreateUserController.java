@@ -2,6 +2,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.utils.AlertUtil;
 import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
@@ -52,7 +53,7 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickLogoutBtn(ActionEvent event) {
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+        Navigation.goToTitleScreen();
     }
 
 
@@ -111,7 +112,7 @@ public class CreateUserController implements Initializable {
             userModel.createNewUser(newUser);
 
             AlertUtil.showSuccessNotification(owner, "Success", "User created.");
-            navigateBack();
+            Navigation.goToAdminView();;
 
 
         } catch (SQLException e) {
@@ -122,20 +123,10 @@ public class CreateUserController implements Initializable {
 
     public void onClickCancelBtn(ActionEvent event) {
 
-        navigateBack();
+        Navigation.goToAdminView();
     }
 
 
-    private void navigateBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
-            Parent root = loader.load();
-            Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }

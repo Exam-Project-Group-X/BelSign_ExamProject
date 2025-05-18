@@ -105,4 +105,11 @@ public class StageManager {
             e.printStackTrace();
         }
     }
+
+    public void switchScene(Parent root) {
+        stageSettings.currentStage.setScene(new Scene(root));
+        stageSettings.currentStage.sizeToScene();
+        stageSettings.currentStage.centerOnScreen();
+    }
+
 }

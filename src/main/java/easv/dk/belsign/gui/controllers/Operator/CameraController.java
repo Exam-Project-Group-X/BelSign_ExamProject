@@ -3,6 +3,7 @@ package easv.dk.belsign.gui.controllers.Operator;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
@@ -96,6 +97,9 @@ public class CameraController {
         addPhotoEntryToGrid(extra);
     }
 
+    //TODO - Need to remove the order card, once the photos are uploaded
+// Also connected with the new upcoming notification system
+
     @FXML
     public void uploadImages() {
         if (selectedOrder == null || selectedOrder.getOrderID() <= 0) {
@@ -138,7 +142,7 @@ public class CameraController {
             }
 
             showAlert("All photos uploaded successfully!\nSigned by: " + operatorName);
-            ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+            Navigation.goToOperatorDashboard();
 
         } catch (Exception e) {
             e.printStackTrace();

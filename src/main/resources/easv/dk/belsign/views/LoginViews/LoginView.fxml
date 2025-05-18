@@ -67,7 +67,7 @@
                             </StackPane.margin>
                         </Button>
                     </StackPane>
-                    <Button fx:id="loginButton" onAction="#onClickLogoutBtn" prefWidth="312.0" style="-fx-pref-height: 40;" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Log in">
+                    <Button fx:id="loginButton" onAction="#onLoginClick" prefWidth="312.0" style="-fx-pref-height: 40;" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Log in">
                         <VBox.margin>
                      <Insets top="20.0" />
                   </VBox.margin></Button>

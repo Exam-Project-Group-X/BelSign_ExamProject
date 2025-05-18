@@ -1,5 +1,6 @@
 package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.models.UserModel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import javafx.event.ActionEvent;
@@ -44,13 +45,15 @@ public class UserCardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_EDITOR));
             Parent root = loader.load();
-            EditUserController userEditorController = loader.getController();
-            userEditorController.setUserData(user);
-            userEditorController.setManageUsersController(adminController);
 
-            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            currentStage.setScene(new Scene(root));
+            EditUserController controller = loader.getController();
+            controller.setUserData(user);
+            controller.setManageUsersController(adminController);
+
+            Navigation.goToEditUserView(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-}}
+    }
+}

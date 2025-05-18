@@ -2,8 +2,7 @@ package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.bll.OrderManager;
-import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-import easv.dk.belsign.gui.ViewManagement.ViewManager;
+import easv.dk.belsign.gui.ViewManagement.*;
 import easv.dk.belsign.gui.controllers.Operator.components.OperatorOrderCardController;
 
 import javafx.animation.PauseTransition;
@@ -12,16 +11,15 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.util.List;
 
@@ -128,13 +126,14 @@ public class OperatorOrdersController {
 
     public void addOrderCard(Order order) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.OPERATOR_ORDER_CARD));
-            Parent card = loader.load();
+            Pair<Parent, OperatorOrderCardController> pair =
+                    FXMLManager.INSTANCE.getFXML(FXMLPath.OPERATOR_ORDER_CARD);
 
-            OperatorOrderCardController controller = loader.getController();
+            OperatorOrderCardController controller = pair.getValue();
             controller.setOrderData(order, this);
 
-            cardContainer.getChildren().add(card);
+            cardContainer.getChildren().add(pair.getKey());
+
         } catch (Exception e) {
             showError("Error loading order card for Order Nr.: " + order.getOrderNumber());
         }
@@ -142,20 +141,7 @@ public class OperatorOrdersController {
 
     public void openTakePictureView(Order selectedOrder) {
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CAMERA_VIEW));
-            Parent root = loader.load();
-
-            CameraController controller = loader.getController();
-            controller.setSelectedOrder(selectedOrder);
-
-            // Replace the scene manually
-            ViewManager.INSTANCE.getSceneManager().getCurrentStage().setScene(new Scene(root));
-            ViewManager.INSTANCE.getSceneManager().getCurrentStage().centerOnScreen();
-
-        } catch (Exception e) {
-            showError("Could not open camera view for Order Nr.: " + selectedOrder.getOrderNumber());
-        }
+        Navigation.goToCameraView(selectedOrder);
     }
 
     private void showError(String message) {
@@ -173,6 +159,6 @@ public class OperatorOrdersController {
     }
 
     public void OnClickLogoutButton(ActionEvent actionEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+        Navigation.goToTitleScreen();
     }
 }

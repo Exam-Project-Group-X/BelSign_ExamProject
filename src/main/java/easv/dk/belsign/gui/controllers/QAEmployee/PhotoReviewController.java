@@ -1,26 +1,19 @@
         package easv.dk.belsign.gui.controllers.QAEmployee;
 
-        import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-        import easv.dk.belsign.gui.ViewManagement.ViewManager;
+        import easv.dk.belsign.gui.ViewManagement.Navigation;
         import easv.dk.belsign.gui.models.PhotosModel;
         import easv.dk.belsign.gui.models.QAEmployeeModel;
         import javafx.event.ActionEvent;
 
         import easv.dk.belsign.dal.web.ProductPhotosDAO;
         import javafx.fxml.FXML;
-        import javafx.fxml.FXMLLoader;
-        import javafx.scene.Node;
-        import javafx.scene.Parent;
-        import javafx.scene.Scene;
         import javafx.scene.control.Button;
         import javafx.scene.control.TextField;
         import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
         import javafx.scene.layout.HBox;
-        import javafx.stage.Stage;
 
         import java.io.ByteArrayInputStream;
-        import java.io.IOException;
         import java.sql.SQLException;
         import java.util.ArrayList;
         import java.util.List;
@@ -109,11 +102,13 @@
 
 
             public void onClickLogoutBtn(ActionEvent actionEvent) {
-                ViewManager.INSTANCE.showScene(FXMLPath.LOGIN);
+                Navigation.goToTitleScreen();
             }
 
+
+            // The orders load again, when we close, but no need to.
             public void onCloseBtnClick(ActionEvent actionEvent) {
-                ViewManager.INSTANCE.showScene(FXMLPath.QA_EMPLOYEE_VIEW);
+                Navigation.goToQAEmployeeView();
             }
 
 
@@ -147,11 +142,7 @@
 
                 try {
                     qamodel.setOrderToCompleted(currentOrderId);
-                    /// todo refactor
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_EMPLOYEE_VIEW));
-                    Parent root = loader.load();
-                    Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    currentStage.setScene(new Scene(root));
+                    Navigation.goToQAEmployeeView();
 
                 } catch (Exception e) {
                     e.printStackTrace();
