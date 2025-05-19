@@ -18,7 +18,7 @@
     <left>
         <ImageView fx:id="loginImage" fitHeight="391.0" fitWidth="400.0" preserveRatio="true">
          <image>
-            <Image url="@../../images/photos/belmanbg.jpg" />
+            <Image url="@../../images/photos/Profile_brochure_EN_Side_05.jpg" />
          </image></ImageView>
     </left>
 

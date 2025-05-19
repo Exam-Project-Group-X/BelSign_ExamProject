@@ -24,22 +24,21 @@
                 <image>
                     <Image url="@../../images/photos/logo.png" />
                 </image></ImageView>
-         <VBox alignment="CENTER" prefHeight="69.0" prefWidth="138.0">
+         <HBox alignment="CENTER" spacing="25.0">
             <children>
-                <FontIcon iconColor="BLACK" iconLiteral="bi-person-square" iconSize="20" wrappingWidth="20.0" />
+                <FontIcon iconColor="#575757" iconLiteral="bi-person-circle" iconSize="30" opacity="0.8" wrappingWidth="20.0" />
                 <!-- Welcome text -->
                   <Label fx:id="welcomeLabel" prefHeight="26.0" prefWidth="219.0" style="-fx-font-size: 20px;" text="Hello, Lucas!" />
             </children>
-         </VBox>
+         </HBox>
             <Region HBox.hgrow="ALWAYS" />
             <!-- Header icons placeholder -->
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <Button fx:id="settingsButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" textFill="WHITE" />
-                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
                 <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
-                    </graphic></Button>
+                    </graphic>
+            </Button>
             </HBox>
         </HBox>
     </top>
