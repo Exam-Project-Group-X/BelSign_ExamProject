@@ -39,7 +39,7 @@ public class UserCardController {
             // Notify parent controller to refresh the cards if available
             if (adminController != null) {
                 adminController.loadAllUsers();
-                AlertUtil.showWarningNotification(owner, "Warning", "User deleted successfully.");
+                AlertUtil.showErrorNotification(owner, "Warning", "User deleted successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

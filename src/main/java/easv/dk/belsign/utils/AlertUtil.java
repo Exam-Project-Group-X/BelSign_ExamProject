@@ -5,12 +5,19 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 public class AlertUtil {
-    private static Runnable onConfirm;
+
     private AlertUtil() {
         // Private constructor to prevent instantiation
     }
+    /**
+     * Displays a success notification with a custom graphic.
+     *
+     * @param owner   The owner window of the notification.
+     * @param title   The title of the notification.
+     * @param message The message of the notification.
+     */
     public static void showSuccessNotification(Window owner, String title, String message) {
-        Label content = createNotificationContent(title, message, "#35B587");
+        Label content = createNotificationContent(title, message, "#0FA958");
         Notifications.create()
                 .owner(owner)
                 .graphic(content)
@@ -21,8 +28,15 @@ public class AlertUtil {
                 .text("")
                 .show();
     }
+    /**
+     * Displays an warning notification with a custom graphic.
+     *
+     * @param owner   The owner window of the notification.
+     * @param title   The title of the notification.
+     * @param message The message of the notification.
+     */
     public static void showErrorNotification(Window owner, String title, String message) {
-        Label content = createNotificationContent(title, message, "#E57373");
+        Label content = createNotificationContent(title, message, "#D92C2C");
         Notifications.create()
                 .owner(owner)
                 .graphic(content)
@@ -32,25 +46,16 @@ public class AlertUtil {
                 .text("")
                 .show();
     }
-    public static void showWarningNotification(Window owner, String title, String message) {
-        Label content = createNotificationContent(title, message, "#F4B400");
-        Notifications.create()
-                .owner(owner)
-                .graphic(content)
-                .hideAfter(Duration.seconds(5)) // Allow a bit more time for deletion confirmation
-                .position(Pos.BOTTOM_CENTER)
-                .title("")
-                .text("")
-                .show();
-    }
-    private static Label createNotificationContent(String title, String message, String textColor) {
+
+    private static Label createNotificationContent(String title, String message, String bgColor) {
         Label label = new Label(title + ": " + message);
         // Set a transparent background, desired text color and font styling.
         label.setStyle(
-                "-fx-text-fill: " + textColor + ";" +
+                "-fx-text-fill: white;" +
                         "-fx-font-size: 16px;" +
-                        "-fx-padding: 15px 20px;" +    // Increase vertical padding for a higher label
-                        "-fx-background-radius: 3px;"   // Rounded corners with radius 5px
+                        "-fx-padding: 15px 20px;" +
+                        "-fx-background-radius: 3px;" +
+                        "-fx-background-color: " + bgColor + ";"
         );
         return label;
     }
