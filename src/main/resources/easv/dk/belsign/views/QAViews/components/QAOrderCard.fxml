@@ -12,28 +12,24 @@
 
     <columnConstraints>
         <ColumnConstraints prefWidth="120" /> <!-- Order ID -->
-        <ColumnConstraints prefWidth="150" /> <!-- Description -->
-        <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
-        <ColumnConstraints prefWidth="150" /> <!-- Operator -->
+        <ColumnConstraints prefWidth="170" /> <!-- Description -->
+        <ColumnConstraints prefWidth="170" /> <!-- Create date -->
         <ColumnConstraints prefWidth="200" /> <!-- Product Photo -->
-        <ColumnConstraints prefWidth="120" /> <!-- Status -->
-        <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
+        <ColumnConstraints prefWidth="150" /> <!-- Status -->
+        <ColumnConstraints prefWidth="140" /> <!-- Update Date -->
         <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
     </columnConstraints>
-
-    <!-- Labels -->
-    <Label text="[NOT ASSIGNED]" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label fx:id="orderNumberLabel" alignment="CENTER" prefHeight="17.0" prefWidth="132.0" text="45042025001" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label fx:id="descriptionLabel" text="LA1BTID no 71" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Label fx:id="createdAtLabel" text="20 April 2025" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-    <AnchorPane fx:id="photoGridPlaceholder" onMouseClicked="#onPhotoGridClick" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="4" />
-    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" styleClass="status-label" stylesheets="@../../styles/orderStatus.css" text="New" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <AnchorPane fx:id="photoGridPlaceholder" onMouseClicked="#onPhotoGridClick" prefHeight="140" prefWidth="200" style="-fx-border-color: blue; -fx-background-color: #eeeeee;" GridPane.columnIndex="3" />
+    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="100.0" styleClass="status-label" stylesheets="@../../styles/orderStatus.css" text="New" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <!-- Update date -->
-    <Label text="27 April 2025" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Label text="27 April 2025" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
     <!-- Action button -->
-    <Button fx:id="btnGenReport" mnemonicParsing="false" onAction="#onClickGenReportBtn" styleClass="primary-btn" text="GENERATE REPORT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Button fx:id="btnGenReport" mnemonicParsing="false" onAction="#onClickGenReportBtn" styleClass="primary-btn" text="GENERATE REPORT" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
 
     <rowConstraints>
