@@ -66,15 +66,28 @@ public class AdminController implements Initializable {
             loadPage(currentPage);
             updatePaginationToggles();
             loadAllUsers();
-            searchField.textProperty().addListener((obs, oldVal, newVal) -> filterUsers());
-            roleFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterUsers());
+            searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+                try {
+                    filterUsers();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            roleFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+                try {
+                    filterUsers();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void setLoggedInUser(User user) {
-        welcomeLabel.setText("Welcome back, " + user.getFullName() + "!");
+
+        welcomeLabel.setText("Hello, " + user.getFullName() + "!");
     }
 
     private void updatePageCount(int totalItems) {
@@ -145,7 +158,9 @@ public class AdminController implements Initializable {
     }
 
     private void setUpRoleFilter() {
-        ObservableList<String> roles = FXCollections.observableArrayList("All");
+        ObservableList<String> roles = FXCollections.observableArrayList();
+        roles.add("Clear");
+        roles.add("All Roles");
         roles.addAll(
                 allUsersList.stream()
                         .map(user -> user.getRoleName())
@@ -153,7 +168,7 @@ public class AdminController implements Initializable {
                         .collect(Collectors.toList())
         );
         roleFilter.setItems(roles);
-        roleFilter.getSelectionModel().selectFirst();
+        roleFilter.getSelectionModel().select("All Roles");
     }
 
 
@@ -168,17 +183,24 @@ public class AdminController implements Initializable {
         Navigation.goToCreateUserView(pair.getKey());
     }
 
-    private void filterUsers() {
+    private void filterUsers() throws SQLException {
         String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
-        String selectedRole = roleFilter.getValue() == null ? "" : roleFilter.getValue().toLowerCase();
-        List<User> filteredUsers = allUsersList.stream()
+        String roleValue = roleFilter.getValue() == null ? "" : roleFilter.getValue().toLowerCase();
+        final String selectedRole;
+        if (roleValue.equals("clear")) {
+            roleFilter.getSelectionModel().select("All Roles");
+            selectedRole = "all roles";
+        } else {
+            selectedRole = roleValue;
+        }
+        List<User> filteredUsers = userModel.getAllUsers().stream()
                 .filter(user ->
                         user.getFullName().toLowerCase().contains(search) ||
                                 user.getEmail().toLowerCase().contains(search) ||
                                 user.getUsername().toLowerCase().contains(search))
                 .filter(user -> {
                     // If no role is selected, show all users
-                    if (selectedRole.isEmpty() || selectedRole.equals("all")) {
+                    if (selectedRole.isEmpty() || selectedRole.equals("all roles")) {
                         return true;
                     } else {
                         return user.getRoleName().toLowerCase().contains(selectedRole);
@@ -186,13 +208,12 @@ public class AdminController implements Initializable {
                 })
                 .collect(Collectors.toList());
         updatePageCount(filteredUsers.size());
-
-
         this.allUsersList = filteredUsers;
         currentPage = 1;
         loadPage(currentPage);
         updatePaginationToggles();
     }
+
 
     public void onClickFirstPageBtn(ActionEvent actionEvent) {
         currentPage = 1;

@@ -24,20 +24,17 @@
                 <image>
                     <Image url="@../../images/photos/logo.png" />
                 </image></ImageView>
-
-            <!-- Welcome text -->
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, Lucas!" />
-
+            <VBox alignment="CENTER" prefHeight="69.0" prefWidth="138.0">
+                <children>
+                    <FontIcon iconColor="BLACK" iconLiteral="bi-person-square" iconSize="20" wrappingWidth="20.0" />
+                    <!-- Welcome text -->
+                    <Label fx:id="welcomeLabel" prefHeight="26.0" prefWidth="219.0" style="-fx-font-size: 20px;" text="Hello, Lucas!" />
+                </children>
+            </VBox>
             <Region HBox.hgrow="ALWAYS" />
-
             <!-- Header icons placeholder -->
             <HBox alignment="CENTER_LEFT" spacing="15.0">
                 <Button fx:id="settingsButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" textFill="WHITE" />
-                <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../images/photos/Charlie.jpg" />
-                    </image>
-                </ImageView>
                 <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
                 <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
@@ -58,7 +55,7 @@
 
             <HBox spacing="10">
                 <TextField fx:id="searchField" prefWidth="200" promptText="Search by name, email or role " style="-fx-background-color: ffffff;" styleClass="box" />
-                <ComboBox fx:id="roleFilter" prefWidth="150" promptText="Role" style="-fx-background-color: ffffff;" styleClass="box" />
+                <ComboBox fx:id="roleFilter" prefWidth="150" style="-fx-background-color: ffffff;" styleClass="box" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="createUserButton" onAction="#onClickCreateUserBtn" styleClass="create-btn" text="Create user">
                     <graphic>

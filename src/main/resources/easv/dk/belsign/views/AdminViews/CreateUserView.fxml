@@ -15,10 +15,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.CreateUserController">
-
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.CreateUserController">
 
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
@@ -55,9 +55,11 @@
 
             <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 15;" styleClass="card" stylesheets="@../styles/card.css">
 
-                <!-- Card title -->
-                <Label fx:id="actionLabel" style="-fx-font-weight: bold; -fx-padding: 0 0 10 5;" text="Creating new user" />
-
+                <Label style="-fx-font-weight: bold; -fx-padding: 0 0 10 5; -fx-font-size: 18 px;" text="Creating New User">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
                 <Separator />
                 <!-- Form grid -->
 
@@ -72,31 +74,26 @@
 
                     <!-- User Full Name -->
 
-                    <Label fx:id="fullNameLabel" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="FULL NAME*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="fullNameField" promptText="Full Name" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
+                    <Label fx:id="fullNameLabel" style="-fx-font-size: 14px;" text="Full Name*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="fullNameField" promptText="Full Name" style="-fx-font-size: 14px;" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                     <!-- User Email Address -->
 
-                    <Label fx:id="emailLabel" prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="EMAIL*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="emailField" promptText="Email Address" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
+                    <Label fx:id="emailLabel" prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 14px;" text="Email*" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="emailField" promptText="Email Address" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <!-- User Name -->
 
 
-                    <Label fx:id="usernameLabel" prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="USERNAME" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="usernameField" promptText="Username" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
+                    <Label fx:id="usernameLabel" prefHeight="16.0" prefWidth="101.0" style="-fx-font-size: 14px;" text="User Name" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="usernameField" promptText="Username" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <!-- Password -->
-                    <Label fx:id="passwordLabel" prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="PASSWORD*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="passwordField" promptText="Password" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
+                    <Label fx:id="passwordLabel" prefHeight="16.0" prefWidth="114.0" style="-fx-font-size: 14px;" text="Password*" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <!-- User Role -->
-
-                    <Label fx:id="labelRole" style="-fx-font-size: 11px; -fx-font-weight: bold;" text="ROLE*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <ComboBox fx:id="roleComboBox" promptText="Select Role" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label fx:id="labelRole" style="-fx-font-size: 14px;" text="Role*" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <ComboBox fx:id="roleComboBox" promptText="Select Role" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />

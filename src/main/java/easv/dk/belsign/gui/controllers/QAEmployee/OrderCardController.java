@@ -62,22 +62,16 @@ public class OrderCardController {
         orderNumberLabel.setText(order.getOrderNumber());
         descriptionLabel.setText(order.getProductDescription() == null ? "No description" : order.getProductDescription());
         createdAtLabel.setText(order.getCreatedAt() != null ? order.getCreatedAt().toString() : "Now");
+        /* ----- status handling ----- */
         String status = order.getOrderStatus();
         statusLabel.setText(status);
-        if ("New".equals(status)) {
-            statusLabel.setStyle("-fx-background-color: #F7EAEA; -fx-text-fill: #E57373;");
-        } else if ("Pending".equals(status)) {
-            statusLabel.setStyle("-fx-background-color: #F7F3EA; -fx-text-fill: #F4B400;");
-        } else if ("Complete".equals(status)) {
-            statusLabel.setStyle("-fx-background-color: #EAF7F3; -fx-text-fill: #35B587;");
-        } else {
-            statusLabel.setStyle("");
+        statusLabel.getStyleClass().removeAll("status-new", "status-pending", "status-complete");
+        switch (status) {
+            case "New"      -> statusLabel.getStyleClass().add("status-new");
+            case "Pending"  -> statusLabel.getStyleClass().add("status-pending");
+            case "Complete" -> statusLabel.getStyleClass().add("status-complete");
         }
-        if ("Complete".equals(status)) {
-            btnGenReport.setDisable(false);
-        } else {
-            btnGenReport.setDisable(true);
-        }
+        btnGenReport.setDisable(!"Complete".equals(status));
         // Load photos for the order
         if (photoGridController != null) {
             photoGridController.loadPhotosForOrder(order.getOrderID());
