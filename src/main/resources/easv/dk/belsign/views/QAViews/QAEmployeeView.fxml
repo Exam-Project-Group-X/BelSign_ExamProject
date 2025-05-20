@@ -74,12 +74,11 @@
             <GridPane hgap="10" style="-fx-padding: 8 0 8 0; -fx-background-color: F9FAFB; -fx-border-color: #d6d6d6; -fx-border-width: 0 0 1 0;" styleClass="card" stylesheets="@../styles/card.css">
                 <columnConstraints>
                     <ColumnConstraints prefWidth="120" /> <!-- Order ID -->
-                    <ColumnConstraints prefWidth="150" /> <!-- Description -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Create Date -->
-                    <ColumnConstraints prefWidth="150" /> <!-- Operator -->
+                    <ColumnConstraints prefWidth="170" /> <!-- Description -->
+                    <ColumnConstraints prefWidth="170" /> <!-- Create date -->
                     <ColumnConstraints prefWidth="200" /> <!-- Product Photo -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Status -->
-                    <ColumnConstraints prefWidth="120" /> <!-- Update Date -->
+                    <ColumnConstraints prefWidth="150" /> <!-- Status -->
+                    <ColumnConstraints prefWidth="140" /> <!-- Update Date -->
                     <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
                 </columnConstraints>
 
@@ -87,10 +86,9 @@
                     <Label alignment="CENTER" styleClass="col-title" stylesheets="@../styles/app.css" text="ORDER ID" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     <Label styleClass="col-title" text="DESCRIPTION" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     <Label styleClass="col-title" text="CREATE DATE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                    <Label styleClass="col-title" text="OPERATOR" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                    <Label styleClass="col-title" text="PRODUCT PHOTO" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                    <Label styleClass="col-title" text="STATUS" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                    <Label styleClass="col-title" text="UPDATE DATE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                    <Label styleClass="col-title" text="PRODUCT PHOTO" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                    <Label styleClass="col-title" text="STATUS" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                    <Label styleClass="col-title" text="UPDATE DATE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                 </children>
                 <rowConstraints>
                     <RowConstraints />
