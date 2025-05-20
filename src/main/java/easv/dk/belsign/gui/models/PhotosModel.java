@@ -12,8 +12,8 @@ public class PhotosModel {
         photosManager.approvePhoto(orderId, angle);
     }
 
-    public void rejectPhoto(int orderId, String angle) throws SQLException {
-        photosManager.rejectPhoto(orderId, angle);
+    public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
+        photosManager.rejectPhoto(orderId, angle, comment);
     }
 
 }

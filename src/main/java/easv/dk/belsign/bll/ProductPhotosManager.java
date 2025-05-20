@@ -11,7 +11,7 @@ public class ProductPhotosManager {
         photosDAO.approvePhoto(orderId, angle);
     }
 
-    public void rejectPhoto(int orderId, String angle) throws SQLException {
-        photosDAO.rejectPhoto(orderId, angle);
+    public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
+        photosDAO.rejectPhoto(orderId, angle, comment);
     }
 }

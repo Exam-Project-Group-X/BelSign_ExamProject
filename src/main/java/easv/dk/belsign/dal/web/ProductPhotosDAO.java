@@ -60,19 +60,18 @@ public class ProductPhotosDAO {
         }
     }
 
-    public void rejectPhoto(int orderId, String angle) throws SQLException {
-
-        String sql = "UPDATE ProductPhotos SET Status = 'Rejected' WHERE OrderID = ? AND PhotoAngle = ?";
+    public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
+        String sql = "UPDATE ProductPhotos SET Status = 'Rejected', Comment = ? WHERE OrderID = ? AND PhotoAngle = ?";
 
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, orderId);
-            stmt.setString(2, angle);
+            stmt.setString(1, comment);
+            stmt.setInt(2, orderId);
+            stmt.setString(3, angle);
 
             int rowsAffected = stmt.executeUpdate();
-
-            System.out.println("X!!!  Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
+            System.out.println("❌ Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
     }
 }
