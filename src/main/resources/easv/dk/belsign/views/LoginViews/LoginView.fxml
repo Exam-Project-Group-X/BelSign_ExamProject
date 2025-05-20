@@ -16,9 +16,9 @@
 <BorderPane prefHeight="388.0" prefWidth="800.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Login.LoginController">
     <!-- Left image side -->
     <left>
-        <ImageView fx:id="loginImage" fitHeight="391.0" fitWidth="400.0" preserveRatio="true">
+        <ImageView fx:id="loginImage" fitHeight="400.0" fitWidth="400.0" preserveRatio="true" smooth="true">
          <image>
-            <Image url="@../../images/photos/belmanbg.jpg" />
+            <Image url="@../../images/photos/Profile_brochure_EN_Side_05.jpg.jpg" />
          </image></ImageView>
     </left>
 

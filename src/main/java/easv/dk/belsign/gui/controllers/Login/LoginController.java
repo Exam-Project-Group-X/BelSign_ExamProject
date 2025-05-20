@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -20,6 +21,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
+    public ImageView loginImage;
     @FXML
     private TextField loginEmail;
     @FXML

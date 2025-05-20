@@ -20,6 +20,7 @@
 <BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.EditUserController">
 
 
+
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
@@ -27,25 +28,21 @@
                 <image>
                     <Image url="@../../images/photos/logo.png" />
                 </image></ImageView>
-
-            <!-- Welcome text -->
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome back, Lucas!" />
-
+            <HBox alignment="CENTER" spacing="25.0">
+                <children>
+                    <FontIcon iconColor="#575757" iconLiteral="bi-person-circle" iconSize="30" opacity="0.8" wrappingWidth="20.0" />
+                    <!-- Welcome text -->
+                    <Label fx:id="welcomeLabel" prefHeight="26.0" prefWidth="219.0" style="-fx-font-size: 20px;" text="Hello, Lucas!" />
+                </children>
+            </HBox>
             <Region HBox.hgrow="ALWAYS" />
-
             <!-- Header icons placeholder -->
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../images/photos/Charlie.jpg" />
-                    </image>
-                </ImageView>
-
-                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
                 <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
-                    </graphic></Button>
+                    </graphic>
+                </Button>
             </HBox>
         </HBox>
     </top>
@@ -60,6 +57,7 @@
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font></Label>
+
                 <Separator />
                 <!-- Form grid -->
 
@@ -74,13 +72,13 @@
 
                     <!-- User Full Name -->
 
-                     <Label style="-fx-font-size: 14 px;" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-size: 14 px;" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="fullNameField" promptText="Full Name" style="-fx-font-size: 14px;" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                     <!-- User Email Address -->
 
-                     <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 14 px;" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 14 px;" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="emailField" promptText="Email Address" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- User Name -->
@@ -91,7 +89,7 @@
 
 
                     <!-- Password -->
-                     <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 14 px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 14 px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
 
