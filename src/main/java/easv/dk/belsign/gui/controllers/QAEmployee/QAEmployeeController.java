@@ -20,7 +20,8 @@ import java.util.ResourceBundle;
 
 public class QAEmployeeController implements Initializable {
     public Label welcomeLabel;
-    public ComboBox statusFilter;
+    @FXML
+    private ComboBox<String> statusFilter;
     public TextField searchField;
     private List<Order> filteredOrders;
 
@@ -65,8 +66,8 @@ public class QAEmployeeController implements Initializable {
 
     private void setupStatusFilter() {
         statusFilter.getItems().clear();
-        statusFilter.getItems().addAll("All Statuses", "Pending", "Complete");
-        statusFilter.getSelectionModel().select("All Statuses");
+        statusFilter.getItems().addAll("All", "Pending", "Complete");
+        statusFilter.getSelectionModel().select("Pending");
     }
 
     private void setupSearchAndFilterListeners() {
@@ -81,7 +82,7 @@ public class QAEmployeeController implements Initializable {
         List<Order> filtered = orders.stream()
                 .filter(order -> String.valueOf(order.getOrderNumber()).toLowerCase().contains(search))
                 .filter(order -> {
-                    if (selectedStatus.equals("All Statuses")) return true;
+                    if (selectedStatus.equals("All")) return true;
                     return order.getOrderStatus().equalsIgnoreCase(selectedStatus);
                 })
                 .toList();
@@ -161,14 +162,14 @@ public class QAEmployeeController implements Initializable {
 
     public void onClickFirstPageBtn(ActionEvent actionEvent) {
         currentPage = 1;
-        loadPage(currentPage);
+        loadFilteredPage(filteredOrders);
         updatePaginationToggles(filteredOrders);
     }
 
     public void onClickPrevPageBtn(ActionEvent actionEvent) {
         if (currentPage > 1) {
             currentPage--;
-            loadPage(currentPage);
+            loadFilteredPage(filteredOrders);
             updatePaginationToggles(filteredOrders);
         }
     }
@@ -176,14 +177,14 @@ public class QAEmployeeController implements Initializable {
     public void onCLickNextPageBtn(ActionEvent actionEvent) {
         if (currentPage < pageCount) {
             currentPage++;
-            loadPage(currentPage);
+            loadFilteredPage(filteredOrders);
             updatePaginationToggles(filteredOrders);
         }
     }
 
     public void onClickLastPageBtn(ActionEvent actionEvent) {
         currentPage = pageCount;
-        loadPage(currentPage);
+        loadFilteredPage(filteredOrders);
         updatePaginationToggles(filteredOrders);
     }
 

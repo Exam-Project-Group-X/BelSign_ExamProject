@@ -73,9 +73,9 @@ public class OrderCardController {
         }
         btnGenReport.setDisable(!"Complete".equals(status));
         // Load photos for the order
-        if (photoGridController != null) {
-            photoGridController.loadPhotosForOrder(order.getOrderID());
-        }
+//        if (photoGridController != null) {
+//            photoGridController.loadPhotosForOrder(order.getOrderID());
+//        }
 //TODO add the icon plus or minus if approved or not
         // Anchor and inject photo grid
         AnchorPane.setTopAnchor(loadedPhotoGrid, 0.0);

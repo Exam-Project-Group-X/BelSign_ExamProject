@@ -64,7 +64,7 @@
             </HBox>
 
             <HBox spacing="10">
-                <ComboBox fx:id="orderIdFilter" prefWidth="120" promptText="Order ID" style="-fx-background-color: ffffff;" styleClass="box" />
+<!--                <ComboBox fx:id="orderIdFilter" prefWidth="120" promptText="Order ID" style="-fx-background-color: ffffff;" styleClass="box" />-->
                 <TextField fx:id="searchField" prefWidth="200" promptText="Search" style="-fx-background-color: ffffff;" styleClass="box" />
                 <ComboBox fx:id="statusFilter" prefWidth="150" promptText="Status" style="-fx-background-color: ffffff;" styleClass="box" />
                 <Region HBox.hgrow="ALWAYS" />
