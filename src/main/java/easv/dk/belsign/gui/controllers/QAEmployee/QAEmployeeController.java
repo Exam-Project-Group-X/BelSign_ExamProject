@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.gui.ViewManagement.*;
+import javafx.scene.control.*;
 import javafx.util.Pair;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
@@ -9,12 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +20,10 @@ import java.util.ResourceBundle;
 
 public class QAEmployeeController implements Initializable {
     public Label welcomeLabel;
+    public ComboBox statusFilter;
+    public TextField searchField;
+    private List<Order> filteredOrders;
+
     @FXML
     private HBox toggleBtnContainer;
     @FXML
@@ -53,15 +54,57 @@ public class QAEmployeeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            // Get all orders from the QAEmployeeModel
             orders = qamodel.getAllOrders();
-            pageCount = (int)Math.ceil((double)orders.size() / PAGE_SIZE);
-            loadPage(currentPage);
-            updatePaginationToggles();
+            setupStatusFilter();
+            setupSearchAndFilterListeners();
+            applyFilters();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void setupStatusFilter() {
+        statusFilter.getItems().clear();
+        statusFilter.getItems().addAll("All Statuses", "Pending", "Complete");
+        statusFilter.getSelectionModel().select("All Statuses");
+    }
+
+    private void setupSearchAndFilterListeners() {
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+    }
+
+    private void applyFilters() {
+        String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
+        String selectedStatus = statusFilter.getValue() == null ? "All Statuses" : statusFilter.getValue().toString();
+
+        List<Order> filtered = orders.stream()
+                .filter(order -> String.valueOf(order.getOrderNumber()).toLowerCase().contains(search))
+                .filter(order -> {
+                    if (selectedStatus.equals("All Statuses")) return true;
+                    return order.getOrderStatus().equalsIgnoreCase(selectedStatus);
+                })
+                .toList();
+
+        filteredOrders = filtered;
+
+        pageCount = (int)Math.ceil((double)filtered.size() / PAGE_SIZE);
+        currentPage = Math.min(currentPage, pageCount == 0 ? 1 : pageCount);
+
+        loadFilteredPage(filteredOrders);
+        updatePaginationToggles(filteredOrders);
+    }
+
+    private void loadFilteredPage(List<Order> list) {
+        cardContainer.getChildren().clear();
+        int start = (currentPage - 1) * PAGE_SIZE;
+        int end = Math.min(start + PAGE_SIZE, list.size());
+        for (int i = start; i < end; i++) {
+            addNewOrderCard(list.get(i));
+        }
+        lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
+    }
+
 
 
     public void setLoggedInUser(User user) {
@@ -90,7 +133,7 @@ public class QAEmployeeController implements Initializable {
     }
 
     // Dynamically generate pagination toggle buttons based on current page
-    private void updatePaginationToggles() {
+    private void updatePaginationToggles(List<Order> filtered) {
         toggleBtnContainer.getChildren().clear();
         int startPage = ((currentPage - 1) / TOGGLE_COUNT) * TOGGLE_COUNT + 1;
         int endPage = Math.min(startPage + TOGGLE_COUNT - 1, pageCount);
@@ -105,8 +148,8 @@ public class QAEmployeeController implements Initializable {
             int pageNum = i;
             toggle.setOnAction(e -> {
                 currentPage = pageNum;
-                loadPage(currentPage);
-                updatePaginationToggles();
+                loadFilteredPage(filtered);
+                updatePaginationToggles(filtered);
             });
             toggleBtnContainer.getChildren().add(toggle);
         }
@@ -119,14 +162,14 @@ public class QAEmployeeController implements Initializable {
     public void onClickFirstPageBtn(ActionEvent actionEvent) {
         currentPage = 1;
         loadPage(currentPage);
-        updatePaginationToggles();
+        updatePaginationToggles(filteredOrders);
     }
 
     public void onClickPrevPageBtn(ActionEvent actionEvent) {
         if (currentPage > 1) {
             currentPage--;
             loadPage(currentPage);
-            updatePaginationToggles();
+            updatePaginationToggles(filteredOrders);
         }
     }
 
@@ -134,14 +177,14 @@ public class QAEmployeeController implements Initializable {
         if (currentPage < pageCount) {
             currentPage++;
             loadPage(currentPage);
-            updatePaginationToggles();
+            updatePaginationToggles(filteredOrders);
         }
     }
 
     public void onClickLastPageBtn(ActionEvent actionEvent) {
         currentPage = pageCount;
         loadPage(currentPage);
-        updatePaginationToggles();
+        updatePaginationToggles(filteredOrders);
     }
 
 
