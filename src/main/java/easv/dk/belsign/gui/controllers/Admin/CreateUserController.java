@@ -2,7 +2,6 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.utils.AlertUtil;
 import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
@@ -30,17 +29,15 @@ import java.util.ResourceBundle;
 
 public class CreateUserController implements Initializable {
 
-    public Label labelRole;
+    @FXML private Label labelRole;
     @FXML private Button cancelBtn;
     @FXML private Label actionLabel;
-    @FXML private Label fullNameLabel, emailLabel, usernameLabel, passwordLabel;
+    @FXML private Label fullNameLabel, emailLabel, passwordLabel;
     @FXML private Button continueBtn;
-    @FXML private TextField usernameField, fullNameField, emailField, passwordField;
+    @FXML private TextField fullNameField, emailField, passwordField;
     @FXML private ComboBox<String> roleComboBox;
 
     private static final UserModel userModel = new UserModel();
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,21 +50,18 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickLogoutBtn(ActionEvent event) {
-        Navigation.goToTitleScreen();
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
-
-
 
     public void onClickContinueBtn(ActionEvent event) {
         Window owner = ((Node) event.getSource()).getScene().getWindow();
 
-        String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
         String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
-        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || rawPassword.isEmpty()) {
+        if (fullName.isEmpty() || email.isEmpty() || rawPassword.isEmpty()) {
             AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
             return;
         }
@@ -102,17 +96,13 @@ public class CreateUserController implements Initializable {
                     AlertUtil.showErrorNotification(owner, "Duplicate Email", "A user with this email already exists.");
                     return;
                 }
-                if (existingUser.getUsername().equalsIgnoreCase(username)) {
-                    AlertUtil.showErrorNotification(owner, "Duplicate Username", "A user with this username already exists.");
-                    return;
-                }
             }
 
-            User newUser = new User(0, username, hashedPassword, "", fullName, email, roleId, null, null, true, roleName);
+            User newUser = new User(0, hashedPassword, "", fullName, email, roleId, null, null, true, roleName);
             userModel.createNewUser(newUser);
 
             AlertUtil.showSuccessNotification(owner, "Success", "User created.");
-            Navigation.goToAdminView();;
+            navigateBack();
 
 
         } catch (SQLException e) {
@@ -122,11 +112,17 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickCancelBtn(ActionEvent event) {
-
-        Navigation.goToAdminView();
+        navigateBack();
     }
 
-
-
-
+    private void navigateBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
+            Parent root = loader.load();
+            Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

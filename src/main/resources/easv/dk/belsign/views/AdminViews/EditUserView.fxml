@@ -81,24 +81,17 @@
                     <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 14 px;" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="emailField" promptText="Email Address" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                    <!-- User Name -->
-
-
-                    <Label prefHeight="14.0" prefWidth="76.0" style="-fx-font-size: 14 px;" text="User Name" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="usernameField" promptText="Username" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
 
                     <!-- Password -->
-                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 14 px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 14 px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
 
                     <!-- User Role -->
 
-                    <Label style="-fx-font-size: 14 px;" text="Role" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <TextField fx:id="roleField" promptText="Select Role" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label style="-fx-font-size: 14 px;" text="Role" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="roleField" promptText="Select Role" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     <rowConstraints>
-                        <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />

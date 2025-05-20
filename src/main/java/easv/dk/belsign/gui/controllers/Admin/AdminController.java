@@ -1,29 +1,29 @@
 package easv.dk.belsign.gui.controllers.Admin;
-
-import easv.dk.belsign.gui.ViewManagement.FXMLManager;
-import easv.dk.belsign.gui.ViewManagement.Navigation;
-import javafx.util.Pair;
-
+import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
-
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
 import javafx.application.Platform;
-
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import java.util.stream.Collectors;
-
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -58,8 +58,6 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-
-
             // Get all users from the UserModel
             allUsersList = userModel.getAllUsers();
             updatePageCount(allUsersList.size());
@@ -86,7 +84,6 @@ public class AdminController implements Initializable {
     }
 
     public void setLoggedInUser(User user) {
-
         welcomeLabel.setText("Hello, " + user.getFullName() + "!");
     }
 
@@ -150,11 +147,16 @@ public class AdminController implements Initializable {
     }
     public void addUserCard(User user) {
 
-        Pair<Parent, UserCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.USER_CARD);
-        pair.getValue().setUserData(user);
-        pair.getValue().setParentController(this);
-        cardContainer.getChildren().add(pair.getKey());
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_CARD));
+            Node userCard = loader.load();
+            UserCardController userCardController = loader.getController();
+            userCardController.setUserData(user);
+            userCardController.setParentController(this);
+            cardContainer.getChildren().add(userCard);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpRoleFilter() {
@@ -172,15 +174,24 @@ public class AdminController implements Initializable {
     }
 
 
-// TODO - warning: This method is reused in a lot of controllers
+    // TODO - warning: This method is reused in a lot of controllers
     public void onClickLogoutBtn(ActionEvent actionEvent) {
-        Navigation.goToTitleScreen();
+        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
     }
 
 
     public void onClickCreateUserBtn(ActionEvent actionEvent) {
-        Pair<Parent, CreateUserController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.CREATE_USER);
-        Navigation.goToCreateUserView(pair.getKey());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.CREATE_USER));
+            Parent root = loader.load();
+            // Close current stage
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+        } catch (IOException e) {
+            //System.err.println("Failed to load user card for: " + user.getFullName());
+            e.printStackTrace();
+        }
+
     }
 
     private void filterUsers() throws SQLException {
@@ -196,8 +207,7 @@ public class AdminController implements Initializable {
         List<User> filteredUsers = userModel.getAllUsers().stream()
                 .filter(user ->
                         user.getFullName().toLowerCase().contains(search) ||
-                                user.getEmail().toLowerCase().contains(search) ||
-                                user.getUsername().toLowerCase().contains(search))
+                                user.getEmail().toLowerCase().contains(search))
                 .filter(user -> {
                     // If no role is selected, show all users
                     if (selectedRole.isEmpty() || selectedRole.equals("all roles")) {
@@ -208,12 +218,13 @@ public class AdminController implements Initializable {
                 })
                 .collect(Collectors.toList());
         updatePageCount(filteredUsers.size());
+
+
         this.allUsersList = filteredUsers;
         currentPage = 1;
         loadPage(currentPage);
         updatePaginationToggles();
     }
-
 
     public void onClickFirstPageBtn(ActionEvent actionEvent) {
         currentPage = 1;
@@ -242,4 +253,5 @@ public class AdminController implements Initializable {
         loadPage(currentPage);
         updatePaginationToggles();
     }
+
 }

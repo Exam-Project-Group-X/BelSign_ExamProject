@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 public class User {
     private int userID;
-    private String username;
     private String passwordHash;
     private String accessCode;
     private String fullName;
@@ -20,9 +19,8 @@ public class User {
         this.active = true;
     }
 
-    public User(int userID, String username, String passwordHash, String accessCode, String fullName, String email, int roleId, Timestamp createdAt, Timestamp updatedAt, boolean active, String roleName) {
+    public User(int userID, String passwordHash, String accessCode, String fullName, String email, int roleId, Timestamp createdAt, Timestamp updatedAt, boolean active, String roleName) {
         this.userID = userID;
-        this.username = username;
         this.passwordHash = passwordHash;
         this.accessCode = accessCode;
         this.fullName = fullName;
@@ -40,14 +38,6 @@ public class User {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPasswordHash() {
