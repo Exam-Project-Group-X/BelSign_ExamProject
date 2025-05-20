@@ -3,6 +3,7 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.utils.AlertUtil;
+import javafx.application.Platform;
 import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
@@ -54,25 +55,29 @@ public class CreateUserController implements Initializable {
     }
 
     public void onClickContinueBtn(ActionEvent event) {
-        Window owner = ((Node) event.getSource()).getScene().getWindow();
-
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
         String rawPassword = passwordField.getText().trim();
         Object selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
 
         if (fullName.isEmpty() || email.isEmpty() || rawPassword.isEmpty()) {
-            AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Please fill in all required fields.");
             return;
         }
 
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            AlertUtil.showErrorNotification(owner, "Invalid Email", "Please enter a valid email address.");
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.(com|dk)$")) {
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Invalid Email Address, Please fill in all required fields.");
             return;
         }
 
         if (selectedRole == null) {
-            AlertUtil.showErrorNotification(owner, "Role Missing", "Please select a role.");
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Please select a role.");
             return;
         }
 
@@ -82,7 +87,9 @@ public class CreateUserController implements Initializable {
             case "QA Employee" -> 2;
             case "Operator" -> 3;
             default -> {
-                AlertUtil.showErrorNotification(owner, "Unknown Role", "Invalid role selected.");
+                AlertUtil.error(
+                        ((Node) event.getSource()).getScene(),
+                        "Invalid role selected.");
                 yield -1;
             }
         };
@@ -93,21 +100,28 @@ public class CreateUserController implements Initializable {
         try {
             for (User existingUser : userModel.getAllUsers()) {
                 if (existingUser.getEmail().equalsIgnoreCase(email)) {
-                    AlertUtil.showErrorNotification(owner, "Duplicate Email", "A user with this email already exists.");
+                    AlertUtil.error(
+                            ((Node) event.getSource()).getScene(),
+                            "A user with this email already exists.");
                     return;
                 }
             }
 
             User newUser = new User(0, hashedPassword, "", fullName, email, roleId, null, null, true, roleName);
             userModel.createNewUser(newUser);
-
-            AlertUtil.showSuccessNotification(owner, "Success", "User created.");
             navigateBack();
-
+            Platform.runLater(() ->
+                    AlertUtil.success(
+                            ViewManager.INSTANCE.getSceneManager()
+                                    .getCurrentStage()
+                                    .getScene(),
+                            "User created ✓"));
 
         } catch (SQLException e) {
             e.printStackTrace();
-            AlertUtil.showErrorNotification(owner, "Database Error", "Failed to save user.");
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Error, failed to save user.");
         }
     }
 

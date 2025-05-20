@@ -10,6 +10,7 @@ import easv.dk.belsign.utils.AlertUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -72,13 +73,17 @@ public class LoginController implements Initializable {
 
         // Validate email format
         if (email.isEmpty() || !isValidEmail(email)) {
-            AlertUtil.showErrorNotification(loginButton.getScene().getWindow(), "Login failed", "Invalid email format");
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Error, Invalid email format.");
             return;
         }
 
         // Check if password is empty
         if (password.isEmpty()) {
-            AlertUtil.showErrorNotification(loginButton.getScene().getWindow(), "Login failed", "Password cannot be empty");
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Error, Password cannot be empty!");
             return;
         }
 
@@ -96,14 +101,17 @@ public class LoginController implements Initializable {
                    Navigation.goToQAEmployeeView(qaView.getKey());
                 }
                 default -> {
-                    AlertUtil.showErrorNotification(loginButton.getScene().getWindow(), "Login failed", "Access denied for role: " + user.getRoleName());
+                    AlertUtil.error(
+                            ((Node) event.getSource()).getScene(),
+                            "Login failed, Access denied for role: " + user.getRoleName());
 
                 }
             }
 
         } else {
-            AlertUtil.showErrorNotification(loginButton.getScene().getWindow(), "Login failed", "Invalid email or password");
-
+            AlertUtil.error(
+                    ((Node) event.getSource()).getScene(),
+                    "Error, Invalid email or password");
         }
     }
 

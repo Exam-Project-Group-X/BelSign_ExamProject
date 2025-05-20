@@ -39,10 +39,14 @@ public class UserCardController {
             // Notify parent controller to refresh the cards if available
             if (adminController != null) {
                 adminController.loadAllUsers();
-                AlertUtil.showErrorNotification(owner, "Warning", "User deleted successfully.");            }
+                AlertUtil.error(
+                        ((Node) actionEvent.getSource()).getScene(),
+                        "User deleted ✓");           }
         } catch (SQLException e) {
             e.printStackTrace();
-            AlertUtil.showErrorNotification(owner,"Error", "Failed to delete user.");
+            AlertUtil.error(
+                    ((Node) actionEvent.getSource()).getScene(),
+                    "Error, Failed to delete user.");
         }
     }
     public void onClickEditUser(ActionEvent actionEvent) {

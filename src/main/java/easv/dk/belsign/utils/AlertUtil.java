@@ -1,62 +1,79 @@
 package easv.dk.belsign.utils;
+import javafx.animation.*;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Window;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
-public class AlertUtil {
+public final class AlertUtil {
 
     private AlertUtil() {
-        // Private constructor to prevent instantiation
+
     }
-    /**
-     * Displays a success notification with a custom graphic.
-     *
-     * @param owner   The owner window of the notification.
-     * @param title   The title of the notification.
-     * @param message The message of the notification.
-     */
-    public static void showSuccessNotification(Window owner, String title, String message) {
-        Label content = createNotificationContent(title, message, "#0FA958");
-        Notifications.create()
-                .owner(owner)
-                .graphic(content)
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_CENTER)
-                // Clear default title and text since we are using our custom graphic.
-                .title("")
-                .text("")
-                .show();
-    }
-    /**
-     * Displays an warning notification with a custom graphic.
-     *
-     * @param owner   The owner window of the notification.
-     * @param title   The title of the notification.
-     * @param message The message of the notification.
-     */
-    public static void showErrorNotification(Window owner, String title, String message) {
-        Label content = createNotificationContent(title, message, "#D92C2C");
-        Notifications.create()
-                .owner(owner)
-                .graphic(content)
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_CENTER)
-                .title("")
-                .text("")
-                .show();
+    public static void success(Scene scene, String msg) {
+        show(scene, msg, "#0FA958");
     }
 
-    private static Label createNotificationContent(String title, String message, String bgColor) {
-        Label label = new Label(title + ": " + message);
-        // Set a transparent background, desired text color and font styling.
-        label.setStyle(
-                "-fx-text-fill: white;" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-padding: 15px 20px;" +
-                        "-fx-background-radius: 3px;" +
-                        "-fx-background-color: " + bgColor + ";"
+    public static void error(Scene scene, String msg) {
+        show(scene, msg, "#D92C2C");
+    }
+
+    public static void info(Scene scene, String msg) {
+        show(scene, msg, "#007ACD");
+    }
+
+    private static void show(Scene scene, String msg, String bg) {
+
+        Label toast = new Label(msg);
+        toast.setStyle(
+                "-fx-background-color:" + bg + ";" +
+                        "-fx-text-fill:white;" +
+                        "-fx-font-size:16px;" +
+                        "-fx-font-weight:600;" +
+                        "-fx-background-radius:3px;"
         );
-        return label;
+        toast.setPadding(new Insets(10, 20, 10, 20));
+        toast.setOpacity(0);
+
+        Parent root = scene.getRoot();
+        StackPane overlay;
+        if (root instanceof StackPane sp) {
+            overlay = sp;
+        } else {
+            overlay = new StackPane();
+            overlay.setPickOnBounds(false);
+            overlay.getChildren().add(root);
+            scene.setRoot(overlay);
+        }
+        overlay.getChildren().add(toast);
+        StackPane.setAlignment(toast, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(toast, new Insets(0, 0, 2, 0));
+
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(500), toast);
+        slideIn.setFromY(50);
+        slideIn.setToY(0);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), toast);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        PauseTransition stay = new PauseTransition(Duration.seconds(3));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), toast);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        TranslateTransition slideOut = new TranslateTransition(Duration.millis(500), toast);
+        slideOut.setFromY(0);
+        slideOut.setToY(50);
+        slideOut.setOnFinished(e -> overlay.getChildren().remove(toast));
+
+        ParallelTransition parallelIn = new ParallelTransition(slideIn, fadeIn);
+        ParallelTransition parallelOut = new ParallelTransition(slideOut, fadeOut);
+
+        new SequentialTransition(parallelIn, stay, parallelOut).play();
     }
 }

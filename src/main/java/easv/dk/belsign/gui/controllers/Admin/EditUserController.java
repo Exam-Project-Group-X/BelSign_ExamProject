@@ -6,6 +6,7 @@ import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
 import easv.dk.belsign.utils.PasswordUtils;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,20 +82,22 @@ public class EditUserController implements Initializable {
     }
 
     public void onClickContinueBtn(ActionEvent actionEvent) {
-        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
-
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
         String rawPassword = passwordField.getText().trim();
         String roleName = roleField.getText();
 
         if (fullName.isEmpty() || email.isEmpty() || (user == null && rawPassword.isEmpty())) {
-            AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
+            AlertUtil.error(
+                    ((Node) actionEvent.getSource()).getScene(),
+                    "Please fill in all required fields.");
             return;
         }
 
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            AlertUtil.showErrorNotification(owner, "Invalid Email", "Please enter a valid email address.");
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.(com|dk)$")) {
+            AlertUtil.error(
+                    ((Node) actionEvent.getSource()).getScene(),
+                    "Invalid Email Address, Please fill in all required fields.");
             return;
         }
 
@@ -103,7 +106,9 @@ public class EditUserController implements Initializable {
             case "QA Employee" -> 2;
             case "Operator" -> 3;
             default -> {
-                AlertUtil.showErrorNotification(owner, "Unknown Role", "Invalid role selected.");
+                AlertUtil.error(
+                        ((Node) actionEvent.getSource()).getScene(),
+                        "Unknown Role, Invalid role selected.");
                 yield -1;
             }
         };
@@ -129,15 +134,21 @@ public class EditUserController implements Initializable {
                 userModel.updateUser(updatedUser);
                 originalUser = updatedUser;
                 fieldsChanged = false;
-                AlertUtil.showSuccessNotification(owner, "Success", "User updated successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            AlertUtil.showErrorNotification(owner, "Error", "Failed to update user.");
+            AlertUtil.error(
+                    ((Node) actionEvent.getSource()).getScene(),
+                    "Error, fail to update user.");
             return;
         }
-
         navigateBack();
+        Platform.runLater(() ->
+                AlertUtil.success(
+                        ViewManager.INSTANCE.getSceneManager()
+                                .getCurrentStage()
+                                .getScene(),
+                        "User updated ✓"));
     }
 
     private void navigateBack() {
