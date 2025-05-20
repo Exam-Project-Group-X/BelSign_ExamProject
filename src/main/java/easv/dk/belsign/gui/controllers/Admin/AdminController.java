@@ -154,12 +154,9 @@ public class AdminController implements Initializable {
             userCardController.setUserData(user);
             userCardController.setParentController(this);
             cardContainer.getChildren().add(userCard);
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
-
     }
 
     private void setUpRoleFilter() {
@@ -210,8 +207,7 @@ public class AdminController implements Initializable {
         List<User> filteredUsers = userModel.getAllUsers().stream()
                 .filter(user ->
                         user.getFullName().toLowerCase().contains(search) ||
-                                user.getEmail().toLowerCase().contains(search) ||
-                                user.getUsername().toLowerCase().contains(search))
+                                user.getEmail().toLowerCase().contains(search))
                 .filter(user -> {
                     // If no role is selected, show all users
                     if (selectedRole.isEmpty() || selectedRole.equals("all roles")) {
@@ -258,8 +254,4 @@ public class AdminController implements Initializable {
         updatePaginationToggles();
     }
 
-    public void onClearRoleFilter(ActionEvent actionEvent) throws SQLException {
-        roleFilter.getSelectionModel().select("All Roles");   // or clearSelection()
-        filterUsers();
-    }
 }

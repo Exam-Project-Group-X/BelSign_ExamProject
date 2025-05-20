@@ -17,7 +17,7 @@ public class UserDAO implements IUserDAO {
     public List<User> getAllUsers() throws SQLException {
         List<User> allUsers = new ArrayList<>();
         String sql = """
-        SELECT u.UserID, u.UserName, u.AccessCode, u.FullName, u.Email, u.PasswordHash,
+        SELECT u.UserID, u.AccessCode, u.FullName, u.Email, u.PasswordHash,
                u.RoleID, u.CreatedAt, u.UpdatedAt, u.Active, r.RoleName
         FROM   Users u
         JOIN   UserRoles r ON r.RoleID = u.RoleID
@@ -27,7 +27,6 @@ public class UserDAO implements IUserDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("UserID");
-                String userName = rs.getString("Username");
                 String accessCode = rs.getString("AccessCode");
                 String fullName = rs.getString("FullName");
                 String email = rs.getString("Email");
@@ -37,7 +36,7 @@ public class UserDAO implements IUserDAO {
                 Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
                 boolean active = rs.getBoolean("Active");
                 String roleName = rs.getString("RoleName");
-                User user = new User(userId, userName, passwordHash, accessCode,
+                User user = new User(userId, passwordHash, accessCode,
                         fullName, email, roleId,
                         createdAt, updatedAt, active,
                         roleName);
@@ -52,17 +51,14 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public int createNewUser(User user) throws SQLException {
-        String sql = "INSERT INTO Users (FullName, Email, Username, PasswordHash, RoleID) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (FullName, Email, PasswordHash, RoleID) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = con.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getUsername());
-            ps.setString(4, user.getPasswordHash());
-            ps.setInt(5, user.getRoleId());
-
+            ps.setString(3, user.getPasswordHash());
+            ps.setInt(4, user.getRoleId());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -107,15 +103,14 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public void updateUser(User user) throws SQLException {
-        String sql = "UPDATE Users SET FullName = ?, Email = ?, Username = ?, PasswordHash = ?, RoleID = ? WHERE UserID = ?";
+        String sql = "UPDATE Users SET FullName = ?, Email = ?, PasswordHash = ?, RoleID = ? WHERE UserID = ?";
         try (Connection connection = con.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getUsername());
-            ps.setString(4, user.getPasswordHash());
-            ps.setInt(5, user.getRoleId());
-            ps.setInt(6, user.getUserID());
+            ps.setString(3, user.getPasswordHash());
+            ps.setInt(4, user.getRoleId());
+            ps.setInt(5, user.getUserID());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error updating users: " + e.getMessage(), e);
@@ -140,7 +135,6 @@ public class UserDAO implements IUserDAO {
                 if (PasswordUtils.checkPassword(rawPassword, storedHash)) {
                     User user = new User();
                     user.setUserID(rs.getInt("UserID"));
-                    user.setUsername(rs.getString("Username"));
                     user.setEmail(rs.getString("Email"));
                     user.setPasswordHash(storedHash);
                     user.setRoleName(rs.getString("RoleName"));

@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 public class EditUserController implements Initializable {
 
     @FXML public TextField roleField;
-    @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
     @FXML private TextField emailField;
     @FXML private TextField passwordField;
@@ -52,14 +51,12 @@ public class EditUserController implements Initializable {
 
     private void addFieldListeners() {
         fullNameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
-        usernameField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> checkIfChanged());
     }
 
     private void checkIfChanged() {
         fieldsChanged =
                 !fullNameField.getText().equals(originalUser.getFullName()) ||
-                        !usernameField.getText().equals(originalUser.getUsername()) ||
                         !passwordField.getText().isBlank();
 
         continueBtn.setText(fieldsChanged ? "Update" : "Save");
@@ -86,13 +83,12 @@ public class EditUserController implements Initializable {
     public void onClickContinueBtn(ActionEvent actionEvent) {
         Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        String username = usernameField.getText().trim();
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
         String rawPassword = passwordField.getText().trim();
         String roleName = roleField.getText();
 
-        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || (user == null && rawPassword.isEmpty())) {
+        if (fullName.isEmpty() || email.isEmpty() || (user == null && rawPassword.isEmpty())) {
             AlertUtil.showErrorNotification(owner, "Validation Error", "Please fill in all required fields.");
             return;
         }
@@ -121,7 +117,6 @@ public class EditUserController implements Initializable {
             if (user != null && user.getUserID() > 0) {
                 User updatedUser = new User(
                         user.getUserID(),
-                        username,
                         finalPassword,
                         "",
                         fullName,
@@ -160,7 +155,6 @@ public class EditUserController implements Initializable {
         this.user = user;
         this.originalUser = user;
         fullNameField.setText(user.getFullName());
-        usernameField.setText(user.getUsername());
         emailField.setText(user.getEmail());
         passwordField.setText("");
         roleField.setText(user.getRoleName());
