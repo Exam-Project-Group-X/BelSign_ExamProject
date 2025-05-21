@@ -15,7 +15,7 @@
         </ToolBar>
     </top>
     <center>
-        <ScrollPane fitToHeight="false" fitToWidth="true" maxHeight="Infinity" prefViewportHeight="800" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+        <ScrollPane fitToHeight="false" fitToWidth="true" maxHeight="Infinity" prefViewportHeight="800" style="-fx-background-color: #f5f5f5;" VBox.vgrow="ALWAYS">
             <content>
                 <VBox fx:id="vboxPages" alignment="TOP_CENTER" maxWidth="595" prefWidth="595" spacing="40" style="-fx-background-color: #eeeeee;">
                     <padding>

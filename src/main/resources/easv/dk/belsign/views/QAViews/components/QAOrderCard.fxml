@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10" styleClass="card" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
+<GridPane hgap="10" style="-fx-background-color: #f5f5f5;" styleClass="card" vgap="5" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController">
 
     <columnConstraints>
         <ColumnConstraints prefWidth="120" /> <!-- Order ID -->

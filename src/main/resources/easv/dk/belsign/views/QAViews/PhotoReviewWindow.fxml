@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController">
@@ -44,7 +45,6 @@
                         <Image url="@../../images/photos/Charlie.jpg" />
                     </image>
                 </ImageView>
-                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
                 <Button fx:id="logoutButton" onAction="#onClickLogoutBtn" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
@@ -54,69 +54,80 @@
     </top>
     <center>
         <!-- Grey background area -->
-        <AnchorPane style="-fx-background-color: #d1d1d1;">
+        <AnchorPane style="-fx-background-color: #E3E3E3;">
 
             <!-- Close (X) button -->
-            <Button fx:id="closeBtn" onAction="#onCloseBtnClick" style="-fx-font-size: 18px; -fx-background-color: transparent;" text="✕" AnchorPane.rightAnchor="15" AnchorPane.topAnchor="10" />
+            <Button fx:id="closeBtn" onAction="#onCloseBtnClick" prefHeight="47.0" prefWidth="47.0" style="-fx-background-color: transparent;" text="✕" AnchorPane.rightAnchor="15" AnchorPane.topAnchor="10">
+            <font>
+               <Font name="System Bold" size="34.0" />
+            </font></Button>
 
             <!-- Main image -->
-            <StackPane fx:id="imageHolder" maxHeight="550" maxWidth="550" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40">
+            <StackPane fx:id="imageHolder" maxHeight="550" maxWidth="550" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
                 <ImageView fx:id="mainImg" fitHeight="583.0" fitWidth="615.0" preserveRatio="true">
                     <image>
                         <Image url="@../../images/photos/pp1.jpg" />
                     </image></ImageView>
-                <AnchorPane prefHeight="140.0" prefWidth="1280.0">
+                <AnchorPane prefHeight="418.0" prefWidth="1280.0">
+      
+                                    <!-- Caption / order‑number field (overlay bar) -->
+                  <TextField fx:id="captionField" prefHeight="26.0" prefWidth="614.0" promptText="Order number or something…" style="-fx-background-color: #575757; -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.7); -fx-background-radius: 0;" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="333.0" AnchorPane.topAnchor="464.0" />
 
-                    <!-- Left: Reject button (icon only, red, extra large) -->
-                    <Button fx:id="RejectBtn" layoutX="130.0" layoutY="89.0" onAction="#RejectPhoto" prefHeight="104.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="89.0">
+                                   <!-- Left: Reject button (icon only, red, extra large) -->
+                    <Button fx:id="RejectBtn" layoutX="556.0" layoutY="486.0" onAction="#RejectPhoto" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" text="" translateY="4.0" AnchorPane.leftAnchor="556.0" AnchorPane.topAnchor="486.0">
                   <graphic>
-                            <FontIcon iconColor="red" iconLiteral="bi-x-circle-fill" iconSize="100" />
-                  </graphic></Button>
+                            <FontIcon iconColor="red" iconLiteral="bi-x-circle-fill" iconSize="42" />
+                  </graphic>
+               </Button>
 
-                    <!-- Right: Approve button (icon only, green, extra large) -->
-                    <Button fx:id="ApproveBtn" layoutX="1048.0" layoutY="89.0" onAction="#ApprovePhoto" prefHeight="103.0" prefWidth="103.0" style="-fx-background-color: transparent;" text="" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="89.0">
+                                <!-- Bottom-right: Finish button -->
+                    <Button fx:id="finishbtn" layoutX="1066.0" layoutY="259.0" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="34.0" prefWidth="158.0" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Finish" AnchorPane.bottomAnchor="247.0" AnchorPane.rightAnchor="56.0" />
+      
+                                   <!-- Right: Approve button (icon only, green, extra large) -->
+                    <Button fx:id="ApproveBtn" layoutX="677.0" layoutY="488.0" onAction="#ApprovePhoto" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" text="" AnchorPane.rightAnchor="556.0" AnchorPane.topAnchor="489.0">
                   <graphic>
-                            <FontIcon iconColor="green" iconLiteral="bi-check-circle-fill" iconSize="100" />
-                  </graphic></Button>
-
-                    <!-- Bottom-right: Finish button -->
-                    <Button fx:id="finishbtn" layoutX="1086.0" layoutY="373.0" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="25.0" prefWidth="158.0" text="Finish" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="36.0" />
+                            <FontIcon iconColor="green" iconLiteral="bi-check-circle-fill" iconSize="42" />
+                  </graphic>
+               </Button>
                 </AnchorPane>
             </StackPane>
 
             <!-- Previous / Next arrows -->
-            <Button fx:id="prevBtn" layoutX="75.0" layoutY="561.0" onAction="#onLeftArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❮" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="561.0" />
-            <Button fx:id="nextBtn" layoutX="1211.0" layoutY="561.0" onAction="#onRightArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❯" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="561.0" />
-
-            <!-- Caption / order‑number field (overlay bar) -->
-            <TextField fx:id="captionField" layoutX="334.0" layoutY="480.0" prefHeight="25.0" prefWidth="617.0" promptText="Order number or something…" style="-fx-background-color: rgba(0,0,0,0.5); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.7); -fx-background-radius: 0;" AnchorPane.leftAnchor="334.0" AnchorPane.rightAnchor="329.0" AnchorPane.topAnchor="480.0" />
+            <Button fx:id="prevBtn" layoutX="31.0" layoutY="587.0" onAction="#onLeftArrowClick" prefHeight="53.0" prefWidth="40.0" styleClass="nav-arrow" text="❮" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="31.0" AnchorPane.topAnchor="587.0">
+            <font>
+               <Font size="20.0" />
+            </font></Button>
+            <Button fx:id="nextBtn" layoutX="1217.0" layoutY="577.0" onAction="#onRightArrowClick" prefHeight="53.0" prefWidth="40.0" styleClass="nav-arrow" text="❯" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="587.0">
+            <font>
+               <Font size="20.0" />
+            </font></Button>
 
             <!-- Thumbnail strip -->
-            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" prefHeight="148.0" prefWidth="1080.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100">
+            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" layoutX="122.0" layoutY="537.0" prefHeight="151.0" prefWidth="1075.0" style="-fx-background-color: #f5f5f5;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="102.0" AnchorPane.rightAnchor="103.0">
                 <content>
-                    <HBox fx:id="thumbStrip" prefHeight="111.0" prefWidth="1078.0" spacing="8" style="-fx-padding: 5;">
+                    <HBox fx:id="thumbStrip" prefHeight="150.0" prefWidth="1075.0" spacing="8" style="-fx-padding: 5; -fx-background-color: #f5f5f5;">
                         <children>
-                            <ImageView fitHeight="161.0" fitWidth="227.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="140.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp2.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="146.0" fitWidth="217.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="140.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp3.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="147.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="140.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp5.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="152.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="140.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp4.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="192.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="140.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp6.jpg" />
                                 </image>
