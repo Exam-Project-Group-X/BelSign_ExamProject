@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
     public ImageView loginImage;
+    public Button backButton;
     @FXML
     private TextField loginEmail;
     @FXML
@@ -122,7 +123,10 @@ public class LoginController implements Initializable {
         return pattern.matcher(email).matches();
     }
 
-    public void onClickLogoutBtn(ActionEvent actionEvent) {
-        Navigation.goToTitleScreen();;
+//    public void onClickLogoutBtn(ActionEvent actionEvent) {
+//        Navigation.goToTitleScreen();;
+//    }
+
+    public void onBackClick(ActionEvent actionEvent) { Navigation.goToTitleScreen();
     }
 }
