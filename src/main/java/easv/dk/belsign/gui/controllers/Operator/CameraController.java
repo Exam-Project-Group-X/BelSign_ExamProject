@@ -7,6 +7,7 @@ import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -37,6 +38,9 @@ public class CameraController {
     private int photoColumnCount = 3;
     private int photoRowIndex = 0;
     private int photoColIndex = 0;
+
+    public void onBackClick(ActionEvent actionEvent) {Navigation.goToOperatorDashboard();
+    }
 
     private static class PhotoEntry {
         ImageView imageView;
