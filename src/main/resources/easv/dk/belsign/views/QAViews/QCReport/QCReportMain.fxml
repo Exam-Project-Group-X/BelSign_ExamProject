@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane styleClass="root" stylesheets="@../../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController">
+<BorderPane styleClass="root" stylesheets="@../../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController">
 
     <top>
         <ToolBar prefHeight="40" BorderPane.alignment="CENTER_RIGHT">
-            <Button onAction="#onClickPrintBtn" text="Print /Export PDF"/>
+            <Button onAction="#onClickPrintBtn" text="Print /Export PDF" />
         </ToolBar>
     </top>
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="false"
-                    VBox.vgrow="ALWAYS"
-                    maxHeight="Infinity"
-                    prefViewportHeight="800">
+        <ScrollPane fitToHeight="false" fitToWidth="true" maxHeight="Infinity" prefViewportHeight="800" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
             <content>
-                <VBox fx:id="vboxPages"
-                      alignment="TOP_CENTER"
-                      spacing="40"
-                      maxWidth="595"
-                      prefWidth="595"
-                      style="-fx-background-color: #eeeeee;">
+                <VBox fx:id="vboxPages" alignment="TOP_CENTER" maxWidth="595" prefWidth="595" spacing="40" style="-fx-background-color: #eeeeee;">
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                 </VBox>
             </content>
