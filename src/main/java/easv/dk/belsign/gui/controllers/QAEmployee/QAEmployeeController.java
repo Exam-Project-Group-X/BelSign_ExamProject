@@ -43,6 +43,10 @@ public class QAEmployeeController implements Initializable {
     @FXML
     private Button logoutButton;
 
+
+    private static String lastSelectedStatus = "Pending";
+    private static String lastSearchText = "";
+
     private static final int PAGE_SIZE = 3;
     private static final int TOGGLE_COUNT = 5;// cards per page
     private int currentPage = 1;
@@ -57,6 +61,7 @@ public class QAEmployeeController implements Initializable {
         try {
             orders = qamodel.getAllOrders();
             setupStatusFilter();
+            searchField.setText(lastSearchText);
             setupSearchAndFilterListeners();
             applyFilters();
         } catch (Exception e) {
@@ -67,12 +72,25 @@ public class QAEmployeeController implements Initializable {
     private void setupStatusFilter() {
         statusFilter.getItems().clear();
         statusFilter.getItems().addAll("All", "Pending", "Complete");
-        statusFilter.getSelectionModel().select("Pending");
+
+        // Restore the last used filter
+        if (lastSelectedStatus != null && statusFilter.getItems().contains(lastSelectedStatus)) {
+            statusFilter.getSelectionModel().select(lastSelectedStatus);
+        } else {
+            statusFilter.getSelectionModel().select("Pending");
+        }
     }
 
     private void setupSearchAndFilterListeners() {
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
-        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+            lastSearchText = newVal;
+            applyFilters();
+        });
+
+        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            lastSelectedStatus = newVal;
+            applyFilters();
+        });
     }
 
     private void applyFilters() {
@@ -157,6 +175,9 @@ public class QAEmployeeController implements Initializable {
     }
 
     public void onClickLogoutBtn(ActionEvent actionEvent) {
+
+        lastSelectedStatus = "Pending";
+        lastSearchText = "";
         Navigation.goToLoginScreen();
     }
 

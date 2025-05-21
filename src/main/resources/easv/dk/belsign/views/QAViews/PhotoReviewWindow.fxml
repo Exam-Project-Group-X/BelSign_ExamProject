@@ -65,48 +65,58 @@
                     <image>
                         <Image url="@../../images/photos/pp1.jpg" />
                     </image></ImageView>
-                <HBox prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <Button fx:id="ApproveBtn" mnemonicParsing="false" onAction="#ApprovePhoto" text="Approve" />
-                        <Button fx:id="RejectBtn" mnemonicParsing="false" onAction="#RejectPhoto" text="Reject" />
-                        <Button fx:id="finishbtn" mnemonicParsing="false" onAction="#OnClickFinishButton" text="Finish" />
-                    </children>
-                </HBox>
+                <AnchorPane prefHeight="140.0" prefWidth="1280.0">
+
+                    <!-- Left: Reject button (icon only, red, extra large) -->
+                    <Button fx:id="RejectBtn" layoutX="130.0" layoutY="89.0" onAction="#RejectPhoto" prefHeight="104.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="89.0">
+                  <graphic>
+                            <FontIcon iconColor="red" iconLiteral="bi-x-circle-fill" iconSize="100" />
+                  </graphic></Button>
+
+                    <!-- Right: Approve button (icon only, green, extra large) -->
+                    <Button fx:id="ApproveBtn" layoutX="1048.0" layoutY="89.0" onAction="#ApprovePhoto" prefHeight="103.0" prefWidth="103.0" style="-fx-background-color: transparent;" text="" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="89.0">
+                  <graphic>
+                            <FontIcon iconColor="green" iconLiteral="bi-check-circle-fill" iconSize="100" />
+                  </graphic></Button>
+
+                    <!-- Bottom-right: Finish button -->
+                    <Button fx:id="finishbtn" layoutX="1086.0" layoutY="373.0" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="25.0" prefWidth="158.0" text="Finish" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="36.0" />
+                </AnchorPane>
             </StackPane>
 
             <!-- Previous / Next arrows -->
-            <Button fx:id="prevBtn" layoutX="19.0" layoutY="320.0" onAction="#onLeftArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❮" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="320.0" />
-            <Button fx:id="nextBtn" layoutX="1232.0" layoutY="317.0" onAction="#onRightArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❯" AnchorPane.bottomAnchor="357.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="317.0" />
+            <Button fx:id="prevBtn" layoutX="75.0" layoutY="561.0" onAction="#onLeftArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❮" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="561.0" />
+            <Button fx:id="nextBtn" layoutX="1211.0" layoutY="561.0" onAction="#onRightArrowClick" prefHeight="45.0" prefWidth="25.0" styleClass="nav-arrow" text="❯" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="561.0" />
 
             <!-- Caption / order‑number field (overlay bar) -->
-            <TextField fx:id="captionField" layoutX="332.0" layoutY="460.0" prefHeight="25.0" prefWidth="617.0" promptText="Order number or something…" style="-fx-background-color: rgba(0,0,0,0.5); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.7); -fx-background-radius: 0;" AnchorPane.leftAnchor="332.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="460.0" />
+            <TextField fx:id="captionField" layoutX="334.0" layoutY="480.0" prefHeight="25.0" prefWidth="617.0" promptText="Order number or something…" style="-fx-background-color: rgba(0,0,0,0.5); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.7); -fx-background-radius: 0;" AnchorPane.leftAnchor="334.0" AnchorPane.rightAnchor="329.0" AnchorPane.topAnchor="480.0" />
 
             <!-- Thumbnail strip -->
-            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="80" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100">
+            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" prefHeight="148.0" prefWidth="1080.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100">
                 <content>
-                    <HBox fx:id="thumbStrip" spacing="8" style="-fx-padding: 5;">
+                    <HBox fx:id="thumbStrip" prefHeight="111.0" prefWidth="1078.0" spacing="8" style="-fx-padding: 5;">
                         <children>
-                            <ImageView fitHeight="94.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="161.0" fitWidth="227.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp2.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="95.0" fitWidth="149.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="146.0" fitWidth="217.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp3.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="99.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../../images/photos/pp4.jpg" />
-                                </image>
-                            </ImageView>
-                            <ImageView fitHeight="117.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="147.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp5.jpg" />
                                 </image>
                             </ImageView>
-                            <ImageView fitHeight="114.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="152.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../images/photos/pp4.jpg" />
+                                </image>
+                            </ImageView>
+                            <ImageView fitHeight="192.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@../../images/photos/pp6.jpg" />
                                 </image>
@@ -116,7 +126,7 @@
             </ScrollPane>
 
             <!-- Pagination dots -->
-            <HBox fx:id="dotBar" alignment="CENTER" spacing="5" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+            <HBox fx:id="dotBar" alignment="CENTER" layoutX="2.0" layoutY="703.0" spacing="5" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-2.0">
                 <Circle fill="#B50000" radius="3" />
                 <Circle fill="#B50000" opacity="0.3" radius="3" />
                 <Circle fill="#B50000" opacity="0.3" radius="3" />
