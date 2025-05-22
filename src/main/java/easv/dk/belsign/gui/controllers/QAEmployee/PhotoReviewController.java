@@ -27,61 +27,43 @@ import java.util.Map;
 
 public class PhotoReviewController {
 
-    public Button closeBtn;
-    public Button ApproveBtn;
-    public Button RejectBtn;
+    // === FXML UI components ===
+    @FXML private ImageView mainImg;
+    @FXML private HBox thumbStrip;
+    @FXML private TextField captionField;
     @FXML private Button finishbtn;
+    @FXML private Button ApproveBtn;
+    @FXML private Button RejectBtn;
+    @FXML private Button closeBtn;
     @FXML private StackPane imageHolder;
-    @FXML
-    private StackPane mainImageWrapper;
 
-    @FXML
-    private ImageView mainImg;
-    @FXML
-    private HBox thumbStrip;
-    @FXML
-    private TextField captionField;
-
+    // === Models ===
     private PhotosModel photosModel;
     private QAEmployeeModel qamodel;
+
+    // === State ===
     private int currentOrderId;
     private String currentAngle;
 
-
-    private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
     private final List<Image> loadedImages = new ArrayList<>();
-
     private final List<StackPane> thumbnailViews = new ArrayList<>();
-    private int currentThumbPage = 0;
-    private static final int THUMBS_PER_PAGE = 5;
     private StackPane currentSelectedThumb = null;
+    private int currentThumbPage = 0;
 
+    private static final int THUMBS_PER_PAGE = 5;
 
-    public void setModel(PhotosModel photosModel) {
-        this.photosModel = photosModel;
-
-    }
-    public void setQAEmployeeModel(QAEmployeeModel model) {
-        this.qamodel = model;
-    }
-
-    public void setOrderId(int orderId) {
-        this.currentOrderId = orderId;
-    }
-    public void setCurrentAngle(String angle) {
-        this.currentAngle = angle;
-    }
-
-    public void setCaption(String caption) {
-        captionField.setText(caption);
-    }
+    // === Setters ===
+    public void setModel(PhotosModel photosModel) { this.photosModel = photosModel; }
+    public void setQAEmployeeModel(QAEmployeeModel model) { this.qamodel = model; }
+    public void setOrderId(int orderId) { this.currentOrderId = orderId; }
+    public void setCurrentAngle(String angle) { this.currentAngle = angle; }
+    public void setCaption(String caption) { captionField.setText(caption); }
 
     public void loadPhotosForOrder(int orderId) {
         String previousAngle = currentAngle;
         try {
-            Map<String, byte[]> photoMap = photoDAO.getPhotosByOrderId(orderId);
-            Map<String, String> statusMap = photoDAO.getPhotoStatusByOrderId(orderId);
-
+            Map<String, byte[]> photoMap = photosModel.getPhotosByOrderId(orderId);
+            Map<String, String> statusMap = photosModel.getPhotoStatusByOrderId(orderId);
             thumbStrip.getChildren().clear();
             thumbnailViews.clear();
             loadedImages.clear();
@@ -129,7 +111,7 @@ public class PhotoReviewController {
 
     private boolean allPhotosApproved() {
         try {
-            Map<String, String> statusMap = photoDAO.getPhotoStatusByOrderId(currentOrderId);
+            Map<String, String> statusMap = photosModel.getPhotoStatusByOrderId(currentOrderId);
             for (String status : statusMap.values()) {
                 if (!status.equalsIgnoreCase("Approved")) {
                     return false;

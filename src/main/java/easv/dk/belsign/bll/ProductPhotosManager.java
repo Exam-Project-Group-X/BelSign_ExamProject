@@ -3,6 +3,7 @@ package easv.dk.belsign.bll;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class ProductPhotosManager {
     private final ProductPhotosDAO photosDAO = new ProductPhotosDAO();
@@ -13,5 +14,14 @@ public class ProductPhotosManager {
 
     public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
         photosDAO.rejectPhoto(orderId, angle, comment);
+    }
+
+
+    public Map<String, byte[]> getPhotosByOrderId(int orderId) throws SQLException {
+        return photosDAO.getPhotosByOrderId(orderId);
+    }
+
+    public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
+        return photosDAO.getPhotoStatusByOrderId(orderId);
     }
 }
