@@ -39,7 +39,7 @@ public class OperatorOrdersController {
 
     private ObservableList<Order> allOrders;
     private FilteredList<Order> filteredOrders;
-    private static final int ORDERS_PER_PAGE = 8;
+    private static final int ORDERS_PER_PAGE = 5;
     private int currentPage = 1;
     private int totalPages;
 
@@ -140,14 +140,12 @@ public class OperatorOrdersController {
     }
 
     public void openTakePictureView(Order selectedOrder) {
-
         Navigation.goToCameraView(selectedOrder);
     }
 
     private void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
-
         PauseTransition pause = new PauseTransition(Duration.seconds(5));
         pause.setOnFinished(e -> errorLabel.setVisible(false));
         pause.play();

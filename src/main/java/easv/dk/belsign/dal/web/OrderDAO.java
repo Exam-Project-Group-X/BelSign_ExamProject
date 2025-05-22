@@ -37,7 +37,18 @@ public class OrderDAO {
 
     public ObservableList<Order> getAllPendingOrders() {
         ObservableList<Order> orderList = FXCollections.observableArrayList();
-        String sql = "SELECT OrderId, OrderNumber FROM Orders WHERE OrderStatus = 'Pending'";
+        String sql = """
+        SELECT o.OrderID, o.OrderNumber,
+               CASE 
+                   WHEN EXISTS (
+                       SELECT 1 FROM ProductPhotos pp 
+                       WHERE pp.OrderID = o.OrderID AND pp.Status = 'Rejected'
+                   ) THEN 1 ELSE 0 
+               END AS HasRejectedPhotos
+        FROM Orders o
+        WHERE o.OrderStatus = 'Pending'
+        ORDER BY HasRejectedPhotos DESC, o.OrderID ASC
+    """;
         try (Connection c = con.getConnection();
              PreparedStatement stmt = c.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -45,12 +56,13 @@ public class OrderDAO {
                 Order order = new Order();
                 order.setOrderID(rs.getInt("OrderID"));
                 order.setOrderNumber(rs.getString("OrderNumber"));
+                order.setHasRejectedPhotos(rs.getInt("HasRejectedPhotos") == 1); // maps to boolean
                 orderList.add(order);
             }
-            System.out.println("Orders retrieved: " + orderList.size());
+            System.out.println("Orders retrieved (with rejected photo priority): " + orderList.size());
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception
-            throw new OrderException(e.getMessage());
+            e.printStackTrace();
+            throw new OrderException("Error retrieving pending orders: " + e.getMessage());
         }
         return orderList;
     }

@@ -4,3 +4,20 @@
     -fx-background-position: center; /* Centers the image */
     -fx-background-repeat: no-repeat;
 }
+
+.swipe-container {
+    -fx-background-color: linear-gradient(to right, #dce6f1, #dce6f1);
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0;
+}
+
+.swipe-knob {
+    -fx-cursor: hand;
+}
+
+.swipe-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}

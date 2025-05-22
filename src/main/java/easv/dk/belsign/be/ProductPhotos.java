@@ -12,6 +12,7 @@ public class ProductPhotos {
     private Timestamp ReviewedAt; // Timestamp of photo review
     private String ReviewerUserID; // This will hold the name of the reviewer (QA Employee)
     private String Comment;
+    private String Operator;
 
     // Default constructor
     public ProductPhotos() {
@@ -88,5 +89,13 @@ public class ProductPhotos {
 
     public void setComment(String comment) {
         Comment = comment;
+    }
+
+    public String getOperator() {
+        return Operator;
+    }
+
+    public void setOperator(String operator) {
+        Operator = operator;
     }
 }

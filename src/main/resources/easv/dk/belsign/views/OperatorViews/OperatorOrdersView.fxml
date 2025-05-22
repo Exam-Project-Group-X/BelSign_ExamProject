@@ -31,20 +31,6 @@
 
             <!-- Header icons placeholder -->
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <Button fx:id="settingsButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/icons/bell.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></Button>
-                <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../images/photos/Charlie.jpg" />
-                    </image>
-                </ImageView>
-                <Button fx:id="notificationButton" prefHeight="26.0" prefWidth="26.0" style="-fx-background-color: ffffff;" styleClass="icon-btn" />
                 <Button onAction="#OnClickLogoutButton" prefHeight="31.0" prefWidth="108.0" styleClass="logout-btn" text="Log out">
                     <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="bi-box-arrow-right" iconSize="20" wrappingWidth="26.0" />
@@ -86,13 +72,13 @@
                 </rowConstraints>
             </GridPane>
 
-            <Label fx:id="noOrdersLabel" text="No orders found" visible="false" style="-fx-text-fill: red; -fx-font-size: 18px;" />
+            <Label fx:id="noOrdersLabel" style="-fx-text-fill: red; -fx-font-size: 18px;" text="No orders found" visible="false" />
 
             <!-- CARD LIST -->
             <VBox fx:id="cardContainer" spacing="5">
             </VBox>
 
-            <Label fx:id="errorLabel" text="" visible="false" wrapText="true" style="-fx-text-fill: red; -fx-font-size: 14;" />
+            <Label fx:id="errorLabel" style="-fx-text-fill: red; -fx-font-size: 14;" text="" visible="false" wrapText="true" />
 
             <HBox fx:id="paginationBox" alignment="CENTER" spacing="6" style="-fx-padding: 10;">
                 <!-- Buttons added programmatically -->

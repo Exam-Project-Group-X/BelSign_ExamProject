@@ -10,6 +10,7 @@ public class Order {
     private Timestamp CreatedAt;
     private Timestamp UpdatedAt;
     private String AssignedToUserID; // This will hold the name of the Operator
+    private boolean hasRejectedPhotos;
 
     // Default constructor
     public Order() {
@@ -70,6 +71,14 @@ public class Order {
 
     public void setAssignedToUserID(String assignedToUserID) {
         AssignedToUserID = assignedToUserID;
+    }
+
+    public boolean isHasRejectedPhotos() {
+        return hasRejectedPhotos;
+    }
+
+    public void setHasRejectedPhotos(boolean hasRejectedPhotos) {
+        this.hasRejectedPhotos = hasRejectedPhotos;
     }
 
     // Builder Pattern
