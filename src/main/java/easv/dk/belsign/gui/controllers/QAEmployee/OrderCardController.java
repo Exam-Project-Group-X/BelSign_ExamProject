@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
@@ -36,7 +37,7 @@ public class OrderCardController {
     private GridPane loadedPhotoGrid;
     private PhotoGridController photoGridController;
     private Order order;
-
+    private User loggedInUser;
 
     private PhotosModel photosModel;
 
@@ -56,6 +57,7 @@ public class OrderCardController {
         }
 
     }
+
 
     public void setOrderData(Order order) {
         this.order = order;
@@ -87,6 +89,11 @@ public class OrderCardController {
         photoGridPlaceholder.getChildren().add(loadedPhotoGrid);
     }
 
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+
     public void onClickGenReportBtn(ActionEvent actionEvent) throws IOException {
 
         Navigation.openQCReportPreview(order);
@@ -94,6 +101,6 @@ public class OrderCardController {
     }
 
     public void onPhotoGridClick(MouseEvent mouseEvent) {
-        Navigation.goToPhotoReviewView(order);
+        Navigation.goToPhotoReviewView(order, loggedInUser);
 }
 }

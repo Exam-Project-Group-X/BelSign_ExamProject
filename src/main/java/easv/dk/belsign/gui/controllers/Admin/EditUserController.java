@@ -1,6 +1,9 @@
 package easv.dk.belsign.gui.controllers.Admin;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
+import easv.dk.belsign.gui.controllers.TopBarController;
 import easv.dk.belsign.utils.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
@@ -17,8 +20,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,9 +44,25 @@ public class EditUserController implements Initializable {
     private User user;
     private User originalUser;
     private boolean fieldsChanged = false;
+    private User loggedInUser;
+    @FXML
+    private AnchorPane topBarHolder;
+    private TopBarController topBarController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
+            Node topBar = loader.load();
+            topBarController = loader.getController();
+            topBarHolder.getChildren().setAll(topBar);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             ObservableList<String> roles = userModel.getAllRoleNames();
             addFieldListeners();
@@ -68,9 +89,14 @@ public class EditUserController implements Initializable {
         this.adminController = adminController;
     }
 
-    public void onClickLogoutBtn(ActionEvent actionEvent) {
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+        if (topBarController != null) {
+            topBarController.setLoggedInUser(user);
+        }
     }
+
+
 
     public void onClickCancelBtn(ActionEvent actionEvent) {
         if (fieldsChanged) {
@@ -152,15 +178,13 @@ public class EditUserController implements Initializable {
     }
 
     private void navigateBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
-            Parent root = loader.load();
-            Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Pair<Parent, AdminController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.ADMIN_DASHBOARD);
+        AdminController controller = pair.getValue();
+        controller.setLoggedInUser(loggedInUser);
+
+        Navigation.goToAdminView(pair.getKey());
     }
+
 
     public void setUserData(User user) {
         this.user = user;

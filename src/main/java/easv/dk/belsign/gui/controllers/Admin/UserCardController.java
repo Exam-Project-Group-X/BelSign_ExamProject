@@ -1,5 +1,6 @@
 package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.utils.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.models.UserModel;
@@ -15,11 +16,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+
 import java.sql.SQLException;
 public class UserCardController {
     @FXML private Label lblRole;
     @FXML private Label lblName;
     @FXML private Label lblEmail;
+    private User loggedInUser;
     private User user;
     private AdminController adminController;
     private static final UserModel model = new UserModel();
@@ -49,19 +53,20 @@ public class UserCardController {
                     "Error, Failed to delete user.");
         }
     }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+
     public void onClickEditUser(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_EDITOR));
-            Parent root = loader.load();
+        Pair<Parent, EditUserController> pair =
+                FXMLManager.INSTANCE.getFXML(FXMLPath.USER_EDITOR);
 
-            EditUserController controller = loader.getController();
-            controller.setUserData(user);
-            controller.setManageUsersController(adminController);
+        EditUserController controller = pair.getValue();
+        controller.setUserData(user);
+        controller.setManageUsersController(adminController);
+        controller.setLoggedInUser(loggedInUser);
 
-            Navigation.goToEditUserView(root);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Navigation.goToEditUserView(pair.getKey());
     }
 }

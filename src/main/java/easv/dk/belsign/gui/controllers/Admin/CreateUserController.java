@@ -2,8 +2,12 @@ package easv.dk.belsign.gui.controllers.Admin;
 
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.gui.ViewManagement.FXMLManager;
+import easv.dk.belsign.gui.ViewManagement.Navigation;
+import easv.dk.belsign.gui.controllers.TopBarController;
 import easv.dk.belsign.utils.AlertUtil;
 import javafx.application.Platform;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
@@ -22,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,11 +42,27 @@ public class CreateUserController implements Initializable {
     @FXML private Button continueBtn;
     @FXML private TextField fullNameField, emailField, passwordField;
     @FXML private ComboBox<String> roleComboBox;
+    @FXML
+    private AnchorPane topBarHolder;
+    private TopBarController topBarController;
+
+    private User loggedInUser;
+
 
     private static final UserModel userModel = new UserModel();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
+            Node topBar = loader.load();
+            topBarController = loader.getController();
+            topBarHolder.getChildren().setAll(topBar);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             ObservableList<String> roles = userModel.getAllRoleNames();
             roleComboBox.setItems(roles);
@@ -50,9 +71,7 @@ public class CreateUserController implements Initializable {
         }
     }
 
-    public void onClickLogoutBtn(ActionEvent event) {
-        ViewManager.INSTANCE.showScene(FXMLPath.TITLE_SCREEN);
-    }
+
 
     public void onClickContinueBtn(ActionEvent event) {
         String fullName = fullNameField.getText().trim();
@@ -130,13 +149,18 @@ public class CreateUserController implements Initializable {
     }
 
     private void navigateBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.ADMIN_DASHBOARD));
-            Parent root = loader.load();
-            Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
+        Pair<Parent, AdminController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.ADMIN_DASHBOARD);
+        AdminController controller = pair.getValue();
+        controller.setLoggedInUser(loggedInUser);
+
+        Navigation.goToAdminView(pair.getKey());
+    }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+        if (topBarController != null) {
+            topBarController.setLoggedInUser(user);
         }
     }
+
 }

@@ -23,7 +23,10 @@ public class FXMLPath {
     public static final String CREATE_USER = "/easv/dk/belsign/views/AdminViews/CreateUserView.fxml";
     public static final String USER_EDITOR = "/easv/dk/belsign/views/AdminViews/EditUserView.fxml";
 
-    /// LOGIN PAths
+    /// TOP Bar
+    public static final String TOP_BAR = "/easv/dk/belsign/views/TopBar.fxml";
+
+
 
 
 

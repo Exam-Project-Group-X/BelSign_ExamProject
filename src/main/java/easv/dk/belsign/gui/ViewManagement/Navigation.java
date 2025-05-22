@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.ViewManagement;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.controllers.Operator.CameraController;
 import easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController;
 import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController;
@@ -83,17 +84,17 @@ public class Navigation {
         StageManagerProvider.get().getSceneManager().switchScene(FXMLPath.QA_EMPLOYEE_VIEW);
     }
 
-    public static void goToPhotoReviewView(Order order) {
-        try {
-            Pair<Parent, PhotoReviewController> pair =
-                    FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
 
+
+    /// ─────────────────────────────────────
+    /// Photo Review
+    /// ─────────────────────────────────────
+    public static void goToPhotoReviewView(Order order, User loggedInUser) {
+        try {
+            Pair<Parent, PhotoReviewController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
             PhotoReviewController controller = pair.getValue();
-            controller.setOrderId(order.getOrderID());
-            controller.setModel(new PhotosModel());
-            controller.setQAEmployeeModel(new QAEmployeeModel());
-            controller.setCaption("Order #" + order.getOrderNumber());
-            controller.loadPhotosForOrder(order.getOrderID());
+
+            controller.setup(loggedInUser, order.getOrderID());
 
             StageManagerProvider.get().switchScene(pair.getKey());
         } catch (Exception e) {
@@ -102,6 +103,9 @@ public class Navigation {
         }
     }
 
+    /// ─────────────────────────────────────
+    /// QC Report
+    /// ─────────────────────────────────────
     public static void openQCReportPreview(Order order) {
         try {
             Pair<Parent, QCReportController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);

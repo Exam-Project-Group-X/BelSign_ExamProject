@@ -1,7 +1,11 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.gui.ViewManagement.*;
+import easv.dk.belsign.gui.controllers.TopBarController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
@@ -19,7 +23,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class QAEmployeeController implements Initializable {
-    public Label welcomeLabel;
     @FXML
     private ComboBox<String> statusFilter;
     public TextField searchField;
@@ -43,6 +46,9 @@ public class QAEmployeeController implements Initializable {
     @FXML
     private Button logoutButton;
 
+    @FXML
+    private AnchorPane topBarHolder;
+    private TopBarController topBarController;
 
     private static String lastSelectedStatus = "Pending";
     private static String lastSearchText = "";
@@ -56,15 +62,20 @@ public class QAEmployeeController implements Initializable {
     private final QAEmployeeModel qamodel = new QAEmployeeModel();
     private User loggedInUser;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            orders = qamodel.getAllOrders();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
+            Node topBar = loader.load();
+            topBarController = loader.getController();
+            topBarHolder.getChildren().setAll(topBar);
+
             setupStatusFilter();
-            searchField.setText(lastSearchText);
             setupSearchAndFilterListeners();
-            applyFilters();
-        } catch (Exception e) {
+
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -125,11 +136,20 @@ public class QAEmployeeController implements Initializable {
     }
 
 
-
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
-        // Optional: update welcome label or other UI
-        welcomeLabel.setText("Welcome back, " + user.getFullName() + "!");
+        if (topBarController != null) {
+            topBarController.setLoggedInUser(user);
+        }
+
+        System.out.println("✅ [DEBUG] Logged-in user: " + user.getFullName());
+
+        try {
+            orders = qamodel.getAllOrders();
+            applyFilters();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -147,9 +167,21 @@ public class QAEmployeeController implements Initializable {
 
     public void addNewOrderCard(Order order) {
         Pair<Parent, OrderCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_ORDER_CARD);
-        pair.getValue().setOrderData(order);
+        OrderCardController controller = pair.getValue();
+
+        // 🔍 Debug log
+        if (loggedInUser == null) {
+            System.err.println("❌ [DEBUG] loggedInUser is NULL in addNewOrderCard → Order: " + order.getOrderNumber());
+        } else {
+            System.out.println("✅ [DEBUG] loggedInUser is set: " + loggedInUser.getFullName() + " → Order: " + order.getOrderNumber());
+        }
+
+        controller.setOrderData(order);
+        controller.setLoggedInUser(loggedInUser);
+
         cardContainer.getChildren().add(pair.getKey());
     }
+
 
     // Dynamically generate pagination toggle buttons based on current page
     private void updatePaginationToggles(List<Order> filtered) {
