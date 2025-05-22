@@ -74,4 +74,25 @@ public class ProductPhotosDAO {
             System.out.println("❌ Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
     }
+
+    public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
+        Map<String, String> statusMap = new HashMap<>();
+
+        String sql = "SELECT PhotoAngle, Status FROM ProductPhotos WHERE OrderID = ?";
+        try (Connection conn = con.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String angle = rs.getString("PhotoAngle").toUpperCase();
+                String status = rs.getString("Status");
+                statusMap.put(angle, status);  // e.g., "Approved", "Rejected", "Pending Review"
+            }
+        }
+
+        return statusMap;
+    }
+
 }

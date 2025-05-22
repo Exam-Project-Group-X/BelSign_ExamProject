@@ -78,3 +78,50 @@
     -fx-border-radius: 5px;
     -fx-effect: dropshadow(gaussian, #00c3ff, 10, 0.5, 0, 0);
 }
+
+.thumb-wrapper {
+    -fx-border-width: 3px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+}
+
+.selected-thumb {
+    -fx-border-color: #0000FF; /* Blue for selection */
+}
+
+.approved-thumb {
+    -fx-border-color: #28a745; /* Green */
+}
+
+.rejected-thumb {
+    -fx-border-color: #dc3545; /* Red */
+
+}
+
+
+.image-approved {
+    -fx-border-color: #28a745;
+    -fx-border-width: 5px;
+    -fx-border-radius: 8px;
+}
+
+.image-rejected {
+    -fx-border-color: #dc3545;
+    -fx-border-width: 5px;
+    -fx-border-radius: 8px;
+}
+
+/* === Main Image Highlighting === */
+.main-approved {
+    -fx-effect: dropshadow(gaussian, #28a745, 20, 0.4, 0, 0); /* green glow */
+    -fx-border-color: #28a745;
+    -fx-border-width: 3;
+    -fx-border-radius: 6;
+}
+
+.main-rejected {
+    -fx-effect: dropshadow(gaussian, #dc3545, 20, 0.4, 0, 0); /* red glow */
+    -fx-border-color: #dc3545;
+    -fx-border-width: 3;
+    -fx-border-radius: 6;
+}
