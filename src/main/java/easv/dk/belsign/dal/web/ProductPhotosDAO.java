@@ -56,14 +56,38 @@ public class ProductPhotosDAO {
         return photos;
     }
 
-    public void insertCapturedPhoto(int orderId, String photoAngle, byte[] photoData) throws SQLException {
-        if (photoData == null) return;
-        String sql = "INSERT INTO ProductPhotos (OrderID, PhotoAngle, Status, PhotoData) VALUES (?, ?, 'Pending Review', ?)";
+    public void upsertCapturedPhoto(int orderId, String photoAngle, byte[] photoData, String operatorName) throws SQLException {
+        String sql = """
+        MERGE INTO ProductPhotos AS target
+        USING (SELECT ? AS OrderID, ? AS PhotoAngle) AS source
+        ON target.OrderID = source.OrderID AND target.PhotoAngle = source.PhotoAngle
+        WHEN MATCHED THEN
+            UPDATE SET
+                PhotoData = ?,
+                Status = 'Pending Review',
+                CreatedAt = GETDATE(),
+                ReviewedAt = NULL,
+                ReviewerUserID = NULL,
+                Comment = NULL,
+                Operator = ?
+        WHEN NOT MATCHED THEN
+            INSERT (OrderID, PhotoAngle, PhotoData, Status, Operator)
+            VALUES (?, ?, ?, 'Pending Review', ?);
+    """;
+
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, orderId);
-            ps.setString(2, photoAngle);
-            ps.setBytes(3,photoData);
+
+            ps.setInt(1, orderId);           // source.OrderID
+            ps.setString(2, photoAngle);     // source.PhotoAngle
+            ps.setBytes(3, photoData);       // UPDATE SET PhotoData
+            ps.setString(4, operatorName);   // UPDATE SET Operator
+
+            ps.setInt(5, orderId);           // INSERT OrderID
+            ps.setString(6, photoAngle);     // INSERT PhotoAngle
+            ps.setBytes(7, photoData);       // INSERT PhotoData
+            ps.setString(8, operatorName);   // INSERT Operator
+
             ps.executeUpdate();
         }
     }

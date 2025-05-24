@@ -28,4 +28,8 @@ public class ProductPhotosManager {
     public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
         return photosDAO.getPhotoStatusByOrderId(orderId);
     }
+
+    public void upsertCapturedPhoto(int orderId, String photoAngle, byte[] photoData, String operatorName) throws SQLException {
+        photosDAO.upsertCapturedPhoto(orderId, photoAngle, photoData, operatorName);
+    }
 }

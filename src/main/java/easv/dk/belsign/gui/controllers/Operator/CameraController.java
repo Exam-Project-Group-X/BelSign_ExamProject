@@ -3,7 +3,6 @@ package easv.dk.belsign.gui.controllers.Operator;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.ProductPhotos;
 import easv.dk.belsign.bll.ProductPhotosManager;
-import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
 
@@ -127,44 +126,46 @@ public class CameraController {
             showAlert("No valid order selected");
             return;
         }
+
         String operatorName = operatorNameField.getText().trim();
         if (operatorName.isEmpty()) {
             showAlert("Please enter operator name to sign the upload");
             return;
         }
-        for (Map.Entry<String, PhotoEntry> entry : requiredPhotos.entrySet()) {
-            if (entry.getValue().image == null) {
-                showAlert("Missing required photo: " + entry.getKey());
-                return;
-            }
-        }
 
         try {
-            ProductPhotosDAO dao = new ProductPhotosDAO();
+            ProductPhotosManager manager = new ProductPhotosManager();
 
-            for (PhotoEntry entry : requiredPhotos.values()) {
-                dao.insertCapturedPhoto(
-                        selectedOrder.getOrderID(),
-                        entry.descriptionField.getText(),
-                        convertToBytes(entry.image)
-                );
-            }
+            // Only upload rejected or new photos from required
+            for (Map.Entry<String, PhotoEntry> entrySet : requiredPhotos.entrySet()) {
+                PhotoEntry entry = entrySet.getValue();
 
-            for (PhotoEntry entry : extraPhotos) {
-                if (entry.image != null) {
-                    dao.insertCapturedPhoto(
+                if (entry.image != null && (entry.status == null || "Rejected".equalsIgnoreCase(entry.status))) {
+                    manager.upsertCapturedPhoto(
                             selectedOrder.getOrderID(),
                             entry.descriptionField.getText(),
-                            convertToBytes(entry.image)
+                            convertToBytes(entry.image),
+                            operatorName
                     );
                 }
             }
 
-            showAlert("All photos uploaded successfully!\nSigned by: " + operatorName);
+            // Upload all extra photos
+            for (PhotoEntry entry : extraPhotos) {
+                if (entry.image != null) {
+                    manager.upsertCapturedPhoto(
+                            selectedOrder.getOrderID(),
+                            entry.descriptionField.getText(),
+                            convertToBytes(entry.image),
+                            operatorName
+                    );
+                }
+            }
+
+            showAlert("Photos uploaded successfully!\nSigned by: " + operatorName);
             Navigation.goToOperatorDashboard();
 
         } catch (Exception e) {
-            e.printStackTrace();
             showAlert("Error uploading photos: " + e.getMessage());
         }
     }
@@ -300,7 +301,6 @@ public class CameraController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             showAlert("Error loading photos: " + e.getMessage());
         }
     }
