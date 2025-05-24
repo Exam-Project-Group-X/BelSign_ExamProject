@@ -12,6 +12,7 @@ public class ProductPhotos {
     private Timestamp ReviewedAt; // Timestamp of photo review
     private String ReviewerUserID; // This will hold the name of the reviewer (QA Employee)
     private String Comment;
+    private byte[] PhotoData; // Binary data for the photo, if needed
     private String Operator;
 
     // Default constructor
@@ -89,6 +90,14 @@ public class ProductPhotos {
 
     public void setComment(String comment) {
         Comment = comment;
+    }
+
+    public byte[] getPhotoData() {
+        return PhotoData;
+    }
+
+    public void setPhotoData(byte[] photoData) {
+        PhotoData = photoData;
     }
 
     public String getOperator() {

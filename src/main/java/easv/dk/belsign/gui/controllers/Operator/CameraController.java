@@ -1,6 +1,8 @@
 package easv.dk.belsign.gui.controllers.Operator;
 
 import easv.dk.belsign.be.Order;
+import easv.dk.belsign.be.ProductPhotos;
+import easv.dk.belsign.bll.ProductPhotosManager;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.utils.WebcamCaptureDialog;
@@ -20,9 +22,11 @@ import javafx.scene.shape.Circle;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import javafx.util.Duration;
@@ -57,6 +61,8 @@ public class CameraController {
         ImageView imageView;
         TextField descriptionField;
         Image image;
+        String status;
+        String comment;
     }
 
     @FXML
@@ -188,7 +194,7 @@ public class CameraController {
             if (newX >= maxX - 5 && !uploadTriggered) {
                 uploadTriggered = true;
                 swipeLabel.setText("Uploading...");
-                swipeLabel.setTextFill(Color.GREEN);
+                swipeLabel.setTextFill(Color.WHITE);
                 uploadImages();
             }
         });
@@ -220,8 +226,82 @@ public class CameraController {
 
     public void setSelectedOrder(Order order) {
         this.selectedOrder = order;
+
         if (orderNumber != null && order != null) {
             orderNumber.setText("Order Nr.: " + order.getOrderNumber());
+        }
+
+        // Clear existing entries
+        requiredPhotos.clear();
+        extraPhotos.clear();
+        photoGridPane.getChildren().clear();
+        photoColIndex = 0;
+        photoRowIndex = 0;
+
+        try {
+            Map<String, ProductPhotos> photoMap = new ProductPhotosManager().getDetailedPhotosByOrderId(order.getOrderID());
+
+            String[] requiredLabels = {"Front", "Back", "Top", "Left", "Right"};
+
+            for (String angle : requiredLabels) {
+                PhotoEntry entry = new PhotoEntry();
+                entry.descriptionField = new TextField(angle);
+                entry.descriptionField.setPrefWidth(150);
+
+                ProductPhotos photo = photoMap.get(angle.toUpperCase());
+
+                if (photo != null && photo.getPhotoData() != null) {
+                    Image image = new Image(new ByteArrayInputStream(photo.getPhotoData()));
+                    entry.image = image;
+                    entry.status = photo.getStatus();
+                    entry.comment = photo.getComment();
+                    entry.imageView = new ImageView(image);
+                    entry.imageView.setFitHeight(150);
+                    entry.imageView.setFitWidth(150);
+                    entry.imageView.setPreserveRatio(true);
+
+                    if ("Approved".equalsIgnoreCase(photo.getStatus())) {
+                        entry.imageView.setOpacity(0.4); // make transparent
+                        entry.imageView.setDisable(true); // lock interaction
+                    } else if ("Rejected".equalsIgnoreCase(photo.getStatus())) {
+                        // allow recapture
+                        entry.imageView.setStyle("-fx-cursor: hand;");
+                        entry.imageView.setOnMouseClicked(e -> {
+                            Image captured = new WebcamCaptureDialog().showAndCapture();
+                            if (captured != null) {
+                                entry.image = captured;
+                                entry.imageView.setImage(captured);
+                                checkSwipeReadiness();
+                            }
+                        });
+                    }
+
+                    // Insert comment label if not null
+                    VBox container = new VBox(5);
+                    container.getChildren().addAll(entry.imageView, entry.descriptionField);
+                    if (entry.comment != null && !entry.comment.isEmpty()) {
+                        Label commentLabel = new Label("Comment: " + entry.comment);
+                        commentLabel.setWrapText(true);
+                        commentLabel.setStyle("-fx-text-fill: red; -fx-font-size: 11px;");
+                        container.getChildren().add(commentLabel);
+                    }
+                    photoGridPane.add(container, photoColIndex, photoRowIndex);
+                    photoColIndex++;
+                    if (photoColIndex >= photoColumnCount) {
+                        photoColIndex = 0;
+                        photoRowIndex++;
+                    }
+                    requiredPhotos.put(angle, entry);
+                } else {
+                    // Photo is missing, allow capture
+                    PhotoEntry newEntry = createPhotoEntry(angle);
+                    requiredPhotos.put(angle, newEntry);
+                    addPhotoEntryToGrid(newEntry);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error loading photos: " + e.getMessage());
         }
     }
 }

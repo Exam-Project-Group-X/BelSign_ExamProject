@@ -15,10 +15,6 @@ import javafx.stage.Stage;
  * =========================================================
  * */
 
-/// TODO List
-/// - [ ] One window for all
-/// - [ ] Improve loading times
-/// - [ ] Remove photo previews from QA Employee panel Order cards
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {

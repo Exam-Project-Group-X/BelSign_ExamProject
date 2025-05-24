@@ -1,5 +1,6 @@
 package easv.dk.belsign.dal.web;
 
+import easv.dk.belsign.be.ProductPhotos;
 import easv.dk.belsign.dal.db.DBConnection;
 
 import java.sql.Connection;
@@ -17,9 +18,9 @@ public class ProductPhotosDAO {
         Map<String, byte[]> photos = new HashMap<>();
 
         String sql = "SELECT PhotoAngle, PhotoData FROM ProductPhotos WHERE OrderID = ?";
+
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
 
@@ -27,6 +28,29 @@ public class ProductPhotosDAO {
                 String angle = rs.getString("PhotoAngle");
                 byte[] data = rs.getBytes("PhotoData");
                 photos.put(angle.toUpperCase(), data);
+            }
+        }
+        return photos;
+    }
+
+    public Map<String, ProductPhotos> getDetailedPhotosByOrderId(int orderId) throws SQLException {
+        Map<String, ProductPhotos> photos = new HashMap<>();
+
+        String sql = "SELECT PhotoAngle, PhotoData, Status, Comment FROM ProductPhotos WHERE OrderID = ?";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ProductPhotos photo = new ProductPhotos();
+                String angle = rs.getString("PhotoAngle");
+                photo.setPhotoAngle(angle);
+                photo.setPhotoData(rs.getBytes("PhotoData"));
+                photo.setStatus(rs.getString("Status"));
+                photo.setComment(rs.getString("Comment"));
+                photos.put(angle.toUpperCase(), photo);
             }
         }
         return photos;
@@ -45,7 +69,6 @@ public class ProductPhotosDAO {
     }
 
     public void approvePhoto(int orderId, String angle) throws SQLException {
-
         String sql = "UPDATE ProductPhotos SET Status = 'Approved' WHERE OrderID = ? AND PhotoAngle = ?";
 
         try (Connection conn = con.getConnection();
@@ -77,22 +100,17 @@ public class ProductPhotosDAO {
 
     public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
         Map<String, String> statusMap = new HashMap<>();
-
         String sql = "SELECT PhotoAngle, Status FROM ProductPhotos WHERE OrderID = ?";
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 String angle = rs.getString("PhotoAngle").toUpperCase();
                 String status = rs.getString("Status");
                 statusMap.put(angle, status);  // e.g., "Approved", "Rejected", "Pending Review"
             }
         }
-
         return statusMap;
     }
-
 }
