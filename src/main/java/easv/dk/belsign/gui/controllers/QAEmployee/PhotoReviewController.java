@@ -206,7 +206,6 @@ public class PhotoReviewController {
         }
     }
 
-
     public void onCloseBtnClick(ActionEvent actionEvent) {
         Pair<Parent, QAEmployeeController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_EMPLOYEE_VIEW);
         QAEmployeeController controller = pair.getValue();

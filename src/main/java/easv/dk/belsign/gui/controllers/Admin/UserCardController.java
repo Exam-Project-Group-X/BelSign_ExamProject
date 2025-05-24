@@ -20,9 +20,7 @@ import javafx.util.Pair;
 
 import java.sql.SQLException;
 public class UserCardController {
-    @FXML private Label lblRole;
-    @FXML private Label lblName;
-    @FXML private Label lblEmail;
+    @FXML private Label lblRole, lblName, lblEmail;
     private User loggedInUser;
     private User user;
     private AdminController adminController;
@@ -36,13 +34,16 @@ public class UserCardController {
     public void setParentController(AdminController adminController) {
         this.adminController = adminController;
     }
-    public void onClickDeleteUser(ActionEvent actionEvent) {
-        Window owner = ((Node) actionEvent.getSource()).getScene().getWindow();
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+    @FXML
+    private void onClickDeleteUser(ActionEvent actionEvent) {
         try {
             model.deleteUser(user);
-            // Notify parent controller to refresh the cards if available
+            // Ask parent controller to reload the user list
             if (adminController != null) {
-                adminController.loadAllUsers();
+                adminController.refreshUsers();
                 AlertUtil.error(
                         ((Node) actionEvent.getSource()).getScene(),
                         "User deleted ✓");           }
@@ -52,10 +53,6 @@ public class UserCardController {
                     ((Node) actionEvent.getSource()).getScene(),
                     "Error, Failed to delete user.");
         }
-    }
-
-    public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
     }
 
     public void onClickEditUser(ActionEvent actionEvent) {

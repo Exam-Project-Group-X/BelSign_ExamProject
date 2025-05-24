@@ -35,39 +35,35 @@
     import java.util.List;
     import java.util.ResourceBundle;
     public class AdminController implements Initializable {
-        @FXML private Label welcomeLabel;
-        @FXML
-        private HBox toggleBtnContainer;
-        @FXML
-        private Button firstPageBtn;
-        @FXML
-        private Button lastPageBtn;
-        @FXML
-        private Label lblPageInfo;
-        @FXML
-        private Button prevPageBtn;
-        @FXML
-        private Button nextPageBtn;
+        @FXML private Button firstPageBtn, prevPageBtn, nextPageBtn, lastPageBtn;
+        @FXML private HBox toggleBtnContainer;
+        @FXML private Label lblPageInfo;
         @FXML private ComboBox<String> roleFilter;
         @FXML private TextField searchField;
         @FXML private VBox cardContainer;
-
-        private static final int PAGE_SIZE = 9; //cards per page
-        private static final int TOGGLE_COUNT = 2;// toggle btn per line
 
         @FXML
         private AnchorPane topBarHolder;
         private TopBarController topBarController;
         private User loggedInUser;
 
-        private int currentPage = 1;
-        private int pageCount  = 1;
         private ToggleGroup toggleGroup = new ToggleGroup();
         private static final UserModel userModel = new UserModel();
         private List<User> allUsersList;
 
+        private static final int PAGE_SIZE = 9; //cards per page
+        private static final int TOGGLE_COUNT = 2;// toggle btn per line
+        private int currentPage = 1;
+        private int pageCount  = 1;
+
         @Override
         public void initialize(URL location, ResourceBundle resources) {
+            loadTopBar();
+            fetchUsersAsync();      // Loads users -> init dropdowns & first page
+            setupListeners();
+        }
+
+        private void loadTopBar() {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
                 Node topBar = loader.load();
@@ -76,32 +72,133 @@
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
-            try {
-                // Get all users from the UserModel
-                allUsersList = userModel.getAllUsers();
-                updatePageCount(allUsersList.size());
-                loadPage(currentPage);
-                updatePaginationToggles();
-                loadAllUsers();
-                searchField.textProperty().addListener((obs, oldVal, newVal) -> {
-                    try {
-                        filterUsers();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+        private void setupListeners() {
+            searchField.textProperty().addListener((obs, o, n) -> applyFilters());
+            roleFilter.valueProperty().addListener((obs, o, n) -> applyFilters());
+        }
+
+        private void fetchUsersAsync() {
+            new Thread(() -> {
+                try {
+                    List<User> users = userModel.getAllUsers();
+                    Platform.runLater(() -> {
+                        allUsersList = users;
+                        initRoleFilter();
+                        applyFilters();
+                    });
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }).start();
+        }
+
+        public void refreshUsers() { fetchUsersAsync(); }
+
+        /* ───────────────────────────── Filtering / Search ───────────────────────────── */
+        private void initRoleFilter() {
+            ObservableList<String> roles = FXCollections.observableArrayList("Clear", "All Roles");
+            roles.addAll(allUsersList.stream()
+                    .map(User::getRoleName)
+                    .distinct()
+                    .collect(Collectors.toList()));
+            roleFilter.setItems(roles);
+            roleFilter.getSelectionModel().select("All Roles");
+        }
+
+        private void applyFilters() {
+            if (allUsersList == null) {
+                return; // No users to filter
+            }
+            if (allUsersList == null) return;   // Safety‑net during early init
+
+            String search       = blankIfNull(searchField.getText()).toLowerCase();
+            String selectedRole = normalizeRoleValue(roleFilter.getValue());
+
+            List<User> filtered = allUsersList.stream()
+                    .filter(u -> {
+                        String role = blankIfNull(u.getRoleName()).toLowerCase();
+                        return u.getFullName().toLowerCase().contains(search) ||
+                                u.getEmail().toLowerCase().contains(search)    ||
+                                role.contains(search);                         // return match role text
+                    })
+                    .filter(u -> "all roles".equals(selectedRole) ||
+                            u.getRoleName().toLowerCase().contains(selectedRole))
+                    .collect(Collectors.toList());
+
+            updatePageCount(filtered.size());
+            loadPage(filtered);
+            updatePaginationToggles();
+        }
+        private static String blankIfNull(String s) { return s == null ? "" : s; }
+        private String normalizeRoleValue(String role) {
+            if ("Clear".equalsIgnoreCase(role)) {
+                roleFilter.getSelectionModel().select("All Roles");
+                return "all roles";
+            }
+            return blankIfNull(role).toLowerCase();
+        }
+
+        /* ───────────────────────────────── Pagination ───────────────────────────────── */
+        private void updatePageCount(int totalItems) {
+            pageCount = Math.max(1, (int) Math.ceil(totalItems / (double) PAGE_SIZE));
+            currentPage = Math.min(currentPage, pageCount);
+            updateNavButtonsVisibility();
+        }
+
+        /** Hides nav buttons when there is only a single page to display. */
+        private void updateNavButtonsVisibility() {
+            boolean multiPage = pageCount > 1;
+            firstPageBtn.setVisible(multiPage);
+            prevPageBtn.setVisible(multiPage);
+            nextPageBtn.setVisible(multiPage);
+            lastPageBtn.setVisible(multiPage);
+
+            // Also remove them from layout to avoid empty space
+            firstPageBtn.setManaged(multiPage);
+            prevPageBtn.setManaged(multiPage);
+            nextPageBtn.setManaged(multiPage);
+            lastPageBtn.setManaged(multiPage);
+        }
+
+        private void loadPage(List<User> source) {
+            cardContainer.getChildren().clear();
+
+            int start = (currentPage - 1) * PAGE_SIZE;
+            int end   = Math.min(start + PAGE_SIZE, source.size());
+
+            source.subList(start, end).forEach(this::addUserCard);
+            lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
+        }
+
+        // Dynamically generate pagination toggle buttons based on current page
+        private void updatePaginationToggles() {
+            toggleBtnContainer.getChildren().clear();
+            if (pageCount <= 1) return;   // nothing to build when single page
+
+            int startPage = ((currentPage - 1) / TOGGLE_COUNT) * TOGGLE_COUNT + 1;
+            int endPage   = Math.min(startPage + TOGGLE_COUNT - 1, pageCount);
+
+            for (int p = startPage; p <= endPage; p++) {
+                ToggleButton toggle = new ToggleButton(String.valueOf(p));
+                toggle.setToggleGroup(toggleGroup);
+                toggle.setSelected(p == currentPage);
+                if (p == currentPage) {
+                    toggle.setStyle("-fx-background-color: #004884; -fx-text-fill: white;");
+                }
+                toggle.setOnAction(e -> {
+                    currentPage = Integer.parseInt(toggle.getText());
+                    applyFilters();
                 });
-                roleFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
-                    try {
-                        filterUsers();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                toggleBtnContainer.getChildren().add(toggle);
             }
         }
+
+        @FXML private void onClickFirstPageBtn(ActionEvent e) { currentPage = 1; applyFilters(); }
+        @FXML private void onClickPrevPageBtn(ActionEvent e)  { if (currentPage > 1) { currentPage--; applyFilters(); } }
+        @FXML private void onCLickNextPageBtn(ActionEvent e)  { if (currentPage < pageCount) { currentPage++; applyFilters(); } }
+        @FXML private void onClickLastPageBtn(ActionEvent e)  { currentPage = pageCount; applyFilters(); }
 
         public void setLoggedInUser(User user) {
             this.loggedInUser = user; //Also sets logged in for other controllers
@@ -114,66 +211,7 @@
             return loggedInUser;
         }
 
-        private void updatePageCount(int totalItems) {
-
-            pageCount = (int) Math.ceil(totalItems / (double) PAGE_SIZE);
-            if (currentPage > pageCount) currentPage = pageCount;
-        }
-
-
-        public void loadPage(int page) {
-            cardContainer.getChildren().clear();
-            int start = (page - 1) * PAGE_SIZE;
-            int end = Math.min(start + PAGE_SIZE, allUsersList.size());
-            for (int i = start; i < end; i++) {
-                addUserCard(allUsersList.get(i));
-            }
-            lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
-        }
-
-        // Dynamically generate pagination toggle buttons based on current page
-        private void updatePaginationToggles() {
-            toggleBtnContainer.getChildren().clear();
-            int startPage = ((currentPage - 1) / TOGGLE_COUNT) * TOGGLE_COUNT + 1;
-            int endPage = Math.min(startPage + TOGGLE_COUNT - 1, pageCount);
-
-            for (int i = startPage; i <= endPage; i++) {
-                ToggleButton toggle = new ToggleButton(String.valueOf(i));
-                toggle.setToggleGroup(toggleGroup);
-                if (i == currentPage) {
-                    toggle.setStyle("-fx-background-color: #004884; -fx-text-fill: white;");
-                    toggle.setSelected(true);
-                }
-                int pageNum = i;
-                toggle.setOnAction(e -> {
-                    currentPage = pageNum;
-                    loadPage(currentPage);
-                    updatePaginationToggles();
-                });
-                toggleBtnContainer.getChildren().add(toggle);
-            }
-        }
-
-        public void loadAllUsers() throws SQLException {
-
-            new Thread(() -> {
-                try {
-                    allUsersList = userModel.getAllUsers();
-                    Platform.runLater(() ->{
-                        setUpRoleFilter();
-                        pageCount = (int)Math.ceil((double)allUsersList.size() / PAGE_SIZE);
-                        loadPage(1);
-                        updatePaginationToggles();
-                    });
-                } catch (SQLException e) {
-                    System.err.println("Error loading users.");
-                    e.printStackTrace();
-                }
-            }).start();
-
-        }
         public void addUserCard(User user) {
-
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_CARD));
                 Node userCard = loader.load();
@@ -187,90 +225,10 @@
             }
         }
 
-        private void setUpRoleFilter() {
-            ObservableList<String> roles = FXCollections.observableArrayList();
-            roles.add("Clear");
-            roles.add("All Roles");
-            roles.addAll(
-                    allUsersList.stream()
-                            .map(user -> user.getRoleName())
-                            .distinct()
-                            .collect(Collectors.toList())
-            );
-            roleFilter.setItems(roles);
-            roleFilter.getSelectionModel().select("All Roles");
-        }
-
-
-
-
         public void onClickCreateUserBtn(ActionEvent actionEvent) {
             Pair<Parent, CreateUserController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.CREATE_USER);
             CreateUserController controller = pair.getValue();
             controller.setLoggedInUser(loggedInUser);
             Navigation.goToCreateUserView(pair.getKey());
         }
-
-        private void filterUsers() throws SQLException {
-            String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
-            String roleValue = roleFilter.getValue() == null ? "" : roleFilter.getValue().toLowerCase();
-            final String selectedRole;
-            if (roleValue.equals("clear")) {
-                roleFilter.getSelectionModel().select("All Roles");
-                selectedRole = "all roles";
-            } else {
-                selectedRole = roleValue;
-            }
-            List<User> filteredUsers = userModel.getAllUsers().stream()
-                    .filter(user ->
-                            user.getFullName().toLowerCase().contains(search) ||
-                                    user.getEmail().toLowerCase().contains(search))
-                    .filter(user -> {
-                        // If no role is selected, show all users
-                        if (selectedRole.isEmpty() || selectedRole.equals("all roles")) {
-                            return true;
-                        } else {
-                            return user.getRoleName().toLowerCase().contains(selectedRole);
-                        }
-                    })
-                    .collect(Collectors.toList());
-            updatePageCount(filteredUsers.size());
-
-
-            this.allUsersList = filteredUsers;
-            currentPage = 1;
-            loadPage(currentPage);
-            updatePaginationToggles();
-        }
-
-        public void onClickFirstPageBtn(ActionEvent actionEvent) {
-            currentPage = 1;
-            loadPage(currentPage);
-            updatePaginationToggles();
-        }
-
-
-
-        public void onClickPrevPageBtn(ActionEvent actionEvent) {
-            if (currentPage > 1) {
-                currentPage--;
-                loadPage(currentPage);
-                updatePaginationToggles();
-            }
-        }
-
-        public void onCLickNextPageBtn(ActionEvent actionEvent) {
-            if (currentPage < pageCount) {
-                currentPage++;
-                loadPage(currentPage);
-                updatePaginationToggles();
-            }
-        }
-
-        public void onClickLastPageBtn(ActionEvent actionEvent) {
-            currentPage = pageCount;
-            loadPage(currentPage);
-            updatePaginationToggles();
-        }
-
     }
