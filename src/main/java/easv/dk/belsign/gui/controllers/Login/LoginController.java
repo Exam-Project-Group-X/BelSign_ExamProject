@@ -54,8 +54,8 @@ public class LoginController implements Initializable {
             visiblePassword.setManaged(true);
             loginPassword.setVisible(false);
             loginPassword.setManaged(false);
-            // Change icon to indicate visibility
-            eyeIcon.setIconLiteral("bi-eye-slash");
+            // Change icon back to "eye"
+            eyeIcon.setIconLiteral("bi-eye");
         } else {
             // Hide plain text field, show PasswordField again
             loginPassword.setText(visiblePassword.getText());
@@ -63,8 +63,8 @@ public class LoginController implements Initializable {
             loginPassword.setManaged(true);
             visiblePassword.setVisible(false);
             visiblePassword.setManaged(false);
-            // Change icon back to "eye"
-            eyeIcon.setIconLiteral("bi-eye");
+            // Change icon to indicate visibility
+            eyeIcon.setIconLiteral("bi-eye-slash");
         }
     }
 

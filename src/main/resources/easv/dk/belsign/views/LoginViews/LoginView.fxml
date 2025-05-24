@@ -29,9 +29,22 @@
 
 
             <!-- Main VBox Content -->
-            <VBox alignment="CENTER" spacing="20.0" style="-fx-padding: 50;">
+            <VBox alignment="CENTER">
                 <children>
-                    <VBox spacing="25.0">
+               <VBox prefHeight="13.0" prefWidth="300.0">
+                  <children>
+            
+                                 <Button fx:id="backButton" onAction="#onBackClick" style="-fx-background-color: transparent;">
+                        <graphic>
+                                <FontIcon iconLiteral="bi-arrow-left" iconSize="30" wrappingWidth="64.0" />
+                        </graphic>
+                        <padding>
+                           <Insets left="-5.0" />
+                        </padding>
+                        </Button>
+                  </children>
+               </VBox>
+                    <VBox prefWidth="300.0" spacing="20.0">
                         <ImageView fx:id="logoImage" fitHeight="38.0" fitWidth="71.0" preserveRatio="true">
                             <image>
                                 <Image url="@../../images/photos/logo.png" />
@@ -42,6 +55,9 @@
                                 <Font name="Helvetica Bold Oblique" size="21.0" />
                             </font>
                         </Label>
+                  <VBox.margin>
+                     <Insets top="20.0" />
+                  </VBox.margin>
                     </VBox>
 
                     <VBox maxWidth="400" spacing="10.0">
@@ -51,10 +67,10 @@
 
                         <StackPane maxWidth="376.0" prefHeight="30.0" style="-fx-background-color: transparent;">
                             <PasswordField fx:id="loginPassword" prefHeight="30.0" prefWidth="309.0" style="-fx-background-radius: 3;" />
-                            <TextField fx:id="visiblePassword" managed="false" visible="false" prefHeight="30.0" prefWidth="309.0" style="-fx-border-radius: 3;" />
-                            <Button fx:id="btnTogglePassword" onAction="#onTogglePasswordVisibility" prefHeight="22.0" prefWidth="35.0" maxHeight="26.0" maxWidth="35.0" style="-fx-background-color: transparent;" StackPane.alignment="CENTER_RIGHT">
+                            <TextField fx:id="visiblePassword" managed="false" prefHeight="30.0" prefWidth="309.0" style="-fx-border-radius: 3;" visible="false" />
+                            <Button fx:id="btnTogglePassword" maxHeight="26.0" maxWidth="35.0" onAction="#onTogglePasswordVisibility" prefHeight="22.0" prefWidth="35.0" style="-fx-background-color: transparent;" StackPane.alignment="CENTER_RIGHT">
                                 <graphic>
-                                    <FontIcon fx:id="eyeIcon" iconColor="BLACK" iconLiteral="bi-eye" iconSize="16" />
+                                    <FontIcon fx:id="eyeIcon" iconColor="BLACK" iconLiteral="bi-eye-slash" iconSize="16" />
                                 </graphic>
                             </Button>
                         </StackPane>
@@ -64,15 +80,15 @@
                                 <Insets top="20.0" />
                             </VBox.margin>
                         </Button>
+                  <VBox.margin>
+                     <Insets bottom="20.0" top="20.0" />
+                  </VBox.margin>
                     </VBox>
                 </children>
+            <padding>
+               <Insets left="50.0" right="50.0" />
+            </padding>
             </VBox>
-
-            <Button fx:id="backButton" onAction="#onBackClick" style="-fx-background-color: transparent;" StackPane.alignment="TOP_RIGHT">
-                <graphic>
-                    <FontIcon iconLiteral="bi-arrow-right-square-fill" iconSize="20" rotate="180"/>
-                </graphic>
-            </Button>
 
         </StackPane>
     </center>
