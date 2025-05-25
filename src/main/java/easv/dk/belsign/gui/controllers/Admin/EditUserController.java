@@ -28,6 +28,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class EditUserController implements Initializable {
@@ -40,33 +41,28 @@ public class EditUserController implements Initializable {
     @FXML private Button continueBtn;
 
     private static final UserModel userModel = new UserModel();
-    private AdminController adminController;
     private User user;
     private User originalUser;
-    private boolean fieldsChanged = false;
     private User loggedInUser;
     @FXML
     private AnchorPane topBarHolder;
     private TopBarController topBarController;
-
+    private AdminController adminController;
+    private boolean fieldsChanged = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadTopBar();
+        addFieldListeners();
+    }
+
+    private void loadTopBar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
             Node topBar = loader.load();
             topBarController = loader.getController();
             topBarHolder.getChildren().setAll(topBar);
-
-
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            ObservableList<String> roles = userModel.getAllRoleNames();
-            addFieldListeners();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -77,16 +73,14 @@ public class EditUserController implements Initializable {
     }
 
     private void checkIfChanged() {
-        fieldsChanged =
-                !fullNameField.getText().equals(originalUser.getFullName()) ||
-                        !passwordField.getText().isBlank();
-
+        fieldsChanged = !fullNameField.getText().equals(originalUser.getFullName()) ||
+                !passwordField.getText().isBlank();
         continueBtn.setText(fieldsChanged ? "Update" : "Save");
         cancelBtn.setText(fieldsChanged ? "Revert" : "Close");
     }
 
-    public void setManageUsersController(AdminController adminController) {
-        this.adminController = adminController;
+    public void setManageUsersController(AdminController parentController) {
+        this.adminController = parentController;
     }
 
     public void setLoggedInUser(User user) {
@@ -96,12 +90,27 @@ public class EditUserController implements Initializable {
         }
     }
 
+    /** Pre‑loads the form with the selected user’s details. */
+    public void setUserData(User user) {
+        this.originalUser = user;
+        roleField.setText(user.getRoleName());
+        fullNameField.setText(user.getFullName());
+        emailField.setText(user.getEmail());
+        passwordField.clear();
 
+        emailField.setDisable(true);          // e‑mail & role are immutable here
+        roleField.setDisable(true);
+
+        continueBtn.setText("Save");
+        cancelBtn.setText("Close");
+    }
 
     public void onClickCancelBtn(ActionEvent actionEvent) {
         if (fieldsChanged) {
+            // revert to original snapshot
             setUserData(originalUser);
             fieldsChanged = false;
+            checkIfChanged();
         } else {
             navigateBack();
         }
@@ -110,72 +119,68 @@ public class EditUserController implements Initializable {
     public void onClickContinueBtn(ActionEvent actionEvent) {
         String fullName = fullNameField.getText().trim();
         String email = emailField.getText().trim();
-        String rawPassword = passwordField.getText().trim();
+        String newPassword = passwordField.getText().trim();
         String roleName = roleField.getText();
 
-        if (fullName.isEmpty() || email.isEmpty() || (user == null && rawPassword.isEmpty())) {
+        if (fullName.isEmpty() || email.isEmpty()) {
             AlertUtil.error(
                     ((Node) actionEvent.getSource()).getScene(),
                     "Please fill in all required fields.");
             return;
         }
-
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.(com|dk)$")) {
             AlertUtil.error(
                     ((Node) actionEvent.getSource()).getScene(),
                     "Invalid Email Address, Please fill in all required fields.");
             return;
         }
+        Integer roleId = allRoles.get(roleName);
+        if (roleId == null) {
+            AlertUtil.error(
+                    ((Node) actionEvent.getSource()).getScene(),
+                    "Unknown role selected.");
+            return;
+        }
 
-        int roleId = switch (roleName) {
-            case "Admin" -> 1;
-            case "QA Employee" -> 2;
-            case "Operator" -> 3;
-            default -> {
-                AlertUtil.error(
-                        ((Node) actionEvent.getSource()).getScene(),
-                        "Unknown Role, Invalid role selected.");
-                yield -1;
-            }
-        };
-        if (roleId == -1) return;
+        String finalPassword = newPassword.isBlank()
+                ? originalUser.getPasswordHash()     // keep old hash
+                : PasswordUtils.hashPassword(newPassword);     // store new hash
 
-        String finalPassword = (user != null && user.getUserID() > 0)
-                ? getFinalPassword(rawPassword, user.getPasswordHash())
-                : PasswordUtils.hashPassword(rawPassword);
+        User updatedUser = new User(
+                originalUser.getUserID(),
+                finalPassword,
+                "",
+                fullName,
+                email,
+                roleId,
+                null, null,
+                true,
+                roleName
+        );
 
         try {
-            if (user != null && user.getUserID() > 0) {
-                User updatedUser = new User(
-                        user.getUserID(),
-                        finalPassword,
-                        "",
-                        fullName,
-                        email,
-                        roleId,
-                        null, null,
-                        true,
-                        roleName
-                );
-                userModel.updateUser(updatedUser);
-                originalUser = updatedUser;
-                fieldsChanged = false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            userModel.updateUser(updatedUser);
+            originalUser  = updatedUser;          // refresh snapshot
+            fieldsChanged = false;
+            navigateBack();
+            Platform.runLater(() -> AlertUtil.success(
+                    ViewManager.INSTANCE.getSceneManager()
+                            .getCurrentStage()
+                            .getScene(),
+                    "User updated ✓"));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             AlertUtil.error(
                     ((Node) actionEvent.getSource()).getScene(),
                     "Error, fail to update user.");
-            return;
         }
-        navigateBack();
-        Platform.runLater(() ->
-                AlertUtil.success(
-                        ViewManager.INSTANCE.getSceneManager()
-                                .getCurrentStage()
-                                .getScene(),
-                        "User updated ✓"));
     }
+
+    private static final Map<String, Integer> allRoles = Map.of(
+            "Admin",       1,
+            "QA Employee", 2,
+            "Operator",    3
+    );
 
     private void navigateBack() {
         Pair<Parent, AdminController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.ADMIN_DASHBOARD);
@@ -183,27 +188,5 @@ public class EditUserController implements Initializable {
         controller.setLoggedInUser(loggedInUser);
 
         Navigation.goToAdminView(pair.getKey());
-    }
-
-
-    public void setUserData(User user) {
-        this.user = user;
-        this.originalUser = user;
-        fullNameField.setText(user.getFullName());
-        emailField.setText(user.getEmail());
-        passwordField.setText("");
-        roleField.setText(user.getRoleName());
-
-        emailField.setDisable(true);
-        roleField.setDisable(true);
-
-        continueBtn.setText("Save");
-        cancelBtn.setText("Close");
-    }
-
-    private String getFinalPassword(String newPasswordInput, String oldPasswordHash) {
-        return (newPasswordInput == null || newPasswordInput.trim().isEmpty())
-                ? oldPasswordHash
-                : PasswordUtils.hashPassword(newPasswordInput.trim());
     }
 }

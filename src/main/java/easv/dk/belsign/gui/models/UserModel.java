@@ -17,12 +17,9 @@ public class UserModel {
     }
 
     public ObservableList<String> getAllRoleNames() throws SQLException {
-
         allRoleNames.setAll(userManager.getAllRoles());
         return allRoleNames;
     }
-
-
 
     public ObservableList<User> getAllUsers() throws SQLException {allUsers.setAll(userManager.getAllUsers());
         return allUsers;

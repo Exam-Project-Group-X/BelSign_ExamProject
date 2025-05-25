@@ -31,14 +31,13 @@ public class UserCardController {
         lblName.setText(user.getFullName());
         lblEmail.setText(user.getEmail());
     }
-    public void setParentController(AdminController adminController) {
-        this.adminController = adminController;
+    public void setParentController(AdminController parentController) {
+        this.adminController = parentController;
     }
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
     }
-    @FXML
-    private void onClickDeleteUser(ActionEvent actionEvent) {
+    public void onClickDeleteUser(ActionEvent actionEvent) {
         try {
             model.deleteUser(user);
             // Ask parent controller to reload the user list
