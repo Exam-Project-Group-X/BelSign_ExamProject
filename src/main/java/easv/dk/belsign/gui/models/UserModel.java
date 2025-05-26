@@ -11,7 +11,7 @@ public class UserModel {
     private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
     private User loggedInUser;
 
-    public User authenticate(String email, String password) {
+    public User authenticate(String email, String password) throws SQLException {
         this.loggedInUser = userManager.authenticateAndGetUser(email, password);
         return loggedInUser;
     }

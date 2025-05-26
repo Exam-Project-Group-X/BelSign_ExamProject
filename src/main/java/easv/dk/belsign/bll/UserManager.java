@@ -1,6 +1,7 @@
 package easv.dk.belsign.bll;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.dal.IUserDAO;
 import easv.dk.belsign.dal.web.UserDAO;
 
 import java.sql.SQLException;
@@ -9,11 +10,11 @@ import java.util.List;
 import javafx.collections.ObservableList;
 
 public class UserManager {
-    private final UserDAO userDAO;
+    private final IUserDAO userDAO = new UserDAO();
 
-    public UserManager() {
+/*    public UserManager() {
         this.userDAO = new UserDAO();
-    }
+    }*/
 
     public List<User> getAllUsers() throws SQLException {
         return userDAO.getAllUsers();
@@ -31,11 +32,11 @@ public class UserManager {
         userDAO.updateUser(user);
     }
 
-    public User authenticateAndGetUser(String email, String password) {
+    public User authenticateAndGetUser(String email, String password) throws SQLException {
         return userDAO.authenticateAndGetUser(email, password);
     }
 
-    public ObservableList<String> getAllRoles() throws SQLException {
+    public List<String> getAllRoles() throws SQLException {
         return userDAO.getAllRoleNames();
     }
 }

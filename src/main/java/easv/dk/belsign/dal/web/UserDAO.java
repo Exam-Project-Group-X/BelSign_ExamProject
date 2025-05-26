@@ -70,9 +70,8 @@ public class UserDAO implements IUserDAO {
         return -1;
     }
 
-
     @Override
-    public ObservableList<String> getAllRoleNames() throws SQLException {
+    public List<String> getAllRoleNames() throws SQLException {
         List<String> roleList = new ArrayList<>();
         String sql = "SELECT DISTINCT RoleName FROM UserRoles";
         try (Connection connection = con.getConnection();
@@ -81,11 +80,7 @@ public class UserDAO implements IUserDAO {
             while (rs.next()) {
                 roleList.add(rs.getString("RoleName"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-        return FXCollections.observableArrayList(roleList);
+        } return roleList;
     }
 
     @Override

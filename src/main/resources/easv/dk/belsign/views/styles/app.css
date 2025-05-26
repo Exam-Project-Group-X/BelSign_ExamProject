@@ -1,3 +1,7 @@
+.font {
+    -fx-font-family: "Helvetica", "Arial", sans-serif; /*If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial → generic sans-serif.*/
+}
+
 .card {
     -fx-font-family: "Helvetica", "Arial", sans-serif;
     -fx-background-color: #F5F5F5;

@@ -4,9 +4,7 @@ import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.controllers.Operator.CameraController;
 import easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController;
-import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController;
-import easv.dk.belsign.gui.models.PhotosModel;
-import easv.dk.belsign.gui.models.QAEmployeeModel;
+import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportMainController;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -108,7 +106,7 @@ public class Navigation {
     /// ─────────────────────────────────────
     public static void openQCReportPreview(Order order) {
         try {
-            Pair<Parent, QCReportController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
+            Pair<Parent, QCReportMainController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
             pair.getValue().setSelectedOrder(order);
 
             Stage stage = new Stage();

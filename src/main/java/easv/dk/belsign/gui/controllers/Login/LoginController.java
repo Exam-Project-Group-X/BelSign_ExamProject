@@ -18,12 +18,15 @@ import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
-    public ImageView loginImage;
-    public Button backButton;
+    @FXML
+    private ImageView loginImage;
+    @FXML
+    private Button backButton;
     @FXML
     private TextField loginEmail;
     @FXML
@@ -88,7 +91,12 @@ public class LoginController implements Initializable {
             return;
         }
 
-        User user = userModel.authenticate(email, password);
+        User user = null;
+        try {
+            user = userModel.authenticate(email, password);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         if (user != null) {
             switch (user.getRoleName()) {
                 case "Admin" -> {

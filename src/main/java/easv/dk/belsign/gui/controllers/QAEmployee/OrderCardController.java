@@ -2,26 +2,17 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
-import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
-import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportController;
 import easv.dk.belsign.gui.models.PhotosModel;
-import easv.dk.belsign.gui.models.QAEmployeeModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 
