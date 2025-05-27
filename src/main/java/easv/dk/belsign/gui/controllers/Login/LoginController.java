@@ -131,9 +131,6 @@ public class LoginController implements Initializable {
         return pattern.matcher(email).matches();
     }
 
-//    public void onClickLogoutBtn(ActionEvent actionEvent) {
-//        Navigation.goToTitleScreen();;
-//    }
 
     public void onBackClick(ActionEvent actionEvent) { Navigation.goToTitleScreen();
     }

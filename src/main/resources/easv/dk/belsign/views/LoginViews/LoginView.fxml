@@ -66,8 +66,8 @@
                         <Label text="Password" />
 
                         <StackPane maxWidth="376.0" prefHeight="30.0" style="-fx-background-color: transparent;">
-                            <PasswordField fx:id="loginPassword" prefHeight="30.0" prefWidth="309.0" style="-fx-background-radius: 3;" />
-                            <TextField fx:id="visiblePassword" managed="false" prefHeight="30.0" prefWidth="309.0" style="-fx-border-radius: 3;" visible="false" />
+                            <PasswordField fx:id="loginPassword" onAction="#onLoginClick" prefHeight="30.0" prefWidth="309.0" style="-fx-background-radius: 3;" />
+                            <TextField fx:id="visiblePassword" onAction="#onLoginClick" managed="false" prefHeight="30.0" prefWidth="309.0" style="-fx-border-radius: 3;" visible="false" />
                             <Button fx:id="btnTogglePassword" maxHeight="26.0" maxWidth="35.0" onAction="#onTogglePasswordVisibility" prefHeight="22.0" prefWidth="35.0" style="-fx-background-color: transparent;" StackPane.alignment="CENTER_RIGHT">
                                 <graphic>
                                     <FontIcon fx:id="eyeIcon" iconColor="BLACK" iconLiteral="bi-eye-slash" iconSize="16" />
@@ -75,7 +75,7 @@
                             </Button>
                         </StackPane>
 
-                        <Button fx:id="loginButton" onAction="#onLoginClick" prefWidth="312.0" style="-fx-pref-height: 40;" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Log in">
+                        <Button fx:id="loginButton" onAction="#onLoginClick" defaultButton="true" prefWidth="312.0" style="-fx-pref-height: 40;" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Log in">
                             <VBox.margin>
                                 <Insets top="20.0" />
                             </VBox.margin>
