@@ -51,7 +51,7 @@
         private static final UserModel userModel = new UserModel();
         private List<User> allUsersList;
 
-        private static final int PAGE_SIZE = 9; //cards per page
+        private static final int PAGE_SIZE = 8; //cards per page
         private static final int TOGGLE_COUNT = 2;// toggle btn per line
         private int currentPage = 1;
         private int pageCount  = 1;
