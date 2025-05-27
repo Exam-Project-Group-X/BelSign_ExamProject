@@ -53,8 +53,8 @@ public class QAEmployeeController implements Initializable {
     private static String lastSelectedStatus = "Pending";
     private static String lastSearchText = "";
 
-    private static final int PAGE_SIZE = 3;
-    private static final int TOGGLE_COUNT = 5;// cards per page
+    private static final int PAGE_SIZE = 5; //cards per page
+    private static final int TOGGLE_COUNT = 5;// toggle btns per line
     private int currentPage = 1;
     private int pageCount  = 1;
     private List<Order> orders;

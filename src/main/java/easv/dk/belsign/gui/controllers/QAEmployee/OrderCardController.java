@@ -16,17 +16,15 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-
 public class OrderCardController {
+    public Label lblImgQty;
     @FXML private Button btnGenReport;
     @FXML private Label statusLabel;
     @FXML private Label orderNumberLabel;
     @FXML private Label descriptionLabel;
     @FXML private Label createdAtLabel;
-    @FXML private AnchorPane photoGridPlaceholder;
 
     private GridPane loadedPhotoGrid;
-    private PhotoGridController photoGridController;
     private Order order;
     private User loggedInUser;
 
@@ -39,6 +37,7 @@ public class OrderCardController {
 
     @FXML
     public void initialize() {
+/*
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.QA_PHOTOGRID));
             loadedPhotoGrid = loader.load(); // Store the loaded grid for reuse
@@ -46,6 +45,7 @@ public class OrderCardController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+*/
 
     }
 
@@ -71,13 +71,13 @@ public class OrderCardController {
 //        }
 //TODO add the icon plus or minus if approved or not
         // Anchor and inject photo grid
-        AnchorPane.setTopAnchor(loadedPhotoGrid, 0.0);
+        /*AnchorPane.setTopAnchor(loadedPhotoGrid, 0.0);
         AnchorPane.setBottomAnchor(loadedPhotoGrid, 0.0);
         AnchorPane.setLeftAnchor(loadedPhotoGrid, 0.0);
         AnchorPane.setRightAnchor(loadedPhotoGrid, 0.0);
 
         photoGridPlaceholder.getChildren().clear();
-        photoGridPlaceholder.getChildren().add(loadedPhotoGrid);
+        photoGridPlaceholder.getChildren().add(loadedPhotoGrid);*/
     }
 
 
@@ -91,7 +91,11 @@ public class OrderCardController {
 
     }
 
-    public void onPhotoGridClick(MouseEvent mouseEvent) {
+  /*  public void onPhotoGridClick(MouseEvent mouseEvent) {
         Navigation.goToPhotoReviewView(order, loggedInUser);
-}
+}*/
+
+    public void onClickShowImg(MouseEvent mouseEvent) {
+        Navigation.goToPhotoReviewView(order, loggedInUser);
+    }
 }
