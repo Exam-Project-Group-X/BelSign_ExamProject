@@ -103,10 +103,9 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-
     @Override
     public void updateUser(User user) throws SQLException {
-        String sql = "UPDATE Users SET FullName = ?, Email = ?, PasswordHash = ?, RoleID = ? WHERE UserID = ?";
+        String sql = "UPDATE Users SET FullName = ?, Email = ?, PasswordHash = ?, RoleID = ?, UpdatedAt = GETDATE() WHERE UserID = ?";
         try (Connection connection = con.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
