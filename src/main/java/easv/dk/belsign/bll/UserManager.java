@@ -20,7 +20,7 @@ public class UserManager {
         return userDAO.getAllUsers();
     }
 
-    public int createNewUser(User user) throws SQLException {
+    public User createNewUser(User user) throws SQLException {
         return userDAO.createNewUser(user); // this returns the newly created UserID from the DB
     }
 

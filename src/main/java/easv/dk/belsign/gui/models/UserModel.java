@@ -25,11 +25,10 @@ public class UserModel {
         return allUsers;
     }
 
-    public int createNewUser(User user) throws SQLException {
-        int newId = userManager.createNewUser(user);
-        user.setUserID(newId);
-        allUsers.add(user);
-        return newId;
+    public User createNewUser(User user) throws SQLException {
+        User newUser = userManager.createNewUser(user);
+        allUsers.add(newUser);
+        return newUser;
     }
 
     public void deleteUser(User user) throws SQLException {

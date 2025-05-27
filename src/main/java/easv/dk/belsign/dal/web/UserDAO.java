@@ -50,7 +50,7 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public int createNewUser(User user) throws SQLException {
+    public User createNewUser(User user) throws SQLException {
         String sql = "INSERT INTO Users (FullName, Email, PasswordHash, RoleID) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = con.getConnection();
@@ -60,14 +60,22 @@ public class UserDAO implements IUserDAO {
             ps.setString(3, user.getPasswordHash());
             ps.setInt(4, user.getRoleId());
             ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
+            //Get the generated ID from DB
+            ResultSet rs = ps.getGeneratedKeys();
+            int userID = 0;
                 if (rs.next()) {
-                    return rs.getInt(1); // ✅ Return the generated user ID
+                    userID = rs.getInt(1); // Return the generated user ID
                 }
+                User newUser = new User(userID, user.getPasswordHash(), user.getAccessCode(),
+                        user.getFullName(), user.getEmail(), user.getRoleId(),
+                        user.getCreatedAt(), user.getUpdatedAt(), user.isActive(),
+                        user.getRoleName());
+                return newUser;
             }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error creating new user: " + e.getMessage(), e);
         }
-        return -1;
     }
 
     @Override
@@ -110,7 +118,6 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating users: " + e.getMessage(), e);
         }
-
     }
 
 
