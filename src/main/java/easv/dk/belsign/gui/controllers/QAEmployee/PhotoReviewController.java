@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.bll.PhotoReviewService;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
@@ -62,6 +63,8 @@ public class PhotoReviewController {
     private int currentThumbPage = 0;
     private static final int THUMBS_PER_PAGE = 5;
 
+    private PhotoReviewService photoReviewService;
+
     // Setters
     public void setModel(PhotosModel photosModel) { this.photosModel = photosModel; }
     public void setQAEmployeeModel(QAEmployeeModel model) { this.qamodel = model; }
@@ -89,56 +92,67 @@ public class PhotoReviewController {
     public void loadPhotosForOrder(int orderId) {
         String previousAngle = currentAngle;
         try {
-            Map<String, byte[]> photoMap = photosModel.getPhotosByOrderId(orderId);
-            Map<String, String> statusMap = photosModel.getPhotoStatusByOrderId(orderId);
+            Map<String, byte[]> photoMap = photoReviewService.getPhotos(orderId);
+            Map<String, String> statusMap = photoReviewService.getStatuses(orderId);
 
-            thumbStrip.getChildren().clear();
-            thumbnailViews.clear();
-            loadedImages.clear();
+            clearThumbnails();
 
             List<String> angles = new ArrayList<>(photoMap.keySet());
             for (String angle : angles) {
                 byte[] photoBytes = photoMap.get(angle);
                 if (photoBytes == null) continue;
 
-                Image img = new Image(new ByteArrayInputStream(photoBytes));
+                Image img = createImageFromBytes(photoBytes);
                 loadedImages.add(img);
 
-                ImageView thumb = new ImageView(img);
-                thumb.setFitWidth(200);
-                thumb.setFitHeight(150);
-                thumb.setPreserveRatio(true);
-                thumb.setPickOnBounds(true);
-
-                StackPane wrapper = new StackPane(thumb);
-                wrapper.getStyleClass().add("thumb-wrapper");
-
-                String status = statusMap.getOrDefault(angle.toUpperCase(), "Pending Review");
-                if ("Approved".equalsIgnoreCase(status)) wrapper.getStyleClass().add("approved-thumb");
-                else if ("Rejected".equalsIgnoreCase(status)) wrapper.getStyleClass().add("rejected-thumb");
-
-                wrapper.setOnMouseClicked(e -> selectImageByAngle(angle, statusMap, angles));
-                thumbnailViews.add(wrapper);
+                StackPane thumbWrapper = createThumbnailWrapper(img, angle, statusMap);
+                thumbnailViews.add(thumbWrapper);
             }
 
             if (!angles.isEmpty()) {
-                if (angles.contains(previousAngle)) {
-                    selectImageByAngle(previousAngle, statusMap, angles);
-                } else {
-                    selectImageByAngle(angles.get(0), statusMap, angles);
-                }
+                String angleToSelect = angles.contains(previousAngle) ? previousAngle : angles.get(0);
+                selectImageByAngle(angleToSelect, statusMap, angles);
             }
 
             showCurrentThumbPage();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    private void clearThumbnails() {
+        thumbStrip.getChildren().clear();
+        thumbnailViews.clear();
+        loadedImages.clear();
+    }
+
+    private Image createImageFromBytes(byte[] bytes) {
+        return new Image(new ByteArrayInputStream(bytes));
+    }
+
+    private StackPane createThumbnailWrapper(Image img, String angle, Map<String, String> statusMap) {
+        ImageView thumb = new ImageView(img);
+        thumb.setFitWidth(200);
+        thumb.setFitHeight(150);
+        thumb.setPreserveRatio(true);
+        thumb.setPickOnBounds(true);
+
+        StackPane wrapper = new StackPane(thumb);
+        wrapper.getStyleClass().add("thumb-wrapper");
+
+        String status = statusMap.getOrDefault(angle.toUpperCase(), "Pending Review");
+        if ("Approved".equalsIgnoreCase(status)) wrapper.getStyleClass().add("approved-thumb");
+        else if ("Rejected".equalsIgnoreCase(status)) wrapper.getStyleClass().add("rejected-thumb");
+
+        wrapper.setOnMouseClicked(e -> selectImageByAngle(angle, statusMap, new ArrayList<>(statusMap.keySet())));
+
+        return wrapper;
+    }
+
     private boolean allPhotosApproved() {
         try {
-            Map<String, String> statusMap = photosModel.getPhotoStatusByOrderId(currentOrderId);
-            return statusMap.values().stream().allMatch(s -> "Approved".equalsIgnoreCase(s));
+            return photoReviewService.allPhotosApproved(currentOrderId);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -158,7 +172,7 @@ public class PhotoReviewController {
 
     public void ApprovePhoto(ActionEvent actionEvent) {
         try {
-            photosModel.approvePhoto(currentOrderId, currentAngle);
+            photoReviewService.approvePhoto(currentOrderId, currentAngle);
             loadPhotosForOrder(currentOrderId);
             System.out.println("Photo Approved for: " + currentOrderId + " " + currentAngle);
         } catch (SQLException e) {
@@ -181,7 +195,7 @@ public class PhotoReviewController {
             }
 
             try {
-                photosModel.rejectPhoto(currentOrderId, currentAngle, comment);
+                photoReviewService.rejectPhoto(currentOrderId, currentAngle, comment);
                 loadPhotosForOrder(currentOrderId);
                 AlertUtil.success(RejectBtn.getScene(), "Photo Rejected ✓");
                 System.out.println("❌ Photo Rejected: " + currentOrderId + ", " + currentAngle + " - " + comment);
@@ -195,7 +209,7 @@ public class PhotoReviewController {
     public void OnClickFinishButton(ActionEvent actionEvent) {
         if (allPhotosApproved()) {
             try {
-                qamodel.setOrderToCompleted(currentOrderId);
+                photoReviewService.completeOrder(currentOrderId);
                 AlertUtil.success(finishbtn.getScene(), "✅ All photos approved. Report ready.");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -269,8 +283,10 @@ public class PhotoReviewController {
 
         setOrderId(orderId);
         setCaption("Order #" + orderId);
-        setModel(new PhotosModel());
-        setQAEmployeeModel(new QAEmployeeModel());
+        PhotosModel photosModel = new PhotosModel();
+        QAEmployeeModel qaModel = new QAEmployeeModel();
+
+        photoReviewService = new PhotoReviewService(photosModel, qaModel);
 
         loadPhotosForOrder(orderId);
     }
