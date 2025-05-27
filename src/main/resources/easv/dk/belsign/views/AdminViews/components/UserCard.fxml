@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<GridPane prefHeight="27.0" prefWidth="552.0" styleClass="card" stylesheets="@../../styles/card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.UserCardController">
+<GridPane prefHeight="27.0" prefWidth="552.0" styleClass="card" stylesheets="@../../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.UserCardController">
     <columnConstraints>
         <ColumnConstraints prefWidth="300.0" />
         <ColumnConstraints maxWidth="176.0" minWidth="138.0" prefWidth="145.0" />

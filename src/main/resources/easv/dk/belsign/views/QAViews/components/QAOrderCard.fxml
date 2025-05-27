@@ -36,7 +36,7 @@
         <RowConstraints />
     </rowConstraints>
     <stylesheets>
-        <URL value="@../../styles/card.css" />
+        <URL value="@../../styles/app.cs" />
         <URL value="@../../styles/orderStatus.css" />
     </stylesheets>
 </GridPane>

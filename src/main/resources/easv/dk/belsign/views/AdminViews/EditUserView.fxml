@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.EditUserController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.EditUserController">
 
 
 
@@ -27,7 +28,7 @@
 
         <StackPane style="-fx-background-color: #D9D9D9; -fx-padding: 25;">
 
-            <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 15;" styleClass="card" stylesheets="@../styles/card.css">
+            <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 15;" styleClass="card" stylesheets="@../styles/app.css">
 
                 <!-- Card title -->
                 <Label style="-fx-font-weight: bold; -fx-padding: 0 0 10 5; -fx-font-size: 18 px;" text="Editing User">
@@ -38,7 +39,7 @@
                 <Separator />
                 <!-- Form grid -->
 
-                <GridPane hgap="15" style="-fx-padding: 25 10 40 10;" stylesheets="@../styles/card.css" vgap="20">
+                <GridPane hgap="15" style="-fx-padding: 25 10 40 10;" stylesheets="@../styles/app.css" vgap="20">
 
                     <columnConstraints>
                         <ColumnConstraints prefWidth="150.0" />
@@ -50,24 +51,24 @@
                     <!-- User Full Name -->
 
                     <Label style="-fx-font-size: 14 px;" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="fullNameField" promptText="Full Name" style="-fx-font-size: 14px;" styleClass="txt-box" stylesheets="@../styles/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="fullNameField" promptText="Full Name" style="-fx-font-size: 14px;" stylesheets="@../styles/app.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                     <!-- User Email Address -->
 
                     <Label prefHeight="14.0" prefWidth="49.0" style="-fx-font-size: 14 px;" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="emailField" promptText="Email Address" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="emailField" promptText="Email Address" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
 
                     <!-- Password -->
                     <Label prefHeight="14.0" prefWidth="75.0" style="-fx-font-size: 14 px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="passwordField" promptText="Password" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
 
                     <!-- User Role -->
 
                     <Label style="-fx-font-size: 14 px;" text="Role" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="roleField" promptText="Select Role" style="-fx-font-size: 14px;" styleClass="txt-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="roleField" promptText="Select Role" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
@@ -87,4 +88,8 @@
             </VBox>
         </StackPane>
     </center>
+   <styleClass>
+      <String fx:value="root" />
+      <String fx:value="font" />
+   </styleClass>
 </BorderPane>

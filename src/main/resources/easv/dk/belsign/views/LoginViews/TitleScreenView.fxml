@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Login.TitleScreenController">
+<StackPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Login.TitleScreenController">
     <!-- Background photo -->
     <ImageView fx:id="backgroundImage" fitHeight="800" fitWidth="1280" preserveRatio="true">
       <image>
@@ -17,7 +18,7 @@
       </image></ImageView>   <!-- 55 ≈ 33 % opacity -->
 
     <!-- Glassmorphism background -->
-    <Region fx:id="glassPane" maxHeight="400.0" maxWidth="400.0" prefHeight="332.0" prefWidth="400.0" styleClass="glass-pane" stylesheets="@../styles/card.css" />
+    <Region fx:id="glassPane" maxHeight="400.0" maxWidth="400.0" prefHeight="332.0" prefWidth="400.0" styleClass="glass-pane" stylesheets="@../styles/app.css" />
 
     <VBox alignment="CENTER" prefHeight="570.0" prefWidth="1280.0" spacing="40.0">
       <Region layoutX="10.0" layoutY="294.0" prefHeight="249.0" prefWidth="1280.0" />
@@ -45,5 +46,9 @@
             <Insets />
         </StackPane.margin>
     </VBox>
+   <styleClass>
+      <String fx:value="root" />
+      <String fx:value="font" />
+   </styleClass>
 
 </StackPane>

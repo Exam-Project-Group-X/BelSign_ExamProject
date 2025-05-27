@@ -1,131 +1,93 @@
-.font {
-    -fx-font-family: "Helvetica", "Arial", sans-serif; /*If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial → generic sans-serif.*/
-}
-
-.card {
+.root, .font {
+    /* If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial */
     -fx-font-family: "Helvetica", "Arial", sans-serif;
-    -fx-background-color: #F5F5F5;
-    -fx-border-color: #E0E0E0;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-    -fx-padding: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
+    -fx-text-fill : #333333;
 }
 
+.card, .op-card {
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-background-color : #F5F5F5;
+    -fx-border-color     : #E0E0E0;
+    -fx-border-width     : 1;
+    -fx-border-radius    : 3;
+    -fx-background-radius: 3;
+    -fx-padding          : 12;
+    -fx-effect           : dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
+}
+
+.card:hover, .op-card:hover {
+    -fx-border-color : #004B88;
+    -fx-border-width : 2;
+    -fx-cursor       : hand;
+}
+
+/* operator card variant – just a larger font */
 .op-card {
-    -fx-font-family: "Helvetica", "Arial", sans-serif; /*If some machines don’t have Helvetica installed, JavaFX will automatically fall back to Arial → generic sans-serif.*/
-    -fx-background-color: #F5F5F5;
-    -fx-border-color: #E0E0E0;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-    -fx-padding: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
     -fx-font-size: 18px;
 }
 
 .glass-pane {
-    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-background-color: rgba(255,255,255,0.18);
     -fx-background-radius: 3;
-    -fx-border-radius: 3;
+    -fx-border-color: rgba(255,255,255,0.35);
     -fx-border-width: 1;
-    -fx-border-color: rgba(255, 255, 255, 0.3);
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 20, 0, 0, 8);
-}
-.create-btn {
-    -fx-background-color: #0FA958;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-}
-.create-btn:hover {
-    -fx-background-color: #9D9D9D;
+    -fx-border-radius: 3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 16, 0.3, 0, 6);
 }
 
-.primary-btn {
-    -fx-background-color: #004884;
-    -fx-text-fill: white;
+.create-btn, .primary-btn, .logout-btn {
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
     -fx-font-size: 14px;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 3;
+    -fx-border-radius    : 3;
+    -fx-padding: 6 14 6 14;
 }
 
-.primary-btn:hover {
-    -fx-background-color: #9D9D9D;
-}
+.create-btn  { -fx-background-color: #0FA958; }
+.primary-btn { -fx-background-color: #004884; }
+.logout-btn  { -fx-background-color: #575757; }
 
-.logout-btn {
-    -fx-background-color: #575757;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-}
-
+.create-btn:hover,
+.primary-btn:hover,
 .logout-btn:hover {
-    -fx-background-color: #9D9D9D;
-}
-
-.col-title{
-    -fx-font-weight: bold;
-}
-
-.box{
-    -fx-background-color: white;
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-}
-
-.selected-thumb {
-    -fx-border-color: #00c3ff;
-    -fx-border-width: 3px;
-    -fx-border-radius: 5px;
-    -fx-effect: dropshadow(gaussian, #00c3ff, 10, 0.5, 0, 0);
+    -fx-background-color: #9D9D9D;          /* same hover colour for all */
 }
 
 .thumb-wrapper {
-    -fx-border-width: 3px;
-    -fx-border-color: transparent;
-    -fx-border-radius: 5px;
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-border-width : 3;
+    -fx-border-radius: 5;
+    -fx-border-color : transparent;
 }
 
-.selected-thumb {
-    -fx-border-color: #0000FF; /* Blue for selection */
-}
+.selected-thumb { -fx-border-color: #004B88; }
+.approved-thumb { -fx-border-color: #28a745; }
+.rejected-thumb { -fx-border-color: #dc3545; }
 
-.approved-thumb {
-    -fx-border-color: #28a745; /* Green */
-}
-
-.rejected-thumb {
-    -fx-border-color: #dc3545; /* Red */
-
-}
-
-
-.image-approved {
-    -fx-border-color: #28a745;
-    -fx-border-width: 5px;
-    -fx-border-radius: 8px;
-}
-
-.image-rejected {
-    -fx-border-color: #dc3545;
-    -fx-border-width: 5px;
-    -fx-border-radius: 8px;
-}
-
-/* === Main Image Highlighting === */
-.main-approved {
-    -fx-effect: dropshadow(gaussian, #28a745, 20, 0.4, 0, 0); /* green glow */
-    -fx-border-color: #28a745;
-    -fx-border-width: 3;
+/* individual image highlights */
+.image-approved, .main-approved {
+    -fx-border-color : #28a745;
+    -fx-border-width : 4;
     -fx-border-radius: 6;
+    -fx-effect       : dropshadow(gaussian, #28a745, 16, 0.4, 0, 0);
 }
 
-.main-rejected {
-    -fx-effect: dropshadow(gaussian, #dc3545, 20, 0.4, 0, 0); /* red glow */
-    -fx-border-color: #dc3545;
-    -fx-border-width: 3;
+.image-rejected, .main-rejected {
+    -fx-border-color : #dc3545;
+    -fx-border-width : 4;
     -fx-border-radius: 6;
+    -fx-effect       : dropshadow(gaussian, #dc3545, 16, 0.4, 0, 0);
+}
+
+.col-title {
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-font-weight: bold; }
+
+.box {
+    -fx-font-family: "Helvetica", "Arial", sans-serif;
+    -fx-background-color : #ffffff;
+    -fx-background-radius: 3;
+    -fx-border-radius    : 3;
 }

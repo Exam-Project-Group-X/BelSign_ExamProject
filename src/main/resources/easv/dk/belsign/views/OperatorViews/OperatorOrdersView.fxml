@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.OperatorOrdersController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="font" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Operator.OperatorOrdersController">
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1280.0" spacing="40.0" style="-fx-background-color: #FFFFFF; -fx-padding: 5 25 5 25; -fx-border-color: #e6e6e6; -fx-border-width: 0 0 1 0;">
@@ -59,7 +59,7 @@
             </HBox>
 
             <!-- Column titles -->
-            <GridPane hgap="10" style="-fx-padding: 8 0; -fx-background-color: F9FAFB; -fx-border-color: #d6d6d6; -fx-border-width: 0 0 1 0;" styleClass="card" stylesheets="@../styles/card.css">
+            <GridPane hgap="10" style="-fx-padding: 8 0; -fx-background-color: F9FAFB; -fx-border-color: #d6d6d6; -fx-border-width: 0 0 1 0;" styleClass="card" stylesheets="@../styles/app.css">
                 <columnConstraints>
                     <ColumnConstraints prefWidth="130" /> <!-- Update Date -->
                     <ColumnConstraints hgrow="ALWAYS" />   <!-- Button / Flex -->
