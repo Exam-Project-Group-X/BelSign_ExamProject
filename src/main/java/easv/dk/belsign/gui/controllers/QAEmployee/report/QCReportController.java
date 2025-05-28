@@ -2,8 +2,10 @@ package easv.dk.belsign.gui.controllers.QAEmployee.report;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.CompressionConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
@@ -11,6 +13,7 @@ import easv.dk.belsign.be.Order;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.utils.AlertUtil;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +21,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
@@ -31,28 +34,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 
-public class QCReportMainController {
-    @FXML private QCReportPage1Controller page1Controller;
-    @FXML private VBox vboxPages;
+public class QCReportController {
 
     private Order selectedOrder;
     private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
 
-    private static final int TARGET_DPI = 300;
-    private static final double MARGIN_PT = 36;
+    @FXML private QCReportPage1Controller page1Controller;
 
-    /* listener that the caller sets */
-    private Consumer<File> reportSaveListener;
-
-    public void setReportSaveListener(Consumer<File> l) { this.reportSaveListener = l; }
-
-
+    @FXML
+    private VBox vboxPages;
 
 
     public void setSelectedOrder(Order order) {
@@ -77,59 +75,61 @@ public class QCReportMainController {
         }
     }
 
-    public void onClickPrintBtn(ActionEvent e) {
 
-        /* 1 ─ file chooser */
+    public void onClickPrintBtn(ActionEvent actionEvent) {
+        /* ---------- Ask the user where to save pdf file---------- */
         FileChooser fc = new FileChooser();
         fc.setTitle("Save QC report");
         fc.setInitialFileName("QC_Report_" + selectedOrder.getOrderID() + ".pdf");
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
         File outFile = fc.showSaveDialog(vboxPages.getScene().getWindow());
-        if (outFile == null) return;
-
-        /* 2 ─ compute uniform scale factor once */
-        double screenDpi = javafx.stage.Screen.getPrimary().getDpi();   // ≈ 96
-        double scale     = TARGET_DPI / screenDpi;                      // ≈ 3.125
-
+        if (outFile == null) return;            // user pressed Cancel
         Platform.runLater(() -> {
-            try (PdfWriter wr   = new PdfWriter(outFile);
-                 PdfDocument pdf = new PdfDocument(wr);
-                 Document doc   = new Document(pdf, PageSize.A4)) {
+            try {
+                PdfWriter writer = new PdfWriter(outFile.getAbsolutePath());
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                Document document = new Document(pdfDoc, PageSize.A4);
 
-                final float maxW = (float) (PageSize.A4.getWidth()  - 2*MARGIN_PT);
-                final float maxH = (float) (PageSize.A4.getHeight() - 2*MARGIN_PT);
-
-                SnapshotParameters snap = new SnapshotParameters();
-                snap.setTransform(new javafx.scene.transform.Scale(scale, scale));
-
-                for (int i = 0, n = vboxPages.getChildren().size(); i < n; i++) {
-
+                int totalPages = vboxPages.getChildren().size();
+                for (int i = 0; i < totalPages; i++) {
                     Node page = vboxPages.getChildren().get(i);
                     page.applyCss();
-                    if (page instanceof javafx.scene.layout.Region r) r.layout();
-
-                    WritableImage fxImg = page.snapshot(snap, null);
-                    BufferedImage awt  = SwingFXUtils.fromFXImage(fxImg, null);
-
-                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                        ImageIO.write(awt, "png", baos);
-                        Image pdfImg = new Image(ImageDataFactory.create(baos.toByteArray()));
-                        pdfImg.scaleToFit(maxW, maxH);           // keeps aspect ratio
-                        doc.add(pdfImg);
+                    if (page instanceof javafx.scene.layout.Region) {
+                        ((javafx.scene.layout.Region) page).layout();
                     }
-                    if (i < n - 1) doc.add(new AreaBreak());
-                }
-                /* inside onClickPrintBtn – AFTER doc.close() succeeds */
-                // .....................................................
-                if (reportSaveListener != null) reportSaveListener.accept(outFile);
+                    // Create SnapshotParameters with a scale factor of 2
+                    SnapshotParameters snapshotParams = new SnapshotParameters();
+                    snapshotParams.setTransform(new Scale(2, 2));
+                    WritableImage snapshot = page.snapshot(new SnapshotParameters(), null);
+                    if (snapshot == null) {
+                        System.err.println("Snapshot is null for page " + i);
+                        continue;
+                    }
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(snapshot, null);
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                AlertUtil.error(((Node) e.getSource()).getScene(),
-                        "Error – failed to create PDF.");
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(bufferedImage, "png", baos);
+                    baos.flush();
+                    byte[] imageBytes = baos.toByteArray();
+                    baos.close();
+
+                    ImageData imageData = ImageDataFactory.create(imageBytes);
+                    Image pdfImage = new Image(imageData);
+                    pdfImage.scaleToFit(PageSize.A4.getWidth() - 72, PageSize.A4.getHeight() - 72);
+                    document.add(pdfImage);
+
+                    if (i < totalPages - 1) {
+                        document.add(new AreaBreak());
+                    }
+                }
+                document.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                AlertUtil.error(((Node) actionEvent.getSource()).getScene(), "Error! Failed to create PDF.");
             }
         });
+
     }
 
     private void loadPhotoPages(Map<String, byte[]> photoMap) throws IOException {

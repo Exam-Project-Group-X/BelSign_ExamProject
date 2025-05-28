@@ -2,6 +2,7 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 
 import easv.dk.belsign.gui.ViewManagement.*;
 import easv.dk.belsign.gui.controllers.TopBarController;
+import easv.dk.belsign.gui.models.PhotosModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -164,7 +165,7 @@ public class QAEmployeeController implements Initializable {
         }
         lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
     }
-
+    private final PhotosModel sharedPhotosModel = new PhotosModel();
     public void addNewOrderCard(Order order) {
         Pair<Parent, OrderCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_ORDER_CARD);
         OrderCardController controller = pair.getValue();
@@ -178,7 +179,7 @@ public class QAEmployeeController implements Initializable {
 
         controller.setOrderData(order);
         controller.setLoggedInUser(loggedInUser);
-
+        controller.setPhotosModel(sharedPhotosModel);
         cardContainer.getChildren().add(pair.getKey());
     }
 

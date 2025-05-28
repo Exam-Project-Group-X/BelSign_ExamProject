@@ -3,6 +3,7 @@ package easv.dk.belsign.gui.ViewManagement;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.controllers.Operator.CameraController;
+import easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController;
 import easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController;
 import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportMainController;
 import javafx.scene.Parent;
@@ -104,7 +105,7 @@ public class Navigation {
     /// ─────────────────────────────────────
     /// QC Report
     /// ─────────────────────────────────────
-    public static void openQCReportPreview(Order order) {
+    /*public static void openQCReportPreview(Order order) {
         try {
             Pair<Parent, QCReportMainController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
             pair.getValue().setSelectedOrder(order);
@@ -119,6 +120,35 @@ public class Navigation {
             System.err.println("Failed to open QC Report Preview for Order: " + order.getOrderNumber());
             e.printStackTrace();
         }
+    }*/
+
+    public static void openQCReportPreview(Order order,
+                                           OrderCardController caller) {
+
+        try {
+            Pair<Parent, QCReportMainController> pair =
+                    FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
+
+            QCReportMainController ctrl = pair.getValue();
+            ctrl.setSelectedOrder(order);                     // what you had
+            ctrl.setReportSaveListener(caller::onReportSaved);/* NEW callback */
+
+            Stage s = new Stage();
+            s.setTitle("QC Report Preview – Order " + order.getOrderNumber());
+            s.initModality(Modality.APPLICATION_MODAL);
+            s.setScene(new Scene(pair.getKey()));
+            s.show();
+
+        } catch (Exception ex) {
+            System.err.println("Failed to open QC Report Preview for Order: "
+                    + order.getOrderNumber());
+            ex.printStackTrace();
+        }
+    }
+
+    /* keep the old no-callback version for existing callers */
+    public static void openQCReportPreview(Order order) {
+        openQCReportPreview(order, null);          // simply ignore callback
     }
 
 

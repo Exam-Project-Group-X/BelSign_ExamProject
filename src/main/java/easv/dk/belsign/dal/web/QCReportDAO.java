@@ -12,91 +12,85 @@ import java.util.List;
 public class QCReportDAO implements IQCReportDAO {
     private DBConnection con = new DBConnection();
 
-    public int insertReport(QCReport report, int orderId, int signedByUserId) throws SQLException {
+    /*public int insertReport(QCReport report, int orderId, int signedByUserId) throws SQLException {
         String sql = "INSERT INTO QCReports (OrderID, ReportFilePath, SignedByUserID, CustomerEmail) " +
                 "VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setInt(1, orderId);
             ps.setString(2, report.getReportFilePath());
             ps.setInt(3, signedByUserId);
             ps.setString(4, report.getCustomerEmail());
-
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 return rs.getInt(1); // Return generated ReportID
             }
         }
-
         return -1; //Chekcs if failed
+    }*/
+    @Override
+    public QCReport generateQCReport(QCReport rpt) throws SQLException {
+        String sql = """
+        INSERT INTO QCReports (OrderID, ReportFilePath, SignedByUserID, CustomerEmail)
+        VALUES ( ?, ?, ?, ? )
+        """;
+        try (Connection conn = con.getConnection();
+             PreparedStatement ps =
+                     conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, rpt.getOrderID());          // FK to Orders
+            ps.setString(2, rpt.getReportFilePath());   // absolute path
+            ps.setInt   (3, Integer.parseInt(rpt.getSignedByUserID())); // QA user
+            ps.setString(4, rpt.getCustomerEmail());    // may be null
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    int reportID = keys.getInt(1);
+
+                    /* build a full object to return */
+                    return new QCReport(
+                            reportID,
+                            rpt.getOrderID(),
+                            rpt.getReportFilePath(),
+                            rpt.getSignedByUserID(),
+                            rpt.getCustomerEmail(),
+                            /* CreatedAt  */ null,   // let SQL Server keep the real timestamp
+                            /* SentAt     */ null);
+                }
+            }
+            return null;  // should not happen unless INSERT failed silently
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new SQLException("Error creating QC-report: " + ex.getMessage(), ex);
+        }
     }
 
-    /*public List<QCReport> getReportsByOrderId(int orderId) throws SQLException {
+    @Override
+    public List<QCReport> getReportsByOrderId(String orderID) throws SQLException {
+        String sql = "SELECT * FROM QCReports WHERE OrderID = ?";
         List<QCReport> reports = new ArrayList<>();
-        //String sql = "SELECT * FROM QCReports WHERE OrderID = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                QCReport report = new QCReport();
-                report.setReportID(rs.getInt("ReportID"));
-                report.setOrderID(String.valueOf(rs.getInt("OrderID")));
-                report.setReportFilePath(rs.getString("ReportFilePath"));
-                report.setSignedByUserID(String.valueOf(rs.getInt("SignedByUserID")));
-                report.setCustomerEmail(rs.getString("CustomerEmail"));
-                report.setCreatedAt(rs.getTimestamp("CreatedAt"));
-                report.setSentAt(rs.getTimestamp("SentAt"));
-
-                reports.add(report);
+            ps.setString(1, orderID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    QCReport rpt = new QCReport(
+                            rs.getInt       ("ReportID"),
+                            rs.getString    ("OrderID"),
+                            rs.getString    ("ReportFilePath"),
+                            String.valueOf( rs.getInt("SignedByUserID") ),
+                            rs.getString    ("CustomerEmail"),
+                            rs.getTimestamp ("CreatedAt"),
+                            rs.getTimestamp ("SentAt")
+                    );
+                    reports.add(rpt);
+                }
             }
+        } catch (SQLException ex) {
+            throw new SQLException("Error fetching QC reports for order "
+                    + orderID, ex);
         }
         return reports;
-    }*/
-    // Java
-    @Override
-    public List<QCReport> getReportsForOrder(String orderId) throws SQLException {
-        List<QCReport> reportsByOrder = new ArrayList<>();
-        String sql = """
-            SELECT r.ReportID,
-                   r.OrderID,
-                   o.ProductDescription,
-                   r.ReportFilePath,
-                   r.SignedByUserID,
-                   r.CustomerEmail,
-                   r.CreatedAt,
-                   r.SentAt
-            FROM   QCReports r
-            JOIN   Orders o ON o.OrderID = r.OrderID
-            WHERE  r.OrderID = ?
-            ORDER  BY r.CreatedAt DESC
-            LIMIT  1
-    """;
-
-        try (Connection c = con.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int reportID = rs.getInt("ReportID");
-                String orderID = rs.getString("OrderID");
-                String productDescription = rs.getString("ProductDescription");
-                String reportFilePath = rs.getString("ReportFilePath");
-                int signedByUserID = rs.getInt("SignedByUserID");
-                String customerEmail = rs.getString("CustomerEmail");
-                LocalDateTime createdAt = rs.getObject("CreatedAt", LocalDateTime.class);
-                LocalDateTime sentAt = rs.getObject("SentAt", LocalDateTime.class);
-                QCReport report = new QCReport(reportID, orderID, productDescription, reportFilePath, signedByUserID, customerEmail, createdAt, sentAt);
-                reportsByOrder.add(report);
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Error fetching reports for order: " + orderId, e);
-        }
-        return reportsByOrder;
     }
 }

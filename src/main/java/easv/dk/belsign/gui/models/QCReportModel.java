@@ -14,14 +14,26 @@ public class QCReportModel {
     private final QCReportManager qcReportManager = new QCReportManager();
     private final ObservableList<QCReport> qcReportsByOrder = FXCollections.observableArrayList();
 
-    public ObservableList<QCReport> getQcReportsByOrder(String orderId) {
+    public ObservableList<QCReport> getQcReportsByOrder(String orderID) {
         try {
-            List<QCReport> reportList = qcReportManager.getReportByOrder(orderId);
-            qcReportsByOrder.setAll(reportList); // Convert to ArrayList to avoid ConcurrentModificationException
+            List<QCReport> rpt = qcReportManager.getReportByOrder(orderID);
+            qcReportsByOrder.setAll(rpt);           // replace contents
+        } catch (SQLException ex) {
+            ex.printStackTrace();                    // log + keep old list
+        }
+        return qcReportsByOrder;
+    }
+
+    public QCReport generateQCReport(QCReport report) {
+        try {
+            QCReport newReport = qcReportManager.generateQCReport(report);
+            if (newReport != null) {
+                // If the report was successfully generated, add it to the list
+                qcReportsByOrder.add(newReport);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return qcReportsByOrder;
-
+        return report;
     }
 }
