@@ -10,11 +10,15 @@ import java.util.List;
 import javafx.collections.ObservableList;
 
 public class UserManager {
-    private final IUserDAO userDAO = new UserDAO();
+    private IUserDAO userDAO;
 
 /*    public UserManager() {
         this.userDAO = new UserDAO();
     }*/
+
+    public UserManager() {
+        this(new UserDAO());                 // uses the real DAO
+    }
 
     public List<User> getAllUsers() throws SQLException {
         return userDAO.getAllUsers();
@@ -38,5 +42,8 @@ public class UserManager {
 
     public List<String> getAllRoles() throws SQLException {
         return userDAO.getAllRoleNames();
+    }
+    public UserManager(IUserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }
