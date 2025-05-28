@@ -38,9 +38,9 @@ public class QCReportDAO implements IQCReportDAO {
         try (Connection conn = con.getConnection();
              PreparedStatement ps =
                      conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, rpt.getOrderID());          // FK to Orders
+            ps.setInt   (1, rpt.getOrderID());          // FK to Orders
             ps.setString(2, rpt.getReportFilePath());   // absolute path
-            ps.setInt   (3, Integer.parseInt(rpt.getSignedByUserID())); // QA user
+            ps.setInt   (3, rpt.getSignedByUserID()); // QA user
             ps.setString(4, rpt.getCustomerEmail());    // may be null
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
@@ -67,19 +67,19 @@ public class QCReportDAO implements IQCReportDAO {
     }
 
     @Override
-    public List<QCReport> getReportsByOrderId(String orderID) throws SQLException {
-        String sql = "SELECT * FROM QCReports WHERE OrderID = ?";
+    public List<QCReport> getReportsByOrderId(int orderID) throws SQLException {
+        String sql = "SELECT * FROM QCReports WHERE OrderID = ? ORDER  BY CreatedAt DESC";
         List<QCReport> reports = new ArrayList<>();
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, orderID);
+            ps.setInt(1, orderID);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     QCReport rpt = new QCReport(
                             rs.getInt       ("ReportID"),
-                            rs.getString    ("OrderID"),
+                            rs.getInt    ("OrderID"),
                             rs.getString    ("ReportFilePath"),
-                            String.valueOf( rs.getInt("SignedByUserID") ),
+                            rs.getInt("SignedByUserID") ,
                             rs.getString    ("CustomerEmail"),
                             rs.getTimestamp ("CreatedAt"),
                             rs.getTimestamp ("SentAt")

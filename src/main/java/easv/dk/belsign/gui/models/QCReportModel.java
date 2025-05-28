@@ -12,28 +12,24 @@ import java.util.List;
 public class QCReportModel {
 
     private final QCReportManager qcReportManager = new QCReportManager();
-    private final ObservableList<QCReport> qcReportsByOrder = FXCollections.observableArrayList();
+    private final ObservableList<QCReport> reports = FXCollections.observableArrayList();
 
-    public ObservableList<QCReport> getQcReportsByOrder(String orderID) {
+    public ObservableList<QCReport> getReportsByOrder(int orderID) {
         try {
-            List<QCReport> rpt = qcReportManager.getReportByOrder(orderID);
-            qcReportsByOrder.setAll(rpt);           // replace contents
+            List<QCReport> reportList = qcReportManager.getReportByOrder(orderID);
+            reports.setAll(reportList);           // replace contents
         } catch (SQLException ex) {
             ex.printStackTrace();                    // log + keep old list
         }
-        return qcReportsByOrder;
+        return reports;
     }
 
-    public QCReport generateQCReport(QCReport report) {
+    public void saveReport(QCReport rpt) {
         try {
-            QCReport newReport = qcReportManager.generateQCReport(report);
-            if (newReport != null) {
-                // If the report was successfully generated, add it to the list
-                qcReportsByOrder.add(newReport);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            QCReport saved = qcReportManager.generateQCReport(rpt);
+            if (saved != null) reports.add(0, saved);   // newest on top
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
-        return report;
     }
 }

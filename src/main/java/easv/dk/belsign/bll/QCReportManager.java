@@ -10,8 +10,8 @@ import java.util.List;
 public class QCReportManager {
     private final IQCReportDAO reportDAO = new QCReportDAO();
 
-    public List<QCReport> getReportByOrder(String orderID) throws SQLException {
-            return reportDAO.getReportsByOrderId(orderID);
+    public List<QCReport> getReportByOrder(int orderID) throws SQLException {
+        return reportDAO.getReportsByOrderId(orderID);
     }
 
     public QCReport generateQCReport(QCReport rpt) throws SQLException {

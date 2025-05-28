@@ -1,9 +1,8 @@
 package easv.dk.belsign.gui.controllers.QAEmployee.report;
-import com.itextpdf.io.image.ImageData;
+
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
@@ -17,142 +16,155 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Alert;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.YearMonth;
+import java.util.*;
 import java.util.function.Consumer;
 
-
 public class QCReportMainController {
-    @FXML private QCReportPage1Controller page1Controller;
+
     @FXML private VBox vboxPages;
 
-    private Order selectedOrder;
-    private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
-
-    private static final int TARGET_DPI = 300;
-    private static final double MARGIN_PT = 36;
-
-    /* listener that the caller sets */
     private Consumer<File> reportSaveListener;
 
     public void setReportSaveListener(Consumer<File> l) { this.reportSaveListener = l; }
 
+    /* ---------- pagination constants ---------- */
+    private static final int    TARGET_DPI = 300;
+    private static final double MARGIN_PT  = 36;
+    private static final Path   REPORTS_BASE = projectRoot().resolve("reports");
 
+    /* ---------- state ---------- */
+    private Order              order;
+    private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
 
-
-    public void setSelectedOrder(Order order) {
-        this.selectedOrder = order;
-
+    public void setSelectedOrder(Order o) {
+        this.order = o;
         try {
-            // ✅ Manually load Page 1
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPage1.fxml"));
-            AnchorPane page1 = loader.load();
-            QCReportPage1Controller page1Controller = loader.getController();
-
-            page1Controller.setOrderDetails(order);
-            vboxPages.getChildren().add(page1); // Add Page 1 as first child
-
-            // ✅ Load additional photo pages
-            Map<String, byte[]> photoMap = photoDAO.getPhotosByOrderId(order.getOrderID());
-            loadPhotoPages(photoMap);
-
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "❌ Failed to load report pages.").showAndWait();
+            loadPage1();
+            loadPhotoPages(photoDAO.getPhotosByOrderId(o.getOrderID()));
+        } catch (IOException | SQLException ex) {
+            ex.printStackTrace();
+            AlertUtil.error(vboxPages.getScene(), "❌ Failed to load report.");
         }
     }
 
-    public void onClickPrintBtn(ActionEvent e) {
-
-        /* 1 ─ file chooser */
+    public void onClickPrintBtn(ActionEvent evt) {
+        /* ask where store the pdf */
         FileChooser fc = new FileChooser();
         fc.setTitle("Save QC report");
-        fc.setInitialFileName("QC_Report_" + selectedOrder.getOrderID() + ".pdf");
-        fc.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
-        File outFile = fc.showSaveDialog(vboxPages.getScene().getWindow());
-        if (outFile == null) return;
+        fc.setInitialFileName("QC_Report_" + order.getOrderID() + ".pdf");
+        fc.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("PDF files (*.pdf)","*.pdf"));
+        File userCopy = fc.showSaveDialog(vboxPages.getScene().getWindow());
+        if (userCopy == null) return;
 
-        /* 2 ─ compute uniform scale factor once */
-        double screenDpi = javafx.stage.Screen.getPrimary().getDpi();   // ≈ 96
-        double scale     = TARGET_DPI / screenDpi;                      // ≈ 3.125
-
+        /* render & save on FX thread (needs snapshots) */
         Platform.runLater(() -> {
-            try (PdfWriter wr   = new PdfWriter(outFile);
-                 PdfDocument pdf = new PdfDocument(wr);
-                 Document doc   = new Document(pdf, PageSize.A4)) {
+            try {
+                Path tempPdf   = Files.createTempFile("qc_", ".pdf");
+                renderPdf(tempPdf);                                     // 2a
+                Path sharedPdf = copyToSharedFolder(tempPdf);           // 2b
+                Files.copy(sharedPdf, userCopy.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);        // 2c
 
-                final float maxW = (float) (PageSize.A4.getWidth()  - 2*MARGIN_PT);
-                final float maxH = (float) (PageSize.A4.getHeight() - 2*MARGIN_PT);
+                if (reportSaveListener != null)                         // 2d
+                    reportSaveListener.accept(sharedPdf.toFile());
 
-                SnapshotParameters snap = new SnapshotParameters();
-                snap.setTransform(new javafx.scene.transform.Scale(scale, scale));
-
-                for (int i = 0, n = vboxPages.getChildren().size(); i < n; i++) {
-
-                    Node page = vboxPages.getChildren().get(i);
-                    page.applyCss();
-                    if (page instanceof javafx.scene.layout.Region r) r.layout();
-
-                    WritableImage fxImg = page.snapshot(snap, null);
-                    BufferedImage awt  = SwingFXUtils.fromFXImage(fxImg, null);
-
-                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                        ImageIO.write(awt, "png", baos);
-                        Image pdfImg = new Image(ImageDataFactory.create(baos.toByteArray()));
-                        pdfImg.scaleToFit(maxW, maxH);           // keeps aspect ratio
-                        doc.add(pdfImg);
-                    }
-                    if (i < n - 1) doc.add(new AreaBreak());
-                }
-                /* inside onClickPrintBtn – AFTER doc.close() succeeds */
-                // .....................................................
-                if (reportSaveListener != null) reportSaveListener.accept(outFile);
+                /* close this preview window */
+                Stage stage = (Stage) vboxPages.getScene().getWindow();
+                stage.close();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
-                AlertUtil.error(((Node) e.getSource()).getScene(),
-                        "Error – failed to create PDF.");
+                AlertUtil.error(((Node) evt.getSource()).getScene(),
+                        "❌ Could not create or save the PDF.");
             }
         });
     }
 
-    private void loadPhotoPages(Map<String, byte[]> photoMap) throws IOException {
-        int photosPerPage = 6;
-        List<Map.Entry<String, byte[]>> entries = new ArrayList<>(photoMap.entrySet());
-        int totalPages = (int) Math.ceil(entries.size() / (double) photosPerPage);
+    /* ======================  load pages on main controller  =========================== */
 
-        for (int i = 0; i < totalPages; i++) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPhotos.fxml"));
-            AnchorPane photoPage = loader.load();
+    private void loadPage1() throws IOException {
+        FXMLLoader fxml = new FXMLLoader(getClass()
+                .getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPage1.fxml"));
+        AnchorPane page1 = fxml.load();
+        fxml.<QCReportPage1Controller>getController().setOrderDetails(order);
+        vboxPages.getChildren().add(page1);
+    }
 
-            PhotoPageController controller = loader.getController();
+    private void loadPhotoPages(Map<String, byte[]> photos) throws IOException {
+        final int perPage = 6;
+        List<Map.Entry<String,byte[]>> list = new ArrayList<>(photos.entrySet());
 
-            List<Map.Entry<String, byte[]>> batch = entries.subList(
-                    i * photosPerPage,
-                    Math.min((i + 1) * photosPerPage, entries.size())
-            );
-
-            controller.setPhotosFromBytes(batch);
-            controller.setPageNumber(i + 2); // Page 1 is fixed
-
-            vboxPages.getChildren().add(photoPage);
+        for (int i = 0; i < list.size(); i += perPage) {
+            FXMLLoader fxml = new FXMLLoader(getClass()
+                    .getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPhotos.fxml"));
+            AnchorPane page = fxml.load();
+            PhotoPageController c = fxml.getController();
+            c.setPhotosFromBytes(list.subList(i, Math.min(i+perPage, list.size())));
+            c.setPageNumber(1 + vboxPages.getChildren().size());        // page #2…
+            vboxPages.getChildren().add(page);
         }
     }
 
+    private void renderPdf(Path out) throws Exception {
+        double scale = TARGET_DPI / javafx.stage.Screen.getPrimary().getDpi();
+        SnapshotParameters snap = new SnapshotParameters();
+        snap.setTransform(new Scale(scale, scale));
+
+        try (PdfWriter wr = new PdfWriter(out.toFile());
+             PdfDocument pdf = new PdfDocument(wr);
+             Document doc = new Document(pdf, PageSize.A4)) {
+
+            float maxW = (float)(PageSize.A4.getWidth()  - 2*MARGIN_PT);
+            float maxH = (float)(PageSize.A4.getHeight() - 2*MARGIN_PT);
+
+            for (int i = 0, n = vboxPages.getChildren().size(); i < n; i++) {
+                Node page = vboxPages.getChildren().get(i);
+                page.applyCss();  if (page instanceof Region r) r.layout();
+
+                WritableImage wi = page.snapshot(snap, null);
+                BufferedImage bi = SwingFXUtils.fromFXImage(wi, null);
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    ImageIO.write(bi, "png", baos);
+                    Image img = new Image(ImageDataFactory.create(baos.toByteArray()));
+                    img.scaleToFit(maxW,maxH);
+                    doc.add(img);
+                }
+                if (i < n-1) doc.add(new AreaBreak());
+            }
+        }
+    }
+
+    private Path copyToSharedFolder(Path tempPdf) throws IOException {
+        YearMonth ym = YearMonth.now();
+        Path dir = REPORTS_BASE.resolve(String.valueOf(ym.getYear()))
+                .resolve("%02d".formatted(ym.getMonthValue()));
+        Files.createDirectories(dir);
+        Path target = dir.resolve(tempPdf.getFileName());
+        return Files.move(tempPdf, target, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    /* get file path in root path */
+    private static Path projectRoot() {
+        return Paths.get(QCReportMainController.class
+                        .getProtectionDomain()
+                        .getCodeSource()
+                        .getLocation()
+                        .getPath())
+                .toAbsolutePath()
+                .getParent()        // …/target
+                .getParent();       // …/BelSign_ExamProject
+    }
 }
