@@ -5,13 +5,14 @@ import easv.dk.belsign.bll.PhotoReviewService;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
+import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.controllers.TopBarController;
 import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
 import easv.dk.belsign.utils.AlertUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
-import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -210,7 +211,16 @@ public class PhotoReviewController {
         if (allPhotosApproved()) {
             try {
                 photoReviewService.completeOrder(currentOrderId);
-                AlertUtil.success(finishbtn.getScene(), "✅ All photos approved. Report ready.");
+                goBackToQaPanel();
+
+                // Show success in the next scene
+                Platform.runLater(() ->
+                        AlertUtil.success(
+                                ViewManager.INSTANCE.getSceneManager()
+                                        .getCurrentStage()
+                                        .getScene(),
+                                "✅ All photos approved. Report ready.")
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -221,10 +231,7 @@ public class PhotoReviewController {
     }
 
     public void onCloseBtnClick(ActionEvent actionEvent) {
-        Pair<Parent, QAEmployeeController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_EMPLOYEE_VIEW);
-        QAEmployeeController controller = pair.getValue();
-        controller.setLoggedInUser(loggedInUser);
-        Navigation.goToQAEmployeeView(pair.getKey());
+        goBackToQaPanel();
     }
 
     private void showCurrentThumbPage() {
@@ -276,7 +283,6 @@ public class PhotoReviewController {
     public void setup(User user, int orderId) {
         this.loggedInUser = user;
 
-
         if (topBarController != null && user != null) {
             topBarController.setLoggedInUser(user);
         }
@@ -289,5 +295,11 @@ public class PhotoReviewController {
         photoReviewService = new PhotoReviewService(photosModel, qaModel);
 
         loadPhotosForOrder(orderId);
+    }
+    public void goBackToQaPanel(){
+        Pair<Parent, QAEmployeeController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_EMPLOYEE_VIEW);
+        QAEmployeeController controller = pair.getValue();
+        controller.setLoggedInUser(loggedInUser);
+        Navigation.goToQAEmployeeView(pair.getKey());
     }
 }
