@@ -9,7 +9,7 @@ import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.controllers.TopBarController;
 import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.models.QAEmployeeModel;
-import easv.dk.belsign.utils.AlertUtil;
+import easv.dk.belsign.gui.util.AlertUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 

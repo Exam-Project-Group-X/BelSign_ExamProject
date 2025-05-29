@@ -1,4 +1,4 @@
-package easv.dk.belsign.utils;
+package easv.dk.belsign.gui.util;
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Window;
 import javafx.util.Duration;
 public final class AlertUtil {
 

@@ -4,7 +4,7 @@ import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.ProductPhotos;
 import easv.dk.belsign.bll.ProductPhotosManager;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
-import easv.dk.belsign.utils.WebcamCaptureDialog;
+import easv.dk.belsign.gui.util.WebcamCaptureDialog;
 
 import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;

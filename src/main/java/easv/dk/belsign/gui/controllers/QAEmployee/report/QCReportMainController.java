@@ -8,7 +8,7 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
-import easv.dk.belsign.utils.AlertUtil;
+import easv.dk.belsign.gui.util.AlertUtil;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;

@@ -6,7 +6,7 @@ import easv.dk.belsign.gui.ViewManagement.*;
 import easv.dk.belsign.gui.controllers.Admin.AdminController;
 import easv.dk.belsign.gui.controllers.QAEmployee.QAEmployeeController;
 import easv.dk.belsign.gui.models.UserModel;
-import easv.dk.belsign.utils.AlertUtil;
+import easv.dk.belsign.gui.util.AlertUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

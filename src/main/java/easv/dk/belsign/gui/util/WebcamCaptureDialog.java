@@ -1,4 +1,4 @@
-package easv.dk.belsign.utils;
+package easv.dk.belsign.gui.util;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
