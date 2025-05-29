@@ -41,19 +41,38 @@ public class OrderCardController {
 
         orderNumberLabel.setText(o.getOrderNumber());
         descriptionLabel.setText(o.getProductDescription() == null ? "No description" : o.getProductDescription());
-        createdAtLabel .setText(o.getCreatedAt() == null ? "–" : o.getCreatedAt().toString());
+        createdAtLabel.setText(o.getCreatedAt() == null ? "–" : o.getCreatedAt().toString());
 
-        /* --- status chip ------------------------------------------------ */
-        statusLabel.getStyleClass().removeAll("status-new","status-pending","status-complete");
+        statusLabel.getStyleClass().removeAll("status-pending", "status-complete");
+
         String status = o.getOrderStatus();
-        statusLabel.setText(status);
-        switch (status) {
-            case "New"      -> statusLabel.getStyleClass().add("status-new");
-            case "Pending"  -> statusLabel.getStyleClass().add("status-pending");
-            case "Complete" -> statusLabel.getStyleClass().add("status-complete");
+        boolean hasPhotos = false;
+
+        if (photosModel != null) {
+            try {
+                hasPhotos = photosModel.countPhotosForOrder(o.getOrderID()) > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        switch (status) {
+            case "Pending" -> {
+                if (hasPhotos) {
+                    statusLabel.setText("Ready For Review");
+                } else {
+                    statusLabel.setText("Pending");
+                }
+                statusLabel.getStyleClass().add("status-pending");
+            }
+            case "Complete" -> {
+                statusLabel.setText("Complete");
+                statusLabel.getStyleClass().add("status-complete");
+            }
+        }
+
         updatePhotoCount();
-        updateReportState();          // ☑︎ keeps button in correct mode
+        updateReportState();
     }
 
 
@@ -115,8 +134,18 @@ public class OrderCardController {
     private void updatePhotoCount() {
         if (order == null || photosModel == null) return;
         try {
-            int cnt = photosModel.countPhotosForOrder(order.getOrderID());
-            lblImgQty.setText(cnt + " photos");
+            int count = photosModel.countPhotosForOrder(order.getOrderID());
+            lblImgQty.setText(count + " photos");
+
+            // 🟡 Update label if status is Pending AND there are photos
+            if ("Pending".equals(order.getOrderStatus())) {
+                if (count > 0) {
+                    statusLabel.setText("Ready For Review");
+                } else {
+                    statusLabel.setText("Pending");
+                }
+            }
+
         } catch (SQLException ex) {
             lblImgQty.setText("0 photos");
             ex.printStackTrace();

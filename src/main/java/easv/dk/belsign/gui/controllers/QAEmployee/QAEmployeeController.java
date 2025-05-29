@@ -173,9 +173,10 @@ public class QAEmployeeController implements Initializable {
         // 🔍 Debug log
         if (loggedInUser == null) {
             System.err.println("❌ [DEBUG] loggedInUser is NULL in addNewOrderCard → Order: " + order.getOrderNumber());
-        } else {
-            System.out.println("✅ [DEBUG] loggedInUser is set: " + loggedInUser.getFullName() + " → Order: " + order.getOrderNumber());
         }
+//        else {
+////            System.out.println("✅ [DEBUG] loggedInUser is set: " + loggedInUser.getFullName() + " → Order: " + order.getOrderNumber());
+//        }
 
         controller.setOrderData(order);
         controller.setLoggedInUser(loggedInUser);
