@@ -17,6 +17,10 @@ public class ProductPhotosManager {
         photosDAO.rejectPhoto(orderId, angle, comment);
     }
 
+    public void deletePhoto(int orderId, String angle) throws SQLException {
+        photosDAO.deletePhoto(orderId, angle);
+    }
+
     public Map<String, byte[]> getPhotosByOrderId(int orderId) throws SQLException {
         return photosDAO.getPhotosByOrderId(orderId);
     }

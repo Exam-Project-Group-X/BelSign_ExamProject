@@ -122,6 +122,21 @@ public class ProductPhotosDAO {
         }
     }
 
+    public void deletePhoto(int orderId, String angle) throws SQLException {
+        String sql = "DELETE FROM ProductPhotos WHERE OrderID = ? AND PhotoAngle = ?";
+
+        try (Connection conn = con.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, orderId);
+            stmt.setString(2, angle);
+
+            int rows = stmt.executeUpdate();
+            System.out.println(" Deleted photo '" + angle + "' for OrderID: " + orderId + " (" + rows + " row(s) affected)");
+        }
+    }
+
+
     public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
         Map<String, String> statusMap = new HashMap<>();
         String sql = "SELECT PhotoAngle, Status FROM ProductPhotos WHERE OrderID = ?";
@@ -137,4 +152,6 @@ public class ProductPhotosDAO {
         }
         return statusMap;
     }
+
+
 }

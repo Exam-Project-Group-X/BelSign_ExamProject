@@ -6,6 +6,7 @@ import easv.dk.belsign.gui.controllers.Operator.CameraController;
 import easv.dk.belsign.gui.controllers.QAEmployee.OrderCardController;
 import easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController;
 import easv.dk.belsign.gui.controllers.QAEmployee.report.QCReportMainController;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -74,9 +75,13 @@ public class Navigation {
 
     // Used when controller is already prepared (e.g. after login) - to pass User Object
     public static void goToQAEmployeeView(Parent root) {
-        StageManagerProvider.get().switchScene(root);
-    }
+        Stage stage = StageManagerProvider.get().getSceneManager().getCurrentStage();
+        stage.setScene(new Scene(root));
 
+        // Delay centering until layout is done
+        root.layout(); // Force layout pass
+        Platform.runLater(stage::centerOnScreen);
+    }
     //Else:
 
     public static void goToQAEmployeeView() {

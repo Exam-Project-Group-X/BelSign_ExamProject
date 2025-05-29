@@ -17,9 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -39,6 +37,7 @@ import java.util.Map;
 
 public class PhotoReviewController {
 
+    @FXML private Button deleteBtn;
     @FXML private ImageView mainImg;
     @FXML private HBox thumbStrip;
     @FXML private TextField captionField;
@@ -58,6 +57,7 @@ public class PhotoReviewController {
     private int currentOrderId;
     private String currentAngle;
 
+    private final List<String> angles = new ArrayList<>();
     private final List<Image> loadedImages = new ArrayList<>();
     private final List<StackPane> thumbnailViews = new ArrayList<>();
     private StackPane currentSelectedThumb = null;
@@ -98,7 +98,8 @@ public class PhotoReviewController {
 
             clearThumbnails();
 
-            List<String> angles = new ArrayList<>(photoMap.keySet());
+            angles.clear();
+            angles.addAll(photoMap.keySet());
             for (String angle : angles) {
                 byte[] photoBytes = photoMap.get(angle);
                 if (photoBytes == null) continue;
@@ -179,6 +180,56 @@ public class PhotoReviewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void DeletePhoto(ActionEvent actionEvent){
+        if (currentAngle == null || currentAngle.isEmpty()) {
+            AlertUtil.error(RejectBtn.getScene(), "No photo selected to delete.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm Deletion");
+        confirm.setHeaderText("Are you sure you want to delete this photo?");
+        confirm.setContentText("Angle: " + currentAngle);
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    // Deletes from DB
+                    photoReviewService.deletePhoto(currentOrderId, currentAngle);
+
+                    //  Remove from UI lists
+                    int index = angles.indexOf(currentAngle);
+                    if (index >= 0) {
+                        angles.remove(index);
+                        loadedImages.remove(index);
+                        thumbnailViews.remove(index);
+                    }
+
+                    // Refresh UI
+                    currentAngle = angles.isEmpty() ? null : angles.get(0);
+                    currentSelectedThumb = null;
+
+                    if (currentAngle != null) {
+                        mainImg.setImage(loadedImages.get(0));
+                        captionField.setText("Angle: " + currentAngle);
+                    } else {
+                        mainImg.setImage(null);
+                        captionField.setText("");
+                    }
+
+                    showCurrentThumbPage();
+
+                    AlertUtil.success(RejectBtn.getScene(), "Photo deleted ✓");
+                    System.out.println("🗑️ Deleted photo: Order " + currentOrderId + " – " + currentAngle);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    AlertUtil.error(RejectBtn.getScene(), "Failed to delete photo from database.");
+                }
+            }
+        });
     }
 
     public void RejectPhoto(ActionEvent actionEvent) {

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController">
 
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
@@ -35,7 +35,8 @@
                         </font>
                      </Label>
                                 <!-- Finish Button-->
-                                <Button fx:id="finishbtn" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="34.0" prefWidth="193.0" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Finish" />
+                                <Button fx:id="finishbtn" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="34.0" prefWidth="193.0" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Finish Review" />
+                     <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#DeletePhoto" prefHeight="34.0" prefWidth="193.0" styleClass="primary-btn" stylesheets="@../styles/app.css" style="-fx-background-color: #D32F2F; -fx-text-fill: white;"  text="Delete Photo" />
                   </children>
                   <HBox.margin>
                      <Insets />
