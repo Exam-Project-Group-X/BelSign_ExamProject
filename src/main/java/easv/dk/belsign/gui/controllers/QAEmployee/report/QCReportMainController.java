@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.sql.SQLException;
 import java.time.YearMonth;
@@ -157,7 +158,7 @@ public class QCReportMainController {
     }
 
     /* get file path in root path */
-    private static Path projectRoot() {
+    /*private static Path projectRoot() {
         return Paths.get(QCReportMainController.class
                         .getProtectionDomain()
                         .getCodeSource()
@@ -166,5 +167,22 @@ public class QCReportMainController {
                 .toAbsolutePath()
                 .getParent()        // …/target
                 .getParent();       // …/BelSign_ExamProject
+    }*/
+
+    private static Path projectRoot() {
+        try {
+            Path classesDir = Paths.get(
+                    QCReportMainController.class
+                            .getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI());                 // ✅ use URI, not plain String
+
+            return classesDir                     // …/target/classes
+                    .getParent()                  // …/target
+                    .getParent();                 // …/BelSign_ExamProject
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Cannot resolve project root", e);
+        }
     }
 }

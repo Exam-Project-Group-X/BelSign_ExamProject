@@ -75,8 +75,14 @@ public class OrderCardController {
         updateReportState();
     }
 
+    // add this for converting file paths to run on different platforms
+    private static File toPlatformFile(String raw) {
+        if (raw != null && raw.matches("^/[A-Za-z]:/.*")) {   // "/C:/…" -> "C:/…"
+            raw = raw.substring(1);
+        }
+        return new File(raw);
+    }
 
-    /* ======================  BUTTON starts ======================== */
 
     /** Enable/disable + label according to DB + status. */
     public void updateReportState() {
@@ -88,7 +94,8 @@ public class OrderCardController {
         QCReport latest = list.isEmpty() ? null : list.get(0);
 
         if (latest != null && latest.getReportFilePath() != null) {           // VIEW mode
-            File f = new File(latest.getReportFilePath());
+            //File f = new File(latest.getReportFilePath());
+            File f = toPlatformFile(latest.getReportFilePath());
             if (f.exists()) {
                 reportPdf = f;
                 btnGenReport.setText("View report");
