@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProductPhotosDAO {
 
@@ -153,5 +155,43 @@ public class ProductPhotosDAO {
         return statusMap;
     }
 
+    public int countPhotosForOrder(int orderId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM ProductPhotos WHERE OrderID = ?";
+        try (Connection c = con.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() ? rs.getInt(1) : 0;
+        }
+    }
+
+    public Map<Integer,Integer> countPhotosForOrders(Set<Integer> orderIds)
+            throws SQLException {
+
+        if (orderIds.isEmpty()) return Map.of();
+
+        String placeholders = orderIds.stream()
+                .map(id -> "?")
+                .collect(Collectors.joining(","));
+
+        String sql = "SELECT OrderID, COUNT(*) AS Cnt "
+                + "FROM ProductPhotos "
+                + "WHERE OrderID IN (" + placeholders + ") "
+                + "GROUP BY OrderID";
+
+        Map<Integer,Integer> result = new HashMap<>();
+
+        try (Connection c  = con.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            int i = 1;
+            for (int id : orderIds) ps.setInt(i++, id);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+                result.put(rs.getInt("OrderID"), rs.getInt("Cnt"));
+        }
+        return result;
+    }
 
 }

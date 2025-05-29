@@ -4,6 +4,7 @@ import easv.dk.belsign.bll.ProductPhotosManager;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PhotosModel {
@@ -33,8 +34,12 @@ public class PhotosModel {
     }
 
     public int countPhotosForOrder(int orderId) throws SQLException {
-        // manager already works with an int  → no more parseInt / NFE
-        return photosManager.getPhotosByOrderId(orderId).size();
+        return photosManager.countPhotosForOrder(orderId);
+    }
+
+    public Map<Integer,Integer> countPhotosForOrders(Set<Integer> ids)
+            throws SQLException {
+        return photosManager.countPhotosForOrders(ids);
     }
 
 }

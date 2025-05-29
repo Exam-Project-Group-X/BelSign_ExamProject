@@ -3,10 +3,13 @@ package easv.dk.belsign.gui.controllers.QAEmployee;
 import easv.dk.belsign.gui.ViewManagement.*;
 import easv.dk.belsign.gui.controllers.TopBarController;
 import easv.dk.belsign.gui.models.PhotosModel;
+import javafx.animation.PauseTransition;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import javafx.util.Pair;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
@@ -20,8 +23,8 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class QAEmployeeController implements Initializable {
     @FXML
@@ -61,8 +64,9 @@ public class QAEmployeeController implements Initializable {
     private List<Order> orders;
     private ToggleGroup toggleGroup = new ToggleGroup();
     private final QAEmployeeModel qamodel = new QAEmployeeModel();
+    private final PhotosModel photosModel = new PhotosModel();
     private User loggedInUser;
-
+    private final Map<Integer,Integer> photoCntCache = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,7 +78,6 @@ public class QAEmployeeController implements Initializable {
 
             setupStatusFilter();
             setupSearchAndFilterListeners();
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,19 +96,62 @@ public class QAEmployeeController implements Initializable {
         }
     }
 
+    private final PauseTransition searchPause = new PauseTransition(
+            Duration.millis(250));          // ¼-second debounce
+
     private void setupSearchAndFilterListeners() {
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
-            lastSearchText = newVal;
-            applyFilters();
+
+        searchField.textProperty().addListener((obs, o, n) -> {
+            lastSearchText = n;
+            /* restart timer */
+            searchPause.playFromStart();
         });
 
-        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
-            lastSelectedStatus = newVal;
-            applyFilters();
+        searchPause.setOnFinished(e -> runFilterAsync());
+
+        statusFilter.valueProperty().addListener((obs, o, n) -> {
+            lastSelectedStatus = n;
+            runFilterAsync();
         });
     }
+    private void runFilterAsync() {                       // heavy work → Task
+        Task<List<Order>> t = new Task<>() {
+            @Override protected List<Order> call() {
+                String search  = lastSearchText == null ? "" :
+                        lastSearchText.toLowerCase();
+                String status  = lastSelectedStatus == null ? "All" :
+                        lastSelectedStatus;
 
-    private void applyFilters() {
+                return orders.parallelStream()             // use all cores
+                        .filter(o -> String.valueOf(o.getOrderNumber())
+                                .toLowerCase().contains(search))
+                        .filter(o -> status.equals("All") ||
+                                o.getOrderStatus().equalsIgnoreCase(status))
+                        .sorted((a, b) -> {                // purely in-memory
+                            boolean readyA = a.getOrderStatus().equals("Pending") &&
+                                    photoCntCache.getOrDefault(
+                                            a.getOrderID(), 0) > 0;
+                            boolean readyB = b.getOrderStatus().equals("Pending") &&
+                                    photoCntCache.getOrDefault(
+                                            b.getOrderID(), 0) > 0;
+                            return Boolean.compare(!readyA, !readyB);
+                        })
+                        .toList();
+            }
+        };
+
+        t.setOnSucceeded(ev -> {
+            filteredOrders = t.getValue();
+            pageCount      = (int) Math.ceil(
+                    filteredOrders.size() / (double) PAGE_SIZE);
+            currentPage    = Math.min(currentPage, Math.max(pageCount, 1));
+            loadFilteredPage(filteredOrders);
+            updatePaginationToggles(filteredOrders);
+        });
+        new Thread(t, "filter-orders").start();
+    }
+
+    /*private void applyFilters() {
         String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
         String selectedStatus = statusFilter.getValue() == null ? "All Statuses" : statusFilter.getValue().toString();
 
@@ -117,8 +163,8 @@ public class QAEmployeeController implements Initializable {
                 })
                 .sorted((o1, o2) -> {
                     try {
-                        int photos1 = sharedPhotosModel.countPhotosForOrder(o1.getOrderID());
-                        int photos2 = sharedPhotosModel.countPhotosForOrder(o2.getOrderID());
+                        int photos1 = photosModel.countPhotosForOrder(o1.getOrderID());
+                        int photos2 = photosModel.countPhotosForOrder(o2.getOrderID());
 
                         boolean ready1 = o1.getOrderStatus().equals("Pending") && photos1 > 0;
                         boolean ready2 = o2.getOrderStatus().equals("Pending") && photos2 > 0;
@@ -133,6 +179,33 @@ public class QAEmployeeController implements Initializable {
                 })
                 .toList();
 
+        filteredOrders = filtered;
+
+        pageCount = (int)Math.ceil((double)filtered.size() / PAGE_SIZE);
+        currentPage = Math.min(currentPage, pageCount == 0 ? 1 : pageCount);
+
+        loadFilteredPage(filteredOrders);
+        updatePaginationToggles(filteredOrders);
+    }*/
+
+    private void applyFilters() {
+        String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
+        String selectedStatus = statusFilter.getValue() == null ? "All Statuses" : statusFilter.getValue().toString();
+
+        List<Order> filtered = orders.stream()
+                .filter(order -> String.valueOf(order.getOrderNumber()).toLowerCase().contains(search))
+                .filter(order -> {
+                    if (selectedStatus.equals("All")) return true;
+                    return order.getOrderStatus().equalsIgnoreCase(selectedStatus);
+                })
+                .sorted((o1, o2) -> {
+                    int photos1 = photoCntCache.getOrDefault(o1.getOrderID(), 0);
+                    int photos2 = photoCntCache.getOrDefault(o2.getOrderID(), 0);
+                    boolean ready1 = o1.getOrderStatus().equals("Pending") && photos1 > 0;
+                    boolean ready2 = o2.getOrderStatus().equals("Pending") && photos2 > 0;
+                    return Boolean.compare(!ready1, !ready2); // put ‘ready’ first
+                })
+                .toList();
         filteredOrders = filtered;
 
         pageCount = (int)Math.ceil((double)filtered.size() / PAGE_SIZE);
@@ -155,49 +228,62 @@ public class QAEmployeeController implements Initializable {
 
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
-        if (topBarController != null) {
-            topBarController.setLoggedInUser(user);
-        }
+        if (topBarController != null) topBarController.setLoggedInUser(user);
 
-        System.out.println("✅ [DEBUG] Logged-in user: " + user.getFullName());
+        /*  run the DB work on a background thread  */
+        Task<Map<Integer,Integer>> preload = new Task<>() {
+            @Override protected Map<Integer,Integer> call() throws Exception {
+                orders = qamodel.getAllOrders();        // 1 ×
+                Set<Integer> ids = orders.stream()
+                        .map(Order::getOrderID)
+                        .collect(Collectors.toSet());
+                /* 1 ×  (instead of n ×)  */
+                return photosModel.countPhotosForOrders(ids);
+            }
+        };
 
-        try {
-            orders = qamodel.getAllOrders();
-            applyFilters();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        preload.setOnSucceeded(ev -> {
+            photoCntCache.putAll(preload.getValue());   // fill cache
+            applyFilters();                             // build the UI
+        });
+        preload.setOnFailed(ev -> preload.getException().printStackTrace());
+
+        new Thread(preload, "preload-photos").start();
     }
 
+    /*public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+        if (topBarController != null) topBarController.setLoggedInUser(user);
 
+        Task<Void> loadTask = new Task<>() {
+            @Override protected Void call() throws Exception {
+                orders = qamodel.getAllOrders();          // one DB hit
+                for (Order o : orders) {                  // n DB hits
+                    int cnt = photosModel.countPhotosForOrder(o.getOrderID());
+                    photoCntCache.put(o.getOrderID(), cnt);
+                }
+                return null;
+            }
+        };
+        loadTask.setOnSucceeded(ev -> applyFilters());    // build UI **after** data ready
+        new Thread(loadTask, "preload-photos").start();
+    }*/
     /// Generate QC Report button only clickable after approving ALL photos (i.e. Status "Complete"
     ///  -> Then you can Generate QC Report)
-    public void loadPage(int page) {
-        cardContainer.getChildren().clear();
-        int start = (page - 1) * PAGE_SIZE;
-        int end = Math.min(start + PAGE_SIZE, orders.size());
-        for (int i = start; i < end; i++) {
-            addNewOrderCard(orders.get(i));
-        }
-        lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
-    }
-    private final PhotosModel sharedPhotosModel = new PhotosModel();
+
+
     public void addNewOrderCard(Order order) {
-        Pair<Parent, OrderCardController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_ORDER_CARD);
-        OrderCardController controller = pair.getValue();
+        Pair<Parent,OrderCardController> p =
+                FXMLManager.INSTANCE.getFXML(FXMLPath.QA_ORDER_CARD);
 
-        // 🔍 Debug log
-        if (loggedInUser == null) {
-            System.err.println("❌ [DEBUG] loggedInUser is NULL in addNewOrderCard → Order: " + order.getOrderNumber());
-        }
-//        else {
-////            System.out.println("✅ [DEBUG] loggedInUser is set: " + loggedInUser.getFullName() + " → Order: " + order.getOrderNumber());
-//        }
+        OrderCardController c = p.getValue();
+        int cnt = photoCntCache.getOrDefault(order.getOrderID(), 0);
 
-        controller.setOrderData(order);
-        controller.setLoggedInUser(loggedInUser);
-        controller.setPhotosModel(sharedPhotosModel);
-        cardContainer.getChildren().add(pair.getKey());
+        c.setLoggedInUser(loggedInUser);
+        c.setPhotosModel(photosModel);                 // still needed later
+        c.setOrderData(order, cnt);                    // <-- overload with count
+
+        cardContainer.getChildren().add(p.getKey());
     }
 
 

@@ -5,6 +5,7 @@ import easv.dk.belsign.dal.web.ProductPhotosDAO;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Set;
 
 public class ProductPhotosManager {
     private final ProductPhotosDAO photosDAO = new ProductPhotosDAO();
@@ -35,5 +36,15 @@ public class ProductPhotosManager {
 
     public void upsertCapturedPhoto(int orderId, String photoAngle, byte[] photoData, String operatorName) throws SQLException {
         photosDAO.upsertCapturedPhoto(orderId, photoAngle, photoData, operatorName);
+    }
+
+    public int countPhotosForOrder(int orderId) throws SQLException {
+        // DAO now runs the lightweight
+        return photosDAO.countPhotosForOrder(orderId);
+    }
+
+    public Map<Integer,Integer> countPhotosForOrders(Set<Integer> ids)
+            throws SQLException {
+        return photosDAO.countPhotosForOrders(ids);
     }
 }

@@ -29,14 +29,14 @@ public class OrderCardController {
 
     private final QCReportModel reportModel = new QCReportModel();
     private PhotosModel photosModel;
-    private Order       order;
-    private User        loggedInUser;
-    private File        reportPdf;            // null until we have one
+    private Order order;
+    private User loggedInUser;
+    private File reportPdf;            // null until we have one
 
     public void setPhotosModel(PhotosModel m) { photosModel = m; updatePhotoCount(); }
     public void setLoggedInUser(User  u)      { loggedInUser = u; }
 
-    public void setOrderData(Order o) {
+    public void setOrderData(Order o, int cachedPhotoCnt) {
         order = o;
 
         orderNumberLabel.setText(o.getOrderNumber());
@@ -79,7 +79,7 @@ public class OrderCardController {
     /* ======================  BUTTON starts ======================== */
 
     /** Enable/disable + label according to DB + status. */
-    private void updateReportState() {
+    public void updateReportState() {
 
         boolean isComplete = "Complete".equalsIgnoreCase(order.getOrderStatus());
 
@@ -117,21 +117,13 @@ public class OrderCardController {
                 null, null, null));                         // timestamps via SQL default
     }
 
-    @FXML private void onClickGenReportBtn(ActionEvent ignored) throws IOException {
-        if (reportPdf == null) {                     // generate
-            Navigation.openQCReportPreview(order, this);
-        } else {                                     // view
-            Desktop.getDesktop().open(reportPdf);
-        }
-    }
-
-    @FXML private void onClickShowImg(MouseEvent e) {
+    public void onClickShowImg(MouseEvent e) {
         Navigation.goToPhotoReviewView(order, loggedInUser);
     }
 
     /* =========================  PHOTO COUNTER starts ========================= */
 
-    private void updatePhotoCount() {
+    public void updatePhotoCount() {
         if (order == null || photosModel == null) return;
         try {
             int count = photosModel.countPhotosForOrder(order.getOrderID());
@@ -149,6 +141,14 @@ public class OrderCardController {
         } catch (SQLException ex) {
             lblImgQty.setText("0 photos");
             ex.printStackTrace();
+        }
+    }
+
+    public void onClickGenReportBtn(ActionEvent actionEvent) throws IOException {
+        if (reportPdf == null) {                     // generate
+            Navigation.openQCReportPreview(order, this);
+        } else {                                     // view
+            Desktop.getDesktop().open(reportPdf);
         }
     }
 }
