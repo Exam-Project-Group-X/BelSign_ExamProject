@@ -115,6 +115,22 @@ public class QAEmployeeController implements Initializable {
                     if (selectedStatus.equals("All")) return true;
                     return order.getOrderStatus().equalsIgnoreCase(selectedStatus);
                 })
+                .sorted((o1, o2) -> {
+                    try {
+                        int photos1 = sharedPhotosModel.countPhotosForOrder(o1.getOrderID());
+                        int photos2 = sharedPhotosModel.countPhotosForOrder(o2.getOrderID());
+
+                        boolean ready1 = o1.getOrderStatus().equals("Pending") && photos1 > 0;
+                        boolean ready2 = o2.getOrderStatus().equals("Pending") && photos2 > 0;
+
+                        // Sort logic:
+                        if (ready1 && !ready2) return -1;
+                        if (!ready1 && ready2) return 1;
+                        return 0;
+                    } catch (Exception e) {
+                        return 0;
+                    }
+                })
                 .toList();
 
         filteredOrders = filtered;
