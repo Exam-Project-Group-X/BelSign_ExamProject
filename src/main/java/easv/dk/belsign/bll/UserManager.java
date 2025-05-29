@@ -1,6 +1,7 @@
 package easv.dk.belsign.bll;
 
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.bll.util.UserFilter;
 import easv.dk.belsign.dal.IUserDAO;
 import easv.dk.belsign.dal.web.UserDAO;
 
@@ -11,10 +12,7 @@ import javafx.collections.ObservableList;
 
 public class UserManager {
     private IUserDAO userDAO;
-
-/*    public UserManager() {
-        this.userDAO = new UserDAO();
-    }*/
+    private UserFilter filter = new UserFilter();
 
     public UserManager() {
         this(new UserDAO());                 // uses the real DAO
@@ -45,5 +43,9 @@ public class UserManager {
     }
     public UserManager(IUserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    public List<User> filterUsers(List<User> allUsers, String search, String role) {
+        return filter.filter(allUsers, search, role);
     }
 }

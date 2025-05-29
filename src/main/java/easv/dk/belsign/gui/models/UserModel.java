@@ -4,11 +4,14 @@ import easv.dk.belsign.bll.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.SQLException;
+import java.util.List;
+
 public class UserModel {
 
     private final UserManager userManager = new UserManager();
     private final ObservableList<User> allUsers = FXCollections.observableArrayList();
     private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
+    private final ObservableList<User> displayedUsers = FXCollections.observableArrayList();
     private User loggedInUser;
 
     public User authenticate(String email, String password) throws SQLException {
@@ -41,6 +44,15 @@ public class UserModel {
         if (index != -1) {
             allUsers.set(index, user);
         }
-}
+    }
+
+    public ObservableList<User> getDisplayedUsers() {
+        return displayedUsers;
+    }
+
+    public void filterUsers(String search, String role) {
+        List<User> filterResults = userManager.filterUsers(allUsers, search, role);
+        displayedUsers.setAll(filterResults);
+    }
 
 }

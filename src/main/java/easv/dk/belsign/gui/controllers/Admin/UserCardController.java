@@ -1,21 +1,16 @@
 package easv.dk.belsign.gui.controllers.Admin;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
-import easv.dk.belsign.utils.AlertUtil;
+import easv.dk.belsign.gui.util.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
 import easv.dk.belsign.gui.models.UserModel;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Window;
 import javafx.scene.control.Label;
-import java.io.IOException;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.sql.SQLException;
@@ -25,6 +20,7 @@ public class UserCardController {
     private User user;
     private AdminController adminController;
     private static final UserModel model = new UserModel();
+
     public void setUserData(User user) {
         this.user = user;
         lblRole.setText(user.getRoleName());

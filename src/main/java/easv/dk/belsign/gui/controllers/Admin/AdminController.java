@@ -108,43 +108,31 @@
         }
 
         private void applyFilters() {
-            if (allUsersList == null) {
-                return; // No users to filter
-            }
-            if (allUsersList == null) return;   // Safety‑net during early init
-
-            String search       = blankIfNull(searchField.getText()).toLowerCase();
-            String selectedRole = normalizeRoleValue(roleFilter.getValue());
-
-            List<User> filtered = allUsersList.stream()
-                    .filter(u -> {
-                        String role = blankIfNull(u.getRoleName()).toLowerCase();
-                        return u.getFullName().toLowerCase().contains(search) ||
-                                u.getEmail().toLowerCase().contains(search)    ||
-                                role.contains(search);                         // return match role text
-                    })
-                    .filter(u -> "all roles".equals(selectedRole) ||
-                            u.getRoleName().toLowerCase().contains(selectedRole))
-                    .collect(Collectors.toList());
-
-            updatePageCount(filtered.size());
-            loadPage(filtered);
-            updatePaginationToggles();
-        }
-        private static String blankIfNull(String s) { return s == null ? "" : s; }
-        private String normalizeRoleValue(String role) {
-            if ("Clear".equalsIgnoreCase(role)) {
+            // if the user picked “Clear” then reset both filters
+            String rawRole = roleFilter.getValue();
+            if ("Clear".equals(rawRole)) {
+                searchField.clear();
                 roleFilter.getSelectionModel().select("All Roles");
-                return "all roles";
             }
-            return blankIfNull(role).toLowerCase();
-        }
+            // run model’s filter (fills displayedUsers)
+            userModel.filterUsers(searchField.getText(), roleFilter.getValue());
 
-        /* ───────────────────────────────── Pagination ───────────────────────────────── */
-        private void updatePageCount(int totalItems) {
-            pageCount = Math.max(1, (int) Math.ceil(totalItems / (double) PAGE_SIZE));
+            // get the filtered list
+            List<User> filtered = userModel.getDisplayedUsers();
+
+            //  pagination calculations
+            pageCount   = Math.max(1, (int)Math.ceil(filtered.size() / (double) PAGE_SIZE));
             currentPage = Math.min(currentPage, pageCount);
             updateNavButtonsVisibility();
+
+            //  extract sublist for current page
+            int start = (currentPage - 1) * PAGE_SIZE;
+            int end   = Math.min(start + PAGE_SIZE, filtered.size());
+            List<User> page = filtered.subList(start, end);
+
+            // render UI
+            loadPage(page);
+            updatePaginationToggles();
         }
 
         /** Hides nav buttons when there is only a single page to display. */
@@ -162,13 +150,9 @@
             lastPageBtn.setManaged(multiPage);
         }
 
-        private void loadPage(List<User> source) {
+        private void loadPage(List<User> page) {
             cardContainer.getChildren().clear();
-
-            int start = (currentPage - 1) * PAGE_SIZE;
-            int end   = Math.min(start + PAGE_SIZE, source.size());
-
-            source.subList(start, end).forEach(this::addUserCard);
+            page.forEach(this::addUserCard);
             lblPageInfo.setText("Showing page " + currentPage + " of " + pageCount);
         }
 
