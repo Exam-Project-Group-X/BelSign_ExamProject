@@ -1,15 +1,12 @@
 package easv.dk.belsign.dal.web;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.dal.db.DBConnection;
-import easv.dk.belsign.utils.PasswordUtils;
+import easv.dk.belsign.bll.util.PasswordUtils;
 import easv.dk.belsign.dal.IUserDAO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
 
 public class UserDAO implements IUserDAO {
     private DBConnection con = new DBConnection();

@@ -1,5 +1,6 @@
 package easv.dk.belsign.utils;
 
+import easv.dk.belsign.bll.util.PasswordUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

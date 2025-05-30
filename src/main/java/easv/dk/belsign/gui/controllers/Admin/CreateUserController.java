@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
-import easv.dk.belsign.utils.PasswordUtils;
+import easv.dk.belsign.bll.util.PasswordUtils;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

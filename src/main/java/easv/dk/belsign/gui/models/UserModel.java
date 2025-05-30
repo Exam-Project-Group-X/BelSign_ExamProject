@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.models;
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.bll.UserManager;
+import easv.dk.belsign.bll.util.PasswordUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.SQLException;
@@ -14,9 +15,17 @@ public class UserModel {
     private final ObservableList<User> displayedUsers = FXCollections.observableArrayList();
     private User loggedInUser;
 
-    public User authenticate(String email, String password) throws SQLException {
-        this.loggedInUser = userManager.authenticateAndGetUser(email, password);
-        return loggedInUser;
+    public User authenticate(String email, String rawPassword) throws SQLException {
+        // ensure we have the latest list
+        getAllUsers();
+        for (User u : allUsers) {
+            if (u.getEmail().equalsIgnoreCase(email)
+                    && PasswordUtils.checkPassword(rawPassword, u.getPasswordHash())) {
+                loggedInUser = u;
+                return u;
+            }
+        }
+        return null;
     }
 
     public ObservableList<String> getAllRoleNames() throws SQLException {
@@ -24,11 +33,16 @@ public class UserModel {
         return allRoleNames;
     }
 
-    public ObservableList<User> getAllUsers() throws SQLException {allUsers.setAll(userManager.getAllUsers());
+    public ObservableList<User> getAllUsers() throws SQLException {
+        allUsers.setAll(userManager.getAllUsers());
         return allUsers;
     }
 
     public User createNewUser(User user) throws SQLException {
+        String hashed = PasswordUtils.hashPassword(user.getPasswordHash());
+        user.setPasswordHash(hashed);
+
+        // 2) save and update local list
         User newUser = userManager.createNewUser(user);
         allUsers.add(newUser);
         return newUser;

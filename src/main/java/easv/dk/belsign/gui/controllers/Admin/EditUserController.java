@@ -8,7 +8,7 @@ import easv.dk.belsign.gui.util.AlertUtil;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import easv.dk.belsign.gui.ViewManagement.ViewManager;
 import easv.dk.belsign.gui.models.UserModel;
-import easv.dk.belsign.utils.PasswordUtils;
+import easv.dk.belsign.bll.util.PasswordUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

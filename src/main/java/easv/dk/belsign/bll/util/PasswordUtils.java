@@ -1,4 +1,4 @@
-package easv.dk.belsign.utils;
+package easv.dk.belsign.bll.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
