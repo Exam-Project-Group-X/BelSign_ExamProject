@@ -36,7 +36,7 @@ public class FXMLPath {
     // QA Paths Dashboard
     public static final String QA_EMPLOYEE_VIEW = "/easv/dk/belsign/views/QAViews/QAEmployeeView.fxml";
     // QA PHOTO REVIEW
-    public static final String QA_PHOTO_REVIEW = "/easv/dk/belsign/views/QAViews/PhotoReviewWindow.fxml";
+    public static final String QA_PHOTO_REVIEW = "/easv/dk/belsign/views/QAViews/PhotoReviewView.fxml";
     public static final String QA_REPORT_PREVIEW = "/easv/dk/belsign/views/QAViews/QCReport/QCReportMain.fxml";
 
 
