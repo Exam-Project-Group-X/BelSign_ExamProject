@@ -40,17 +40,17 @@ public class QCReportPage1Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /* 1 ── create a canvas and keep it the size of the pane */
+       // create a canvas for signature
         sigCanvas = new Canvas();
         sigCanvas.setManaged(false);
-        sigCanvas.widthProperty() .bind(qaSignaturePane.widthProperty());
+        sigCanvas.widthProperty().bind(qaSignaturePane.widthProperty());
         sigCanvas.heightProperty().bind(qaSignaturePane.heightProperty());
         qaSignaturePane.getChildren().add(sigCanvas);
 
-        /* 2 ── basic pen setup */
+        // set up pen
         gc = sigCanvas.getGraphicsContext2D();
         gc.setLineWidth(2);
-        /* static footer timestamp */
+        // Timestamp footer
         lblCreateTime1.setText("This PDF was created at " +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yy, HH:mm")));
     }
@@ -63,15 +63,7 @@ public class QCReportPage1Controller implements Initializable {
         lblOrderNo.setText(order.getOrderNumber());
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         lblProductDes.setText(order.getProductDescription());
-
-        //lblReportNo.setText("Preview – Not Saved");
-
-        //lblOrderNo.setText(order.getOrderNumber());
-/*
-        lblCreateTime1.setText("This PDF was created at " +
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yy, HH:mm")));*/
     }
-
 
     /*  ── Mouse handlers wired in FXML ─────────────────────────────── */
     @FXML private void handleSigPress(MouseEvent e) {
@@ -86,7 +78,6 @@ public class QCReportPage1Controller implements Initializable {
         gc.stroke();
     }
 
-    /*  ── Optional helpers ────────────────────────────────────────── */
     public boolean isSigned() { return signed; }
 
     /** PNG bytes you can save in DB or embed in PDF */
