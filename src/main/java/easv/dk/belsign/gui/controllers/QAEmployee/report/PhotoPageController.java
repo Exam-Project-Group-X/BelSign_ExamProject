@@ -1,6 +1,7 @@
 package easv.dk.belsign.gui.controllers.QAEmployee.report;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -9,14 +10,26 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-public class PhotoPageController {
-
-    public Label lblPageNumber;
+public class PhotoPageController implements Initializable {
+    @FXML
+    private Label lblCreateTime1;
+    @FXML
+    private Label lblPageNumber;
     @FXML
     private GridPane photoGrid;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lblCreateTime1.setText("This PDF was created at " +
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yy, HH:mm")));
+    }
 
     public void setPageNumber(int page) {
         lblPageNumber.setText("Page " + page);

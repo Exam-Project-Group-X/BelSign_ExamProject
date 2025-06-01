@@ -1,6 +1,8 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
+import easv.dk.belsign.be.Order;
 import easv.dk.belsign.be.User;
+import easv.dk.belsign.bll.OrderManager;
 import easv.dk.belsign.bll.PhotoReviewService;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.FXMLPath;
@@ -32,11 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-
-
 public class PhotoReviewController {
-
+    @FXML private Label lblOrderNo;
     @FXML private Button deleteBtn;
     @FXML private ImageView mainImg;
     @FXML private HBox thumbStrip;
@@ -63,6 +62,7 @@ public class PhotoReviewController {
     private StackPane currentSelectedThumb = null;
     private int currentThumbPage = 0;
     private static final int THUMBS_PER_PAGE = 5;
+    private Order order;
 
     private PhotoReviewService photoReviewService;
 
@@ -86,9 +86,6 @@ public class PhotoReviewController {
             e.printStackTrace();
         }
     }
-
-
-
 
     public void loadPhotosForOrder(int orderId) {
         String previousAngle = currentAngle;
@@ -333,12 +330,38 @@ public class PhotoReviewController {
 
     public void setup(User user, int orderId) {
         this.loggedInUser = user;
+        this.currentOrderId = orderId;
+
+        //set the label to "Order ID: " + orderId
+        try {
+            // Use OrderManager to load every Order
+            List<Order> all = new OrderManager().getAllOrders();
+
+            // Find the one whose ID matches
+            Order matching = all.stream()
+                    .filter(o -> o.getOrderID() == orderId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (matching != null) {
+                // 3) Now set the label using order.getOrderNumber()
+                lblOrderNo.setText("Order No: " + matching.getOrderNumber());
+            } else {
+                // fallback if something went wrong
+                lblOrderNo.setText("Order ID: " + orderId);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            lblOrderNo.setText("Order ID: " + orderId);
+        }
+
 
         if (topBarController != null && user != null) {
             topBarController.setLoggedInUser(user);
         }
 
         setOrderId(orderId);
+
         setCaption("Order #" + orderId);
         PhotosModel photosModel = new PhotosModel();
         QAEmployeeModel qaModel = new QAEmployeeModel();

@@ -12,11 +12,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.QAEmployee.PhotoReviewController">
 
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
@@ -29,14 +28,14 @@
             <children>
                <VBox alignment="BASELINE_LEFT" prefHeight="582.0" prefWidth="225.0" spacing="20.0">
                   <children>
-                           <Label style="-fx-font-family: Helvetica;" text="Order No">
+                           <Label fx:id="lblOrderNo" style="-fx-font-family: Helvetica;" text="Order No">
                         <font>
                            <Font name="System Bold" size="16.0" />
                         </font>
                      </Label>
                                 <!-- Finish Button-->
                                 <Button fx:id="finishbtn" mnemonicParsing="false" onAction="#OnClickFinishButton" prefHeight="34.0" prefWidth="193.0" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Finish Review" />
-                     <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#DeletePhoto" prefHeight="34.0" prefWidth="193.0" styleClass="primary-btn" stylesheets="@../styles/app.css" style="-fx-background-color: #D32F2F; -fx-text-fill: white;"  text="Delete Photo" />
+                     <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#DeletePhoto" prefHeight="34.0" prefWidth="193.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" styleClass="primary-btn" stylesheets="@../styles/app.css" text="Delete Photo" />
                   </children>
                   <HBox.margin>
                      <Insets />
@@ -79,8 +78,6 @@
                           <Font name="System Bold" size="34.0" />
                       </font>
                </Button>
-
-
 
             <!-- Arrows -->
             <Button fx:id="prevBtn" layoutX="31.0" layoutY="670.0" onAction="#onLeftArrowClick" prefHeight="50.0" prefWidth="40.0" styleClass="nav-arrow" text="❮" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="48.0" AnchorPane.topAnchor="670.0">
@@ -125,12 +122,6 @@
             </children></HBox>
             </content>
             </ScrollPane>
-            <!-- Pagination dots -->
-            <HBox fx:id="dotBar" alignment="CENTER" spacing="5" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-2.0">
-                <Circle fill="#B50000" radius="3" />
-                <Circle fill="#B50000" opacity="0.3" radius="3" />
-                <Circle fill="#B50000" opacity="0.3" radius="3" />
-            </HBox>
 
         </AnchorPane>
     </center>

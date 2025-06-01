@@ -93,7 +93,7 @@
         </GridPane>
 
         <!-- Footer -->
-        <Label fx:id="lblCreateTime" layoutX="40" layoutY="770" text="This PDF was created at dd‑MM‑yy, HH:mm" />
+        <Label fx:id="lblCreateTime1" layoutX="40" layoutY="770" text="This PDF was created at dd‑MM‑yy, HH:mm" />
         <Label fx:id="lblPageNumber" alignment="CENTER" layoutX="0" layoutY="810" prefWidth="595" />
     </children>
 </AnchorPane>

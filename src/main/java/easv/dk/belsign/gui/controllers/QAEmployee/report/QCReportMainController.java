@@ -8,6 +8,7 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
 import easv.dk.belsign.be.Order;
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
+import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.util.AlertUtil;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -37,6 +38,8 @@ public class QCReportMainController {
     @FXML private VBox vboxPages;
 
     private Consumer<File> reportSaveListener;
+    private Order order;
+    private final PhotosModel photosModel = new PhotosModel();
 
     public void setReportSaveListener(Consumer<File> l) { this.reportSaveListener = l; }
 
@@ -45,15 +48,14 @@ public class QCReportMainController {
     private static final double MARGIN_PT  = 36;
     private static final Path   REPORTS_BASE = projectRoot().resolve("reports");
 
-    /* ---------- state ---------- */
-    private Order              order;
-    private final ProductPhotosDAO photoDAO = new ProductPhotosDAO();
 
     public void setSelectedOrder(Order o) {
         this.order = o;
+        vboxPages.getChildren().clear();
         try {
             loadPage1();
-            loadPhotoPages(photoDAO.getPhotosByOrderId(o.getOrderID()));
+            Map<String, byte[]> photosByAngle = photosModel.getPhotosByOrderId(o.getOrderID());
+            loadPhotoPages(photosByAngle);
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
             AlertUtil.error(vboxPages.getScene(), "❌ Failed to load report.");
@@ -156,18 +158,6 @@ public class QCReportMainController {
         Path target = dir.resolve(tempPdf.getFileName());
         return Files.move(tempPdf, target, StandardCopyOption.REPLACE_EXISTING);
     }
-
-    /* get file path in root path */
-    /*private static Path projectRoot() {
-        return Paths.get(QCReportMainController.class
-                        .getProtectionDomain()
-                        .getCodeSource()
-                        .getLocation()
-                        .getPath())
-                .toAbsolutePath()
-                .getParent()        // …/target
-                .getParent();       // …/BelSign_ExamProject
-    }*/
 
     private static Path projectRoot() {
         try {
