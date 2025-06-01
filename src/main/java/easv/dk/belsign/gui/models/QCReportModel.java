@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QCReportModel {
-
     private final QCReportManager qcReportManager = new QCReportManager();
     private final ObservableList<QCReport> reports = FXCollections.observableArrayList();
 

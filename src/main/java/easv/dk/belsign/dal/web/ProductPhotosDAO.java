@@ -18,14 +18,11 @@ public class ProductPhotosDAO {
 
     public Map<String, byte[]> getPhotosByOrderId(int orderId) throws SQLException {
         Map<String, byte[]> photos = new HashMap<>();
-
         String sql = "SELECT PhotoAngle, PhotoData FROM ProductPhotos WHERE OrderID = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 String angle = rs.getString("PhotoAngle");
                 byte[] data = rs.getBytes("PhotoData");
@@ -37,14 +34,11 @@ public class ProductPhotosDAO {
 
     public Map<String, ProductPhotos> getDetailedPhotosByOrderId(int orderId) throws SQLException {
         Map<String, ProductPhotos> photos = new HashMap<>();
-
         String sql = "SELECT PhotoAngle, PhotoData, Status, Comment FROM ProductPhotos WHERE OrderID = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 ProductPhotos photo = new ProductPhotos();
                 String angle = rs.getString("PhotoAngle");
@@ -75,50 +69,39 @@ public class ProductPhotosDAO {
         WHEN NOT MATCHED THEN
             INSERT (OrderID, PhotoAngle, PhotoData, Status, Operator)
             VALUES (?, ?, ?, 'Pending Review', ?);
-    """;
-
+        """;
         try (Connection conn = con.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, orderId);           // source.OrderID
             ps.setString(2, photoAngle);     // source.PhotoAngle
             ps.setBytes(3, photoData);       // UPDATE SET PhotoData
             ps.setString(4, operatorName);   // UPDATE SET Operator
-
             ps.setInt(5, orderId);           // INSERT OrderID
             ps.setString(6, photoAngle);     // INSERT PhotoAngle
             ps.setBytes(7, photoData);       // INSERT PhotoData
             ps.setString(8, operatorName);   // INSERT Operator
-
             ps.executeUpdate();
         }
     }
 
     public void approvePhoto(int orderId, String angle) throws SQLException {
         String sql = "UPDATE ProductPhotos SET Status = 'Approved' WHERE OrderID = ? AND PhotoAngle = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, orderId);
             stmt.setString(2, angle);
-
             int rowsAffected = stmt.executeUpdate();
-
             System.out.println("✅ Approved photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
     }
 
     public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
         String sql = "UPDATE ProductPhotos SET Status = 'Rejected', Comment = ? WHERE OrderID = ? AND PhotoAngle = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, comment);
             stmt.setInt(2, orderId);
             stmt.setString(3, angle);
-
             int rowsAffected = stmt.executeUpdate();
             System.out.println("❌ Rejected photo '" + angle + "' for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
         }
@@ -126,18 +109,14 @@ public class ProductPhotosDAO {
 
     public void deletePhoto(int orderId, String angle) throws SQLException {
         String sql = "DELETE FROM ProductPhotos WHERE OrderID = ? AND PhotoAngle = ?";
-
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, orderId);
             stmt.setString(2, angle);
-
             int rows = stmt.executeUpdate();
             System.out.println(" Deleted photo '" + angle + "' for OrderID: " + orderId + " (" + rows + " row(s) affected)");
         }
     }
-
 
     public Map<String, String> getPhotoStatusByOrderId(int orderId) throws SQLException {
         Map<String, String> statusMap = new HashMap<>();
@@ -165,11 +144,8 @@ public class ProductPhotosDAO {
         }
     }
 
-    public Map<Integer,Integer> countPhotosForOrders(Set<Integer> orderIds)
-            throws SQLException {
-
+    public Map<Integer,Integer> countPhotosForOrders(Set<Integer> orderIds) throws SQLException {
         if (orderIds.isEmpty()) return Map.of();
-
         String placeholders = orderIds.stream()
                 .map(id -> "?")
                 .collect(Collectors.joining(","));
@@ -180,18 +156,14 @@ public class ProductPhotosDAO {
                 + "GROUP BY OrderID";
 
         Map<Integer,Integer> result = new HashMap<>();
-
         try (Connection c  = con.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-
             int i = 1;
             for (int id : orderIds) ps.setInt(i++, id);
-
             ResultSet rs = ps.executeQuery();
             while (rs.next())
                 result.put(rs.getInt("OrderID"), rs.getInt("Cnt"));
         }
         return result;
     }
-
 }

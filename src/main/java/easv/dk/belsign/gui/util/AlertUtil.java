@@ -1,4 +1,5 @@
 package easv.dk.belsign.gui.util;
+
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,11 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+/**
+ * Utility class for displaying alert messages in a JavaFX application.
+ * Provides methods to show success, error, and info messages with animations.
+ */
 public final class AlertUtil {
-
     private AlertUtil() {
-
     }
+
     public static void success(Scene scene, String msg) {
         show(scene, msg, "#0FA958");
     }
@@ -25,7 +29,6 @@ public final class AlertUtil {
     }
 
     private static void show(Scene scene, String msg, String bg) {
-
         Label toast = new Label(msg);
         toast.setStyle(
                 "-fx-background-color:" + bg + ";" +
@@ -36,7 +39,6 @@ public final class AlertUtil {
         );
         toast.setPadding(new Insets(10, 20, 10, 20));
         toast.setOpacity(0);
-
         Parent root = scene.getRoot();
         StackPane overlay;
         if (root instanceof StackPane sp) {

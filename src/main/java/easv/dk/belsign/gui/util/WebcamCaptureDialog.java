@@ -30,7 +30,6 @@ public class WebcamCaptureDialog {
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
             // Draw circle background
             if (getModel().isPressed()) {
                 g2.setColor(Color.DARK_GRAY);
@@ -50,7 +49,6 @@ public class WebcamCaptureDialog {
             g2.setColor(Color.WHITE);
             int inset = 15;
             g2.fillOval(inset, inset, getWidth() - 2 * inset, getHeight() - 2 * inset);
-
             g2.dispose();
         }
 
@@ -70,7 +68,6 @@ public class WebcamCaptureDialog {
         webcam.setViewSize(WebcamResolution.VGA.getSize());
         WebcamPanel panel = new WebcamPanel(webcam);
         panel.setFPSDisplayed(true);
-
         CircularButton captureButton = new CircularButton("");
         captureButton.addActionListener(e -> {
             capturedImage = webcam.getImage();
@@ -97,16 +94,13 @@ public class WebcamCaptureDialog {
         window.setLocationRelativeTo(null); // center on screen
 
         window.setVisible(true);
-
         synchronized (this) {
             try {
                 this.wait(); // Wait for capture
             } catch (InterruptedException ignored) {}
         }
-
         webcam.close();
         window.dispose();
-
         return capturedImage != null ? SwingFXUtils.toFXImage(capturedImage, null) : null;
     }
 }

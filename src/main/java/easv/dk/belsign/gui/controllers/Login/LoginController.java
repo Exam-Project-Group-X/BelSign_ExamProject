@@ -39,7 +39,6 @@ public class LoginController implements Initializable {
     private FontIcon eyeIcon;
 
     private boolean passwordVisible = false;
-
     private final UserModel userModel = new UserModel();
 
     @Override
@@ -74,7 +73,6 @@ public class LoginController implements Initializable {
     public void onLoginClick(ActionEvent event) {
         String email = loginEmail.getText().trim();
         String password = passwordVisible ? visiblePassword.getText() : loginPassword.getText();
-
         // Validate email format
         if (email.isEmpty() || !isValidEmail(email)) {
             AlertUtil.error(
@@ -82,7 +80,6 @@ public class LoginController implements Initializable {
                     "Error, Invalid email format.");
             return;
         }
-
         // Check if password is empty
         if (password.isEmpty()) {
             AlertUtil.error(
@@ -90,7 +87,6 @@ public class LoginController implements Initializable {
                     "Error, Password cannot be empty!");
             return;
         }
-
         User user = null;
         try {
             user = userModel.authenticate(email, password);
@@ -116,7 +112,6 @@ public class LoginController implements Initializable {
 
                 }
             }
-
         } else {
             AlertUtil.error(
                     ((Node) event.getSource()).getScene(),
@@ -130,7 +125,6 @@ public class LoginController implements Initializable {
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
-
 
     public void onBackClick(ActionEvent actionEvent) { Navigation.goToTitleScreen();
     }

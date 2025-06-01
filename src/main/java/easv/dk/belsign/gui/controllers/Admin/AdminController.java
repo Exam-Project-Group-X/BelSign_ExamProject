@@ -1,14 +1,12 @@
     package easv.dk.belsign.gui.controllers.Admin;
-    import easv.dk.belsign.be.Order;
+
     import easv.dk.belsign.be.User;
     import easv.dk.belsign.gui.ViewManagement.FXMLManager;
     import easv.dk.belsign.gui.ViewManagement.FXMLPath;
     import easv.dk.belsign.gui.ViewManagement.Navigation;
-    import easv.dk.belsign.gui.ViewManagement.ViewManager;
     import easv.dk.belsign.gui.controllers.TopBarController;
     import easv.dk.belsign.gui.models.UserModel;
     import javafx.application.Platform;
-    import javafx.beans.property.SimpleStringProperty;
     import javafx.collections.FXCollections;
     import javafx.collections.ObservableList;
     import javafx.event.ActionEvent;
@@ -16,17 +14,12 @@
     import javafx.fxml.FXMLLoader;
     import javafx.fxml.Initializable;
     import java.util.stream.Collectors;
-    import javafx.geometry.Insets;
-    import javafx.geometry.Pos;
     import javafx.scene.Node;
     import javafx.scene.Parent;
-    import javafx.scene.Scene;
     import javafx.scene.control.*;
     import javafx.scene.layout.AnchorPane;
     import javafx.scene.layout.HBox;
     import javafx.scene.layout.VBox;
-    import javafx.stage.Modality;
-    import javafx.stage.Stage;
     import javafx.util.Pair;
 
     import java.io.IOException;
@@ -34,6 +27,7 @@
     import java.sql.SQLException;
     import java.util.List;
     import java.util.ResourceBundle;
+
     public class AdminController implements Initializable {
         @FXML private Button firstPageBtn, prevPageBtn, nextPageBtn, lastPageBtn;
         @FXML private HBox toggleBtnContainer;
@@ -45,9 +39,9 @@
         @FXML
         private AnchorPane topBarHolder;
         private TopBarController topBarController;
+        private ToggleGroup toggleGroup = new ToggleGroup();
         private User loggedInUser;
 
-        private ToggleGroup toggleGroup = new ToggleGroup();
         private static final UserModel userModel = new UserModel();
         private List<User> allUsersList;
 
@@ -116,20 +110,16 @@
             }
             // run model’s filter (fills displayedUsers)
             userModel.filterUsers(searchField.getText(), roleFilter.getValue());
-
             // get the filtered list
             List<User> filtered = userModel.getDisplayedUsers();
-
             //  pagination calculations
             pageCount   = Math.max(1, (int)Math.ceil(filtered.size() / (double) PAGE_SIZE));
             currentPage = Math.min(currentPage, pageCount);
             updateNavButtonsVisibility();
-
             //  extract sublist for current page
             int start = (currentPage - 1) * PAGE_SIZE;
             int end   = Math.min(start + PAGE_SIZE, filtered.size());
             List<User> page = filtered.subList(start, end);
-
             // render UI
             loadPage(page);
             updatePaginationToggles();
@@ -142,7 +132,6 @@
             prevPageBtn.setVisible(multiPage);
             nextPageBtn.setVisible(multiPage);
             lastPageBtn.setVisible(multiPage);
-
             // Also remove them from layout to avoid empty space
             firstPageBtn.setManaged(multiPage);
             prevPageBtn.setManaged(multiPage);
@@ -160,10 +149,8 @@
         private void updatePaginationToggles() {
             toggleBtnContainer.getChildren().clear();
             if (pageCount <= 1) return;   // nothing to build when single page
-
             int startPage = ((currentPage - 1) / TOGGLE_COUNT) * TOGGLE_COUNT + 1;
             int endPage   = Math.min(startPage + TOGGLE_COUNT - 1, pageCount);
-
             for (int p = startPage; p <= endPage; p++) {
                 ToggleButton toggle = new ToggleButton(String.valueOf(p));
                 toggle.setToggleGroup(toggleGroup);

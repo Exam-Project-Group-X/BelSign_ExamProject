@@ -48,7 +48,6 @@ public class StageManager {
             /* ---------- centre once the window is actually shown ---------- */
             stage.setOnShown(e -> stage.centerOnScreen());
             /* ---------------------------------------------------------------- */
-
             stageCache.put(fxmlFile, stage);
         }
     }
@@ -65,7 +64,6 @@ public class StageManager {
         if (stageSettings.currentStage != null) {
             hideCurrentStage();
         }
-
         try {
             stageSettings.currentStage = getStage(fxmlFile);
             stageSettings.currentStage.show();
@@ -111,5 +109,4 @@ public class StageManager {
         stageSettings.currentStage.sizeToScene();
         stageSettings.currentStage.centerOnScreen();
     }
-
 }

@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class EditUserController implements Initializable {
-
     @FXML public TextField roleField;
     @FXML private TextField fullNameField;
     @FXML private TextField emailField;
@@ -36,15 +35,16 @@ public class EditUserController implements Initializable {
     @FXML private Button cancelBtn;
     @FXML private Button continueBtn;
 
-    private static final UserModel userModel = new UserModel();
-    private User user;
-    private User originalUser;
-    private User loggedInUser;
     @FXML
     private AnchorPane topBarHolder;
     private TopBarController topBarController;
     private AdminController adminController;
     private boolean fieldsChanged = false;
+
+    private static final UserModel userModel = new UserModel();
+    private User user;
+    private User originalUser;
+    private User loggedInUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -93,10 +93,8 @@ public class EditUserController implements Initializable {
         fullNameField.setText(user.getFullName());
         emailField.setText(user.getEmail());
         passwordField.clear();
-
-        emailField.setDisable(true);          // e‑mail & role are immutable here
+        emailField.setDisable(true); // e‑mail & role are immutable here
         roleField.setDisable(true);
-
         continueBtn.setText("Save");
         cancelBtn.setText("Close");
     }
@@ -117,7 +115,6 @@ public class EditUserController implements Initializable {
         String email = emailField.getText().trim();
         String newPassword = passwordField.getText().trim();
         String roleName = roleField.getText();
-
         if (fullName.isEmpty() || email.isEmpty()) {
             AlertUtil.error(
                     ((Node) actionEvent.getSource()).getScene(),
@@ -137,11 +134,9 @@ public class EditUserController implements Initializable {
                     "Unknown role selected.");
             return;
         }
-
         String finalPassword = newPassword.isBlank()
                 ? originalUser.getPasswordHash()     // keep old hash
                 : PasswordUtils.hashPassword(newPassword);     // store new hash
-
         User updatedUser = new User(
                 originalUser.getUserID(),
                 finalPassword,
@@ -153,7 +148,6 @@ public class EditUserController implements Initializable {
                 true,
                 roleName
         );
-
         try {
             userModel.updateUser(updatedUser);
             originalUser  = updatedUser;          // refresh snapshot
@@ -182,7 +176,6 @@ public class EditUserController implements Initializable {
         Pair<Parent, AdminController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.ADMIN_DASHBOARD);
         AdminController controller = pair.getValue();
         controller.setLoggedInUser(loggedInUser);
-
         Navigation.goToAdminView(pair.getKey());
     }
 }

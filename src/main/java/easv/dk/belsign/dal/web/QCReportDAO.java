@@ -5,30 +5,12 @@ import easv.dk.belsign.dal.IQCReportDAO;
 import easv.dk.belsign.dal.db.DBConnection;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QCReportDAO implements IQCReportDAO {
     private DBConnection con = new DBConnection();
 
-    /*public int insertReport(QCReport report, int orderId, int signedByUserId) throws SQLException {
-        String sql = "INSERT INTO QCReports (OrderID, ReportFilePath, SignedByUserID, CustomerEmail) " +
-                "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = con.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, orderId);
-            ps.setString(2, report.getReportFilePath());
-            ps.setInt(3, signedByUserId);
-            ps.setString(4, report.getCustomerEmail());
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                return rs.getInt(1); // Return generated ReportID
-            }
-        }
-        return -1; //Chekcs if failed
-    }*/
     @Override
     public QCReport generateQCReport(QCReport rpt) throws SQLException {
         String sql = """
@@ -46,7 +28,6 @@ public class QCReportDAO implements IQCReportDAO {
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {
                     int reportID = keys.getInt(1);
-
                     /* build a full object to return */
                     return new QCReport(
                             reportID,

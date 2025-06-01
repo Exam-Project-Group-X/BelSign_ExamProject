@@ -1,6 +1,5 @@
 package easv.dk.belsign.gui.controllers.Admin;
 
-
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.ViewManagement.Navigation;
@@ -33,7 +32,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CreateUserController implements Initializable {
-
     @FXML private Label labelRole;
     @FXML private Button cancelBtn;
     @FXML private Label actionLabel;
@@ -57,7 +55,7 @@ public class CreateUserController implements Initializable {
     private void loadTopBar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.TOP_BAR));
-            Node topBar      = loader.load();
+            Node topBar = loader.load();
             topBarController = loader.getController();
             topBarHolder.getChildren().setAll(topBar);
         } catch (IOException ex) { ex.printStackTrace(); }
@@ -121,7 +119,6 @@ public class CreateUserController implements Initializable {
                     "Could not validate e‑mail uniqueness.");
             return;
         }
-
             String hashedPassword = PasswordUtils.hashPassword(rawPassword);
             User newUser = new User(0, hashedPassword, "", fullName, email, roleId, null, null, true, roleName);
         try {

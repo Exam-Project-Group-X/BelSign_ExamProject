@@ -24,33 +24,28 @@ import javafx.util.Pair;
 import java.util.List;
 
 public class OperatorOrdersController {
-
     @FXML
     private VBox cardContainer;
-
     @FXML
     private HBox paginationBox;
-
     @FXML
     private Label pageInfoLabel, noOrdersLabel, errorLabel;
-
     @FXML
     private TextField searchField;
 
     private ObservableList<Order> allOrders;
     private FilteredList<Order> filteredOrders;
+    private OrderManager orderManager = new OrderManager();
+
     private static final int ORDERS_PER_PAGE = 5;
     private int currentPage = 1;
     private int totalPages;
-
-    private OrderManager orderManager = new OrderManager();
 
     @FXML
     public void initialize() {
         try {
             allOrders = FXCollections.observableArrayList(orderManager.getAllPendingOrders());
             filteredOrders = new FilteredList<>(allOrders, p -> true);
-
             // Setup search filter
             searchField.textProperty().addListener((obs, oldVal, newVal) -> {
                 filteredOrders.setPredicate(order -> {
@@ -60,7 +55,6 @@ public class OperatorOrdersController {
                     String lowerCaseFilter = newVal.toLowerCase();
                     return order.getOrderNumber().toLowerCase().contains(lowerCaseFilter);
                 });
-
                 // Handle empty results
                 if (filteredOrders.isEmpty()) {
                     noOrdersLabel.setVisible(true);
@@ -85,22 +79,17 @@ public class OperatorOrdersController {
 
     private void showPage(int pageNumber) {
         cardContainer.getChildren().clear();
-
         int start = (pageNumber - 1) * ORDERS_PER_PAGE;
         int end = Math.min(start + ORDERS_PER_PAGE, filteredOrders.size());
-
         List<Order> pageOrders = filteredOrders.subList(start, end);
-
         for (Order order : pageOrders) {
             addOrderCard(order);
         }
-
         pageInfoLabel.setText("Page " + currentPage + " of " + totalPages);
     }
 
     private void updatePagination() {
         paginationBox.getChildren().clear();
-
         for (int i = 1; i <= totalPages; i++) {
             ToggleButton btn = new ToggleButton(String.valueOf(i));
             int finalI = i;
@@ -111,7 +100,6 @@ public class OperatorOrdersController {
             });
             paginationBox.getChildren().add(btn);
         }
-
         highlightSelectedPage();
     }
 
@@ -128,12 +116,9 @@ public class OperatorOrdersController {
         try {
             Pair<Parent, OperatorOrderCardController> pair =
                     FXMLManager.INSTANCE.getFXML(FXMLPath.OPERATOR_ORDER_CARD);
-
             OperatorOrderCardController controller = pair.getValue();
             controller.setOrderData(order, this);
-
             cardContainer.getChildren().add(pair.getKey());
-
         } catch (Exception e) {
             showError("Error loading order card for Order Nr.: " + order.getOrderNumber());
         }

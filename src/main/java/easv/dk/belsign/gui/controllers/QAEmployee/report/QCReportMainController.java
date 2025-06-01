@@ -7,7 +7,6 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
 import easv.dk.belsign.be.Order;
-import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import easv.dk.belsign.gui.models.PhotosModel;
 import easv.dk.belsign.gui.util.AlertUtil;
 import javafx.application.Platform;
@@ -34,7 +33,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class QCReportMainController {
-
     @FXML private VBox vboxPages;
 
     private Consumer<File> reportSaveListener;
@@ -47,7 +45,6 @@ public class QCReportMainController {
     private static final int    TARGET_DPI = 300;
     private static final double MARGIN_PT  = 36;
     private static final Path   REPORTS_BASE = projectRoot().resolve("reports");
-
 
     public void setSelectedOrder(Order o) {
         this.order = o;
@@ -71,23 +68,20 @@ public class QCReportMainController {
                 new FileChooser.ExtensionFilter("PDF files (*.pdf)","*.pdf"));
         File userCopy = fc.showSaveDialog(vboxPages.getScene().getWindow());
         if (userCopy == null) return;
-
         /* render & save on FX thread (needs snapshots) */
         Platform.runLater(() -> {
             try {
                 Path tempPdf   = Files.createTempFile("qc_", ".pdf");
-                renderPdf(tempPdf);                                     // 2a
-                Path sharedPdf = copyToSharedFolder(tempPdf);           // 2b
+                renderPdf(tempPdf);
+                Path sharedPdf = copyToSharedFolder(tempPdf);
                 Files.copy(sharedPdf, userCopy.toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);        // 2c
+                        StandardCopyOption.REPLACE_EXISTING);
 
-                if (reportSaveListener != null)                         // 2d
+                if (reportSaveListener != null)
                     reportSaveListener.accept(sharedPdf.toFile());
-
                 /* close this preview window */
                 Stage stage = (Stage) vboxPages.getScene().getWindow();
                 stage.close();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 AlertUtil.error(((Node) evt.getSource()).getScene(),
@@ -97,7 +91,6 @@ public class QCReportMainController {
     }
 
     /* ======================  load pages on main controller  =========================== */
-
     private void loadPage1() throws IOException {
         FXMLLoader fxml = new FXMLLoader(getClass()
                 .getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPage1.fxml"));
@@ -109,7 +102,6 @@ public class QCReportMainController {
     private void loadPhotoPages(Map<String, byte[]> photos) throws IOException {
         final int perPage = 6;
         List<Map.Entry<String,byte[]>> list = new ArrayList<>(photos.entrySet());
-
         for (int i = 0; i < list.size(); i += perPage) {
             FXMLLoader fxml = new FXMLLoader(getClass()
                     .getResource("/easv/dk/belsign/views/QAViews/QCReport/QCReportPhotos.fxml"));
@@ -125,7 +117,6 @@ public class QCReportMainController {
         double scale = TARGET_DPI / javafx.stage.Screen.getPrimary().getDpi();
         SnapshotParameters snap = new SnapshotParameters();
         snap.setTransform(new Scale(scale, scale));
-
         try (PdfWriter wr = new PdfWriter(out.toFile());
              PdfDocument pdf = new PdfDocument(wr);
              Document doc = new Document(pdf, PageSize.A4)) {
@@ -166,8 +157,7 @@ public class QCReportMainController {
                             .getProtectionDomain()
                             .getCodeSource()
                             .getLocation()
-                            .toURI());                 // ✅ use URI, not plain String
-
+                            .toURI());                // use URI, not plain String
             return classesDir                     // …/target/classes
                     .getParent()                  // …/target
                     .getParent();                 // …/BelSign_ExamProject

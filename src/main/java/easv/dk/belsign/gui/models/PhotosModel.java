@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PhotosModel {
-
     ProductPhotosManager photosManager = new ProductPhotosManager();
     /** OrderID → number of photos */
     private final Map<Integer, Integer> countCache = new ConcurrentHashMap<>();
@@ -20,10 +19,10 @@ public class PhotosModel {
     public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
         photosManager.rejectPhoto(orderId, angle, comment);
     }
+
     public void deletePhoto(int orderId, String angle) throws SQLException {
         photosManager.deletePhoto(orderId, angle);
     }
-
 
     public Map<String, byte[]> getPhotosByOrderId(int orderId) throws SQLException {
         return photosManager.getPhotosByOrderId(orderId);
@@ -41,5 +40,4 @@ public class PhotosModel {
             throws SQLException {
         return photosManager.countPhotosForOrders(ids);
     }
-
 }

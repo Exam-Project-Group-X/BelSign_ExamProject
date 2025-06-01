@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class OperatorOrderCardController {
-
     @FXML private Label orderNumberLabel, retakePhotosLabel;
     @FXML private GridPane cardRoot;
 
@@ -17,9 +16,7 @@ public class OperatorOrderCardController {
     public void setOrderData(Order order, OperatorOrdersController parentController) {
         this.order = order;
         this.parentController = parentController;
-
         orderNumberLabel.setText(order.getOrderNumber());
-
         // Handle retake photos logic
         if (order.isHasRejectedPhotos()) {
             retakePhotosLabel.setText("Retake Photos");
@@ -27,7 +24,6 @@ public class OperatorOrderCardController {
         } else {
             retakePhotosLabel.setVisible(false);
         }
-
         // Handle card click event to open camera view
         cardRoot.setOnMouseClicked(event -> parentController.openTakePictureView(order));
     }

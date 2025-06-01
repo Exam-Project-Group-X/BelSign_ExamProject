@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class OrderCardController {
-
     @FXML private Label   lblImgQty;
     @FXML private Button  btnGenReport;
     @FXML private Label   statusLabel;
@@ -34,20 +33,16 @@ public class OrderCardController {
     private File reportPdf;            // null until we have one
 
     public void setPhotosModel(PhotosModel m) { photosModel = m; updatePhotoCount(); }
-    public void setLoggedInUser(User  u)      { loggedInUser = u; }
+    public void setLoggedInUser(User u) { loggedInUser = u; }
 
     public void setOrderData(Order o, int cachedPhotoCnt) {
         order = o;
-
         orderNumberLabel.setText(o.getOrderNumber());
         descriptionLabel.setText(o.getProductDescription() == null ? "No description" : o.getProductDescription());
         createdAtLabel.setText(o.getCreatedAt() == null ? "–" : o.getCreatedAt().toString());
-
         statusLabel.getStyleClass().removeAll("status-pending", "status-complete");
-
         String status = o.getOrderStatus();
         boolean hasPhotos = false;
-
         if (photosModel != null) {
             try {
                 hasPhotos = photosModel.countPhotosForOrder(o.getOrderID()) > 0;
@@ -55,7 +50,6 @@ public class OrderCardController {
                 e.printStackTrace();
             }
         }
-
         switch (status) {
             case "Pending" -> {
                 if (hasPhotos) {
@@ -70,7 +64,6 @@ public class OrderCardController {
                 statusLabel.getStyleClass().add("status-complete");
             }
         }
-
         updatePhotoCount();
         updateReportState();
     }
@@ -83,16 +76,12 @@ public class OrderCardController {
         return new File(raw);
     }
 
-
     /** Enable/disable + label according to DB + status. */
     public void updateReportState() {
-
         boolean isComplete = "Complete".equalsIgnoreCase(order.getOrderStatus());
-
         /* newest report */
         List<QCReport> list = reportModel.getReportsByOrder(order.getOrderID());
         QCReport latest = list.isEmpty() ? null : list.get(0);
-
         if (latest != null && latest.getReportFilePath() != null) {           // VIEW mode
             //File f = new File(latest.getReportFilePath());
             File f = toPlatformFile(latest.getReportFilePath());
@@ -106,22 +95,21 @@ public class OrderCardController {
         /* GENERATE mode (no file yet) */
         reportPdf = null;
         btnGenReport.setText("Generate report");
-        btnGenReport.setDisable(!isComplete);                 // ☑︎ active only if status = Complete
+        btnGenReport.setDisable(!isComplete); // active only if status = Complete
     }
 
     /** Called by QCReportMainController after **saving** the PDF. */
     public void onReportSaved(File pdf) {
         reportPdf = pdf;
         btnGenReport.setText("View report");
-        btnGenReport.setDisable(false);                       // ☑︎ keep it enabled
-
+        btnGenReport.setDisable(false); // keep it enabled
         /* persist in DB – minimal information */
         reportModel.saveReport(new QCReport(
-                0,                                           // auto
-                order.getOrderID(),                         // FK
+                0,                 // auto
+                order.getOrderID(), // FK
                 pdf.getAbsolutePath(),
-                loggedInUser.getUserID(),                   // who signed
-                null, null, null));                         // timestamps via SQL default
+                loggedInUser.getUserID(), // who signed
+                null, null, null));  // timestamps via SQL default
     }
 
     public void onClickShowImg(MouseEvent e) {
@@ -129,14 +117,12 @@ public class OrderCardController {
     }
 
     /* =========================  PHOTO COUNTER starts ========================= */
-
     public void updatePhotoCount() {
         if (order == null || photosModel == null) return;
         try {
             int count = photosModel.countPhotosForOrder(order.getOrderID());
             lblImgQty.setText(count + " photos");
-
-            // 🟡 Update label if status is Pending AND there are photos
+            // Update label if status is Pending AND there are photos
             if ("Pending".equals(order.getOrderStatus())) {
                 if (count > 0) {
                     statusLabel.setText("Ready For Review");
@@ -144,7 +130,6 @@ public class OrderCardController {
                     statusLabel.setText("Pending");
                 }
             }
-
         } catch (SQLException ex) {
             lblImgQty.setText("0 photos");
             ex.printStackTrace();

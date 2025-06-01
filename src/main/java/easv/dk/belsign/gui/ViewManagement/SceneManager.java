@@ -1,6 +1,5 @@
 package easv.dk.belsign.gui.ViewManagement;
 
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -32,7 +31,6 @@ public class SceneManager {
     public Stage getCurrentStage() {
         return this.currentStage;
     }
-
 
     public void setStageRoot(BorderPane stageRoot)
     {

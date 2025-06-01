@@ -6,8 +6,8 @@ public class StageManagerProvider {
 
     public static void init(StageManager stageManager) {
         instance = stageManager;
-
         }
+
     public static StageManager get() {
         if (instance == null) {
             throw new IllegalStateException("StageManager has not been initialized!");

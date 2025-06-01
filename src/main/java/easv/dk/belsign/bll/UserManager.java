@@ -41,6 +41,7 @@ public class UserManager {
     public List<String> getAllRoles() throws SQLException {
         return userDAO.getAllRoleNames();
     }
+
     public UserManager(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }

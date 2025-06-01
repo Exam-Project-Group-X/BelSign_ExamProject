@@ -17,14 +17,11 @@ import javafx.util.Pair;
 // Use (Parent root) versions when you need to inject controller data.
 // Use plain versions when the view self-loads its data.
 
-
 public class Navigation {
-
 
     /// ─────────────────────────────────────
     /// LOGIN + LOGOUT
     /// ─────────────────────────────────────
-
     public static void goToTitleScreen() {
         StageManagerProvider.get().getSceneManager().switchScene(FXMLPath.TITLE_SCREEN);
     }
@@ -33,41 +30,31 @@ public class Navigation {
         StageManagerProvider.get().getSceneManager().switchScene(FXMLPath.LOGIN);
     }
 
-
-
     /// ─────────────────────────────────────
     /// OPERATOR NAVIGATION
     /// ─────────────────────────────────────
-
     // If we need to pass the operator (user) object to the controller we use:
-
     public static void goToOperatorDashboardWithRoot(Parent root) {
         StageManagerProvider.get().switchScene(root);
     }
 
     // Else:
-
     public static void goToOperatorDashboard() {
         StageManagerProvider.get().getSceneManager().switchScene(FXMLPath.OPERATOR_DASHBOARD);
     }
-
 
     public static void goToCameraView(Order order) {
         try {
             Pair<Parent, CameraController> pair =
                     FXMLManager.INSTANCE.getFXML(FXMLPath.CAMERA_VIEW);
-
             CameraController controller = pair.getValue();
             controller.setSelectedOrder(order);
-
             StageManagerProvider.get().switchScene(pair.getKey());
-
         } catch (Exception e) {
             System.err.println("Error navigating to camera view for order: " + order.getOrderNumber());
             e.printStackTrace();
         }
     }
-
 
     /// ─────────────────────────────────────
     /// QA EMPLOYEE NAVIGATION
@@ -77,18 +64,14 @@ public class Navigation {
     public static void goToQAEmployeeView(Parent root) {
         Stage stage = StageManagerProvider.get().getSceneManager().getCurrentStage();
         stage.setScene(new Scene(root));
-
         // Delay centering until layout is done
         root.layout(); // Force layout pass
         Platform.runLater(stage::centerOnScreen);
     }
-    //Else:
 
     public static void goToQAEmployeeView() {
         StageManagerProvider.get().getSceneManager().switchScene(FXMLPath.QA_EMPLOYEE_VIEW);
     }
-
-
 
     /// ─────────────────────────────────────
     /// Photo Review
@@ -97,9 +80,7 @@ public class Navigation {
         try {
             Pair<Parent, PhotoReviewController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_PHOTO_REVIEW);
             PhotoReviewController controller = pair.getValue();
-
             controller.setup(loggedInUser, order.getOrderID());
-
             StageManagerProvider.get().switchScene(pair.getKey());
         } catch (Exception e) {
             System.err.println("Failed to load photo review for Order: " + order.getOrderNumber());
@@ -110,30 +91,11 @@ public class Navigation {
     /// ─────────────────────────────────────
     /// QC Report
     /// ─────────────────────────────────────
-    /*public static void openQCReportPreview(Order order) {
-        try {
-            Pair<Parent, QCReportMainController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
-            pair.getValue().setSelectedOrder(order);
-
-            Stage stage = new Stage();
-            stage.setTitle("QC Report Preview - Order #" + order.getOrderNumber());
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(pair.getKey()));
-            stage.show();
-
-        } catch (Exception e) {
-            System.err.println("Failed to open QC Report Preview for Order: " + order.getOrderNumber());
-            e.printStackTrace();
-        }
-    }*/
-
-    public static void openQCReportPreview(Order order,
+        public static void openQCReportPreview(Order order,
                                            OrderCardController caller) {
-
         try {
             Pair<Parent, QCReportMainController> pair =
                     FXMLManager.INSTANCE.getFXML(FXMLPath.QA_REPORT_PREVIEW);
-
             QCReportMainController ctrl = pair.getValue();
             ctrl.setSelectedOrder(order);                     // what you had
             ctrl.setReportSaveListener(caller::onReportSaved);/* NEW callback */
@@ -143,7 +105,6 @@ public class Navigation {
             s.initModality(Modality.APPLICATION_MODAL);
             s.setScene(new Scene(pair.getKey()));
             s.show();
-
         } catch (Exception ex) {
             System.err.println("Failed to open QC Report Preview for Order: "
                     + order.getOrderNumber());
@@ -155,10 +116,6 @@ public class Navigation {
     public static void openQCReportPreview(Order order) {
         openQCReportPreview(order, null);          // simply ignore callback
     }
-
-
-
-
 
     /// ─────────────────────────────────────
     /// ADMIN NAVIGATION
@@ -177,10 +134,8 @@ public class Navigation {
     public static void goToCreateUserView(Parent root) {
         StageManagerProvider.get().switchScene(root);
     }
+
     public static void goToEditUserView(Parent root) {
         StageManagerProvider.get().switchScene(root);
     }
-
-
-
 }

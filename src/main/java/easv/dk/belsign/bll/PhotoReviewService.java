@@ -33,6 +33,7 @@ public class PhotoReviewService {
     public void rejectPhoto(int orderId, String angle, String comment) throws SQLException {
         photosModel.rejectPhoto(orderId, angle, comment);
     }
+
     public void deletePhoto(int orderId, String angle) throws SQLException {
         photosModel.deletePhoto(orderId, angle);
     }

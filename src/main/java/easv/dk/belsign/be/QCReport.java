@@ -22,10 +22,6 @@ public class QCReport {
         this.sentAt = sentAt;
     }
 
-    public QCReport(int reportID, int orderID, String productDescription, String reportFilePath, int signedByUserID, String customerEmail, LocalDateTime createdAt, LocalDateTime sentAt) {
-
-    }
-
     public int getReportID() {
         return reportID;
     }

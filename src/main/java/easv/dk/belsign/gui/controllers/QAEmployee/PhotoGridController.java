@@ -1,6 +1,5 @@
 package easv.dk.belsign.gui.controllers.QAEmployee;
 
-
 import easv.dk.belsign.dal.web.ProductPhotosDAO;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -11,7 +10,6 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class PhotoGridController {
-
     @FXML
     private ImageView frontImage;
     @FXML
@@ -32,10 +30,8 @@ public class PhotoGridController {
             System.out.println("No photo data for angle: " + angle);
             return;
         }
-
         Image image = new Image(new ByteArrayInputStream(photoData));
         System.out.println("Setting image for " + angle + ": " + photoData.length + " bytes");
-
         switch (angle.toUpperCase()) {
             case "FRONT" -> frontImage.setImage(image);
             case "BACK" -> backImage.setImage(image);
@@ -49,8 +45,7 @@ public class PhotoGridController {
 
     public void loadPhotosForOrder(int orderId) {
         System.out.println("Loading photos for order ID: " + orderId);
-        clearAll(); // optional reset
-
+        clearAll();
         try {
             Map<String, byte[]> photoMap = photoDAO.getPhotosByOrderId(orderId);
             for (Map.Entry<String, byte[]> entry : photoMap.entrySet()) {

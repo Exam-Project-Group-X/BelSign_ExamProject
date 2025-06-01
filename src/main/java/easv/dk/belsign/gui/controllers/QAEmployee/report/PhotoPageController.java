@@ -37,16 +37,12 @@ public class PhotoPageController implements Initializable {
 
     public void setPhotosFromBytes(List<Map.Entry<String, byte[]>> photos) {
         photoGrid.getChildren().clear(); // fx:id in QCReportPhotoPage.fxml
-
         for (int i = 0; i < photos.size(); i++) {
             Map.Entry<String, byte[]> entry = photos.get(i);
-
             String angle = entry.getKey();
             byte[] data = entry.getValue();
             if (data == null) continue;
-
             Image img = new Image(new ByteArrayInputStream(data));
-
             ImageView imageView = new ImageView(img);
             imageView.setFitHeight(123);
             imageView.setFitWidth(150);

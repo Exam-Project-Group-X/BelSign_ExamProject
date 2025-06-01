@@ -1,4 +1,5 @@
 package easv.dk.belsign.gui.controllers.Admin;
+
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.gui.ViewManagement.FXMLManager;
 import easv.dk.belsign.gui.util.AlertUtil;
@@ -8,12 +9,12 @@ import easv.dk.belsign.gui.ViewManagement.FXMLPath;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
 import java.sql.SQLException;
+
 public class UserCardController {
     @FXML private Label lblRole, lblName, lblEmail;
     private User loggedInUser;
@@ -27,12 +28,15 @@ public class UserCardController {
         lblName.setText(user.getFullName());
         lblEmail.setText(user.getEmail());
     }
+
     public void setParentController(AdminController parentController) {
         this.adminController = parentController;
     }
+
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
     }
+
     public void onClickDeleteUser(ActionEvent actionEvent) {
         try {
             model.deleteUser(user);
@@ -53,12 +57,10 @@ public class UserCardController {
     public void onClickEditUser(ActionEvent actionEvent) {
         Pair<Parent, EditUserController> pair =
                 FXMLManager.INSTANCE.getFXML(FXMLPath.USER_EDITOR);
-
         EditUserController controller = pair.getValue();
         controller.setUserData(user);
         controller.setManageUsersController(adminController);
         controller.setLoggedInUser(loggedInUser);
-
         Navigation.goToEditUserView(pair.getKey());
     }
 }

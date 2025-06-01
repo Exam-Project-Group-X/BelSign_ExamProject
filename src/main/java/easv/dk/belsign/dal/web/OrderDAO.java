@@ -48,7 +48,7 @@ public class OrderDAO {
         FROM Orders o
         WHERE o.OrderStatus = 'Pending'
         ORDER BY HasRejectedPhotos DESC, o.OrderID ASC
-    """;
+        """;
         try (Connection c = con.getConnection();
              PreparedStatement stmt = c.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -68,16 +68,12 @@ public class OrderDAO {
     }
 
     public int updateOrderStatusToPending(int orderId) {
-
         String sql = "UPDATE Orders SET OrderStatus = 'Pending' WHERE OrderID = ?";
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             int rowsAffected = stmt.executeUpdate();
-
-            System.out.println("✅ Order status updated to Pending for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
             return rowsAffected;
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new OrderException("Failed to update order status: " + e.getMessage());
@@ -85,16 +81,12 @@ public class OrderDAO {
     }
 
     public int updateOrderStatusToComplete(int orderId) {
-
         String sql = "UPDATE Orders SET OrderStatus = 'Complete' WHERE OrderID = ?";
         try (Connection conn = con.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             int rowsAffected = stmt.executeUpdate();
-
-            System.out.println("✅ Order status updated to Complete for OrderID: " + orderId + " (" + rowsAffected + " row(s) affected)");
             return rowsAffected;
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new OrderException("Failed to update order status: " + e.getMessage());

@@ -1,4 +1,5 @@
 package easv.dk.belsign.dal.web;
+
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.dal.db.DBConnection;
 import easv.dk.belsign.bll.util.PasswordUtils;
@@ -49,7 +50,6 @@ public class UserDAO implements IUserDAO {
     @Override
     public User createNewUser(User user) throws SQLException {
         String sql = "INSERT INTO Users (FullName, Email, PasswordHash, RoleID) VALUES (?, ?, ?, ?)";
-
         try (Connection connection = con.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getFullName());
@@ -69,10 +69,10 @@ public class UserDAO implements IUserDAO {
                         user.getRoleName());
                 return newUser;
             }
-        catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("Error creating new user: " + e.getMessage(), e);
-        }
+            catch (SQLException e) {
+                e.printStackTrace();
+                throw new SQLException("Error creating new user: " + e.getMessage(), e);
+            }
     }
 
     @Override
@@ -116,7 +116,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-
     public User authenticateAndGetUser(String email, String rawPassword) {
         String sql = """
         SELECT u.*, r.RoleName
@@ -149,5 +148,4 @@ public class UserDAO implements IUserDAO {
         }
         return null;
     }
-
 }

@@ -18,18 +18,13 @@
 
 <BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.dk.belsign.gui.controllers.Admin.EditUserController">
 
-
-
     <!-- ===== TOP HEADER BAR ===== -->
     <top>
         <AnchorPane fx:id="topBarHolder" />
     </top>
     <center>
-
         <StackPane style="-fx-background-color: #D9D9D9; -fx-padding: 25;">
-
             <VBox maxWidth="1000" style="-fx-background-color: #FFFFFF; -fx-border-color: #d3d3d3; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 15;" styleClass="card" stylesheets="@../styles/app.css">
-
                 <!-- Card title -->
                 <Label style="-fx-font-weight: bold; -fx-padding: 0 0 10 5; -fx-font-size: 18 px;" text="Editing User">
                     <font>

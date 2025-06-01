@@ -1,4 +1,5 @@
 package easv.dk.belsign.gui.models;
+
 import easv.dk.belsign.be.User;
 import easv.dk.belsign.bll.UserManager;
 import easv.dk.belsign.bll.util.PasswordUtils;
@@ -8,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserModel {
-
     private final UserManager userManager = new UserManager();
     private final ObservableList<User> allUsers = FXCollections.observableArrayList();
     private final ObservableList<String> allRoleNames = FXCollections.observableArrayList();
@@ -41,8 +41,7 @@ public class UserModel {
     public User createNewUser(User user) throws SQLException {
         String hashed = PasswordUtils.hashPassword(user.getPasswordHash());
         user.setPasswordHash(hashed);
-
-        // 2) save and update local list
+        // save and update local list
         User newUser = userManager.createNewUser(user);
         allUsers.add(newUser);
         return newUser;
@@ -52,6 +51,7 @@ public class UserModel {
         userManager.deleteUser(user);
         allUsers.remove(user);
     }
+
     public void updateUser(User user) throws SQLException {
         userManager.updateUser(user);
         int index = allUsers.indexOf(user);
@@ -68,5 +68,4 @@ public class UserModel {
         List<User> filterResults = userManager.filterUsers(allUsers, search, role);
         displayedUsers.setAll(filterResults);
     }
-
 }

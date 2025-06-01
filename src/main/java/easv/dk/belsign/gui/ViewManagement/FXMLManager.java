@@ -1,6 +1,5 @@
 package easv.dk.belsign.gui.ViewManagement;
 
-
 import easv.dk.belsign.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,11 +8,8 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.URL;
 
-
 public enum FXMLManager {
-
     INSTANCE;
-
     public <T> Pair<Parent, T> getFXML(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getFXMLPath(fxmlPath));
@@ -24,7 +20,6 @@ public enum FXMLManager {
             e.printStackTrace();
             throw new RuntimeException("Failed to load FXML: " + fxmlPath, e);
         }
-
     }
 
     private static URL getFXMLPath(String fxmlPath) {

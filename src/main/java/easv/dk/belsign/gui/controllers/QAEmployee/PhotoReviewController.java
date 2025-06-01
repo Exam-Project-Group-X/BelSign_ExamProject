@@ -63,7 +63,6 @@ public class PhotoReviewController {
     private int currentThumbPage = 0;
     private static final int THUMBS_PER_PAGE = 5;
     private Order order;
-
     private PhotoReviewService photoReviewService;
 
     // Setters
@@ -72,8 +71,6 @@ public class PhotoReviewController {
     public void setOrderId(int orderId) { this.currentOrderId = orderId; }
     public void setCurrentAngle(String angle) { this.currentAngle = angle; }
     public void setCaption(String caption) { captionField.setText(caption); }
-
-
 
     @FXML
     public void initialize() {
@@ -92,18 +89,14 @@ public class PhotoReviewController {
         try {
             Map<String, byte[]> photoMap = photoReviewService.getPhotos(orderId);
             Map<String, String> statusMap = photoReviewService.getStatuses(orderId);
-
             clearThumbnails();
-
             angles.clear();
             angles.addAll(photoMap.keySet());
             for (String angle : angles) {
                 byte[] photoBytes = photoMap.get(angle);
                 if (photoBytes == null) continue;
-
                 Image img = createImageFromBytes(photoBytes);
                 loadedImages.add(img);
-
                 StackPane thumbWrapper = createThumbnailWrapper(img, angle, statusMap);
                 thumbnailViews.add(thumbWrapper);
             }
@@ -112,9 +105,7 @@ public class PhotoReviewController {
                 String angleToSelect = angles.contains(previousAngle) ? previousAngle : angles.get(0);
                 selectImageByAngle(angleToSelect, statusMap, angles);
             }
-
             showCurrentThumbPage();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,16 +127,12 @@ public class PhotoReviewController {
         thumb.setFitHeight(150);
         thumb.setPreserveRatio(true);
         thumb.setPickOnBounds(true);
-
         StackPane wrapper = new StackPane(thumb);
         wrapper.getStyleClass().add("thumb-wrapper");
-
         String status = statusMap.getOrDefault(angle.toUpperCase(), "Pending Review");
         if ("Approved".equalsIgnoreCase(status)) wrapper.getStyleClass().add("approved-thumb");
         else if ("Rejected".equalsIgnoreCase(status)) wrapper.getStyleClass().add("rejected-thumb");
-
         wrapper.setOnMouseClicked(e -> selectImageByAngle(angle, statusMap, new ArrayList<>(statusMap.keySet())));
-
         return wrapper;
     }
 
@@ -161,7 +148,6 @@ public class PhotoReviewController {
     private void applyMainImageHighlight(String angle, Map<String, String> statusMap) {
         mainImg.getStyleClass().removeAll("main-approved", "main-rejected", "main-neutral");
         String status = statusMap.getOrDefault(angle.toUpperCase(), "Pending Review");
-
         switch (status) {
             case "Approved" -> mainImg.getStyleClass().add("main-approved");
             case "Rejected" -> mainImg.getStyleClass().add("main-rejected");
@@ -184,18 +170,15 @@ public class PhotoReviewController {
             AlertUtil.error(RejectBtn.getScene(), "No photo selected to delete.");
             return;
         }
-
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirm Deletion");
         confirm.setHeaderText("Are you sure you want to delete this photo?");
         confirm.setContentText("Angle: " + currentAngle);
-
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
                     // Deletes from DB
                     photoReviewService.deletePhoto(currentOrderId, currentAngle);
-
                     //  Remove from UI lists
                     int index = angles.indexOf(currentAngle);
                     if (index >= 0) {
@@ -203,11 +186,9 @@ public class PhotoReviewController {
                         loadedImages.remove(index);
                         thumbnailViews.remove(index);
                     }
-
                     // Refresh UI
                     currentAngle = angles.isEmpty() ? null : angles.get(0);
                     currentSelectedThumb = null;
-
                     if (currentAngle != null) {
                         mainImg.setImage(loadedImages.get(0));
                         captionField.setText("Angle: " + currentAngle);
@@ -215,12 +196,9 @@ public class PhotoReviewController {
                         mainImg.setImage(null);
                         captionField.setText("");
                     }
-
                     showCurrentThumbPage();
-
                     AlertUtil.success(RejectBtn.getScene(), "Photo deleted ✓");
                     System.out.println("🗑️ Deleted photo: Order " + currentOrderId + " – " + currentAngle);
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                     AlertUtil.error(RejectBtn.getScene(), "Failed to delete photo from database.");
@@ -234,15 +212,12 @@ public class PhotoReviewController {
         dialog.setTitle("Reject Photo");
         dialog.setHeaderText("Please provide a reason for rejection:");
         dialog.setContentText("Comment:");
-
         dialog.getEditor().setPromptText("e.g. blurry, wrong photo...");
-
         dialog.showAndWait().ifPresent(comment -> {
             if (comment.trim().isEmpty()) {
                 AlertUtil.error(RejectBtn.getScene(), "You must write a reason to reject.");
                 return;
             }
-
             try {
                 photoReviewService.rejectPhoto(currentOrderId, currentAngle, comment);
                 loadPhotosForOrder(currentOrderId);
@@ -260,7 +235,6 @@ public class PhotoReviewController {
             try {
                 photoReviewService.completeOrder(currentOrderId);
                 goBackToQaPanel();
-
                 // Show success in the next scene
                 Platform.runLater(() ->
                         AlertUtil.success(
@@ -315,15 +289,12 @@ public class PhotoReviewController {
             currentAngle = angle;
             captionField.setText("Angle: " + angle);
             applyMainImageHighlight(angle, statusMap);
-
             if (currentSelectedThumb != null) {
                 currentSelectedThumb.getStyleClass().remove("selected-thumb");
             }
-
             StackPane wrapper = thumbnailViews.get(index);
             wrapper.getStyleClass().add("selected-thumb");
             currentSelectedThumb = wrapper;
-
             currentThumbPage = index / THUMBS_PER_PAGE;
         }
     }
@@ -331,18 +302,15 @@ public class PhotoReviewController {
     public void setup(User user, int orderId) {
         this.loggedInUser = user;
         this.currentOrderId = orderId;
-
         //set the label to "Order ID: " + orderId
         try {
             // Use OrderManager to load every Order
             List<Order> all = new OrderManager().getAllOrders();
-
             // Find the one whose ID matches
             Order matching = all.stream()
                     .filter(o -> o.getOrderID() == orderId)
                     .findFirst()
                     .orElse(null);
-
             if (matching != null) {
                 // 3) Now set the label using order.getOrderNumber()
                 lblOrderNo.setText("Order No: " + matching.getOrderNumber());
@@ -354,22 +322,17 @@ public class PhotoReviewController {
             ex.printStackTrace();
             lblOrderNo.setText("Order ID: " + orderId);
         }
-
-
         if (topBarController != null && user != null) {
             topBarController.setLoggedInUser(user);
         }
-
         setOrderId(orderId);
-
         setCaption("Order #" + orderId);
         PhotosModel photosModel = new PhotosModel();
         QAEmployeeModel qaModel = new QAEmployeeModel();
-
         photoReviewService = new PhotoReviewService(photosModel, qaModel);
-
         loadPhotosForOrder(orderId);
     }
+
     public void goBackToQaPanel(){
         Pair<Parent, QAEmployeeController> pair = FXMLManager.INSTANCE.getFXML(FXMLPath.QA_EMPLOYEE_VIEW);
         QAEmployeeController controller = pair.getValue();

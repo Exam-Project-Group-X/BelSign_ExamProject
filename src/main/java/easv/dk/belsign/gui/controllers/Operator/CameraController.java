@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CameraController {
-
     @FXML private GridPane photoGridPane;
     @FXML private TextField operatorNameField;
     @FXML private StackPane swipePane;
@@ -85,10 +84,8 @@ public class CameraController {
         entry.imageView.setFitWidth(150);
         entry.imageView.setPreserveRatio(true);
         entry.imageView.setStyle("-fx-cursor: hand;");
-
         entry.descriptionField = new TextField(defaultDescription);
         entry.descriptionField.setPrefWidth(150);
-
         entry.imageView.setOnMouseClicked(e -> {
             Image captured = new WebcamCaptureDialog().showAndCapture();
             if (captured != null) {
@@ -104,9 +101,7 @@ public class CameraController {
         VBox container = new VBox(5);
         container.getChildren().addAll(entry.imageView, entry.descriptionField);
         photoGridPane.add(container, photoColIndex, photoRowIndex);
-
         photoColIndex++;
-
         if (photoColIndex >= photoColumnCount) {
             photoColIndex = 0;
             photoRowIndex++;
@@ -126,20 +121,16 @@ public class CameraController {
             showAlert("No valid order selected");
             return;
         }
-
         String operatorName = operatorNameField.getText().trim();
         if (operatorName.isEmpty()) {
             showAlert("Please enter operator name to sign the upload");
             return;
         }
-
         try {
             ProductPhotosManager manager = new ProductPhotosManager();
-
             // Only upload rejected or new photos from required
             for (Map.Entry<String, PhotoEntry> entrySet : requiredPhotos.entrySet()) {
                 PhotoEntry entry = entrySet.getValue();
-
                 if (entry.image != null && (entry.status == null || "Rejected".equalsIgnoreCase(entry.status))) {
                     manager.upsertCapturedPhoto(
                             selectedOrder.getOrderID(),
@@ -149,7 +140,6 @@ public class CameraController {
                     );
                 }
             }
-
             // Upload all extra photos
             for (PhotoEntry entry : extraPhotos) {
                 if (entry.image != null) {
@@ -161,10 +151,8 @@ public class CameraController {
                     );
                 }
             }
-
             showAlert("Photos uploaded successfully!\nSigned by: " + operatorName);
             Navigation.goToOperatorDashboard();
-
         } catch (Exception e) {
             showAlert("Error uploading photos: " + e.getMessage());
         }
@@ -173,11 +161,8 @@ public class CameraController {
     private void checkSwipeReadiness() {
         boolean hasAllRequiredPhotos = requiredPhotos.values().stream()
                 .allMatch(entry -> entry.image != null);
-
         boolean hasOperatorName = !operatorNameField.getText().trim().isEmpty();
-
         boolean isReady = hasAllRequiredPhotos && hasOperatorName;
-
         swipePane.setDisable(!isReady);
         swipePane.setOpacity(isReady ? 1.0 : 0.4);
     }
@@ -185,13 +170,11 @@ public class CameraController {
     @FXML
     private void initializeSwipeControl() {
         swipeKnob.setOnMousePressed(event -> dragStartX = event.getSceneX());
-
         swipeKnob.setOnMouseDragged(event -> {
             double offsetX = event.getSceneX() - dragStartX;
             double maxX = swipePane.getWidth() - swipeKnob.getRadius() * 2;
             double newX = Math.max(0, Math.min(offsetX, maxX));
             swipeKnob.setLayoutX(newX + swipeKnob.getRadius());
-
             if (newX >= maxX - 5 && !uploadTriggered) {
                 uploadTriggered = true;
                 swipeLabel.setText("Uploading...");
@@ -199,7 +182,6 @@ public class CameraController {
                 uploadImages();
             }
         });
-
         swipeKnob.setOnMouseReleased(event -> {
             if (!uploadTriggered) {
                 TranslateTransition tt = new TranslateTransition(Duration.millis(300), swipeKnob);
@@ -208,7 +190,6 @@ public class CameraController {
                 tt.play();
             }
         });
-
         swipeKnob.setLayoutX(swipeKnob.getRadius()); // Start at left
     }
 
@@ -227,30 +208,23 @@ public class CameraController {
 
     public void setSelectedOrder(Order order) {
         this.selectedOrder = order;
-
         if (orderNumber != null && order != null) {
             orderNumber.setText("Order Nr.: " + order.getOrderNumber());
         }
-
         // Clear existing entries
         requiredPhotos.clear();
         extraPhotos.clear();
         photoGridPane.getChildren().clear();
         photoColIndex = 0;
         photoRowIndex = 0;
-
         try {
             Map<String, ProductPhotos> photoMap = new ProductPhotosManager().getDetailedPhotosByOrderId(order.getOrderID());
-
             String[] requiredLabels = {"Front", "Back", "Top", "Left", "Right"};
-
             for (String angle : requiredLabels) {
                 PhotoEntry entry = new PhotoEntry();
                 entry.descriptionField = new TextField(angle);
                 entry.descriptionField.setPrefWidth(150);
-
                 ProductPhotos photo = photoMap.get(angle.toUpperCase());
-
                 if (photo != null && photo.getPhotoData() != null) {
                     Image image = new Image(new ByteArrayInputStream(photo.getPhotoData()));
                     entry.image = image;
@@ -260,7 +234,6 @@ public class CameraController {
                     entry.imageView.setFitHeight(150);
                     entry.imageView.setFitWidth(150);
                     entry.imageView.setPreserveRatio(true);
-
                     if ("Approved".equalsIgnoreCase(photo.getStatus())) {
                         entry.imageView.setOpacity(0.4); // make transparent
                         entry.imageView.setDisable(true); // lock interaction
@@ -276,7 +249,6 @@ public class CameraController {
                             }
                         });
                     }
-
                     // Insert comment label if not null
                     VBox container = new VBox(5);
                     container.getChildren().addAll(entry.imageView, entry.descriptionField);
