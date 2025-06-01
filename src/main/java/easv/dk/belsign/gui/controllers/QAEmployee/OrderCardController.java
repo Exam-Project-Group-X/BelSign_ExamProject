@@ -32,7 +32,7 @@ public class OrderCardController {
     private User loggedInUser;
     private File reportPdf;            // null until we have one
 
-    public void setPhotosModel(PhotosModel m) { photosModel = m; updatePhotoCount(); }
+    public void setPhotosModel(PhotosModel m) { photosModel = m;}
     public void setLoggedInUser(User u) { loggedInUser = u; }
 
     public void setOrderData(Order o, int cachedPhotoCnt) {
@@ -64,7 +64,7 @@ public class OrderCardController {
                 statusLabel.getStyleClass().add("status-complete");
             }
         }
-        updatePhotoCount();
+        lblImgQty.setText(cachedPhotoCnt + " photos");
         updateReportState();
     }
 
@@ -114,26 +114,6 @@ public class OrderCardController {
 
     public void onClickShowImg(MouseEvent e) {
         Navigation.goToPhotoReviewView(order, loggedInUser);
-    }
-
-    /* =========================  PHOTO COUNTER starts ========================= */
-    public void updatePhotoCount() {
-        if (order == null || photosModel == null) return;
-        try {
-            int count = photosModel.countPhotosForOrder(order.getOrderID());
-            lblImgQty.setText(count + " photos");
-            // Update label if status is Pending AND there are photos
-            if ("Pending".equals(order.getOrderStatus())) {
-                if (count > 0) {
-                    statusLabel.setText("Ready For Review");
-                } else {
-                    statusLabel.setText("Pending");
-                }
-            }
-        } catch (SQLException ex) {
-            lblImgQty.setText("0 photos");
-            ex.printStackTrace();
-        }
     }
 
     public void onClickGenReportBtn(ActionEvent actionEvent) throws IOException {
